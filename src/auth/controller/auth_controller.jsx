@@ -5,8 +5,8 @@ import LoginView from '../view/login_view';
 
 
 const AuthController = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('aspirationasia@gmail.com');
+  const [password, setPassword] = useState('9ZOP35hcRhh!=WuJc9');
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
