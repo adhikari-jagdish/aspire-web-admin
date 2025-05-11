@@ -1,42 +1,40 @@
-import {
-    AppShell,
-    Card,
-    Text,
-    Grid,
-    Container,
-} from '@mantine/core';
+import { AppShell, Card, Text, Grid, Container } from "@mantine/core";
+import Header from "../components/header";
+import SideNav from "../components/side_nav";
+import Footer from "../components/footer";
 
 const DashboardView = () => {
-    return (
-        <AppShell>
-            <AppShell.Header>
-                <div style={{ padding: '16px', fontWeight: 'bold' }}>Header</div>
-            </AppShell.Header>
+  return (
+    <AppShell>
+      <AppShell.Header>
+        <Header />
+      </AppShell.Header>
 
-            <AppShell.Navbar width={{ base: 200 }}>
-                <div style={{ padding: '16px' }}>Navbar</div>
-            </AppShell.Navbar>
+      <AppShell.Navbar>
+        <SideNav />
+      </AppShell.Navbar>
 
-            <AppShell.Footer height={60}>
-                <div style={{ padding: '16px' }}>Footer</div>
-            </AppShell.Footer>
+      <AppShell.Footer>
+        <Footer />
+      </AppShell.Footer>
 
-            <AppShell.Main>
-                <Container>
-                    <Grid>
-                        {[1, 2, 3].map((num) => (
-                            <Grid.Col span={4} key={num}>
-                                <Card shadow="sm" padding="lg" radius="md" withBorder>
-                                    <Text align="center" size="xl">{num}</Text>
-                                </Card>
-                            </Grid.Col>
-                        ))}
-                    </Grid>
-                </Container>
-            </AppShell.Main>
-        </AppShell>
-    );
-}
+      <AppShell.Main>
+        <Container>
+          <Grid>
+            {[1, 2, 3].map((num) => (
+              <Grid.Col span={4} key={num}>
+                <Card shadow="sm" padding="lg" radius="md" withBorder>
+                  <Text align="center" size="xl">
+                    {num}
+                  </Text>
+                </Card>
+              </Grid.Col>
+            ))}
+          </Grid>
+        </Container>
+      </AppShell.Main>
+    </AppShell>
+  );
+};
 
-
-export default DashboardView
+export default DashboardView;
