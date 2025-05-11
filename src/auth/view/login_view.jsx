@@ -3,11 +3,19 @@ import React from 'react';
 const LoginView = ({ username, setUsername, password, setPassword, error, onSubmit }) => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
+
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">Login</h2>
+
+        <img
+          src="https://i.ibb.co/N2WHzdZv/aspiration-logo-2.png" // <-- replace with your actual logo path
+          alt="Logo"
+          className="mb-6 w-24 h-24 object-contain text-center mx-auto"
+        /><hr className="border-t border-gray-300 my-4" />
+        <h2 className="text-2xl font-bold text-center text-gray-800 ">Login</h2>
+        <hr className="border-t border-gray-300 my-4 mb-6" />
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="username" className="block text-sm font-medium text-gray-700 text-left">
               Username
             </label>
             <input
@@ -21,7 +29,7 @@ const LoginView = ({ username, setUsername, password, setPassword, error, onSubm
             />
           </div>
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 text-left">
               Password
             </label>
             <input
