@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const navItems = [
   { name: "Home", icon: "🏠" },
+  { name: "Destinations", icon: "🥾" },
   { name: "Tours", icon: "🗺️" },
   { name: "Trekking", icon: "🥾" },
   { name: "Expedition", icon: "⛰️" },
@@ -31,9 +33,8 @@ const SideNav = () => {
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 w-50 bg-white text-white shadow-md transform ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 transition-transform duration-300 ease-in-out z-40`}
+        className={`fixed inset-y-0 left-0 bg-white text-white shadow-md transform ${isOpen ? "translate-x-0" : "-translate-x-full"
+          } md:translate-x-0 transition-transform duration-300 ease-in-out z-40`}
       >
         <div className="p-4">
           <img
@@ -44,14 +45,15 @@ const SideNav = () => {
         </div>
         <nav className="mt-4">
           {navItems.map((item) => (
-            <a
+
+            <Link
               key={item.name}
-              href={`#${item.name.toLowerCase()}`}
+              to={`${item.name.toLowerCase()}`}
               className="flex items-center px-4 py-3 text-black hover:bg-gray-500 hover:text-white transition-colors"
             >
               <span className="mr-3">{item.icon}</span>
               {item.name}
-            </a>
+            </Link>
           ))}
         </nav>
       </div>

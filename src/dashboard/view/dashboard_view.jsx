@@ -2,10 +2,21 @@ import { AppShell, Card, Text, Grid, Container } from "@mantine/core";
 import Header from "../components/header";
 import SideNav from "../components/side_nav";
 import Footer from "../components/footer";
+import HomeView from "./home_view";
+import { Outlet } from "react-router-dom";
 
 const DashboardView = () => {
+  const headerHeight = 60;
+  const footerHeight = 40;
   return (
-    <AppShell>
+    <AppShell
+      padding={0}
+      navbar={{
+        width: { base: 300 }, // Set navbar width (base for all screens)
+      }}
+      header={{ height: headerHeight }} // Set header height
+      footer={{ height: footerHeight }} // Set footer height
+    >
       <AppShell.Header>
         <Header />
       </AppShell.Header>
@@ -18,20 +29,15 @@ const DashboardView = () => {
         <Footer />
       </AppShell.Footer>
 
-      <AppShell.Main>
-        <Container>
-          <Grid>
-            {[1, 2, 3].map((num) => (
-              <Grid.Col span={4} key={num}>
-                <Card shadow="sm" padding="lg" radius="md" withBorder>
-                  <Text align="center" size="xl">
-                    {num}
-                  </Text>
-                </Card>
-              </Grid.Col>
-            ))}
-          </Grid>
-        </Container>
+      <AppShell.Main
+        style={{
+          paddingTop: headerHeight, // Offset main content by header height
+          transition: "padding 0.3s", // Smooth transition for responsive changes
+          boxSizing: "border-box",
+          minHeight: `calc(100vh - ${headerHeight}px - ${footerHeight}px)`, // Fit viewport
+        }}
+      >
+        <Outlet />
       </AppShell.Main>
     </AppShell>
   );
