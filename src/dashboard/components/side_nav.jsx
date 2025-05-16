@@ -45,7 +45,7 @@ const SideNav = () => {
         </div>
         <nav className="mt-4">
           {navItems.map((item) => (
-            console.log(item.name.toLowerCase()),
+
             <Link
               key={item.name}
               to={`${item.name.toLowerCase()}`}

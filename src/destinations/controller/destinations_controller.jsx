@@ -1,6 +1,14 @@
+import { useNavigate } from 'react-router-dom';
+
+
 import DestinationsView from '../view/destinations_view';
 
 const DestinationsController = () => {
+    const navigate = useNavigate();
+    const handleClick = () => {
+        console.log("Add Destination clicked");
+        navigate("addEditDestination");
+    }
 
     const columns = [
         { label: "Title", accessor: "title" },
@@ -33,7 +41,7 @@ const DestinationsController = () => {
 
     return (
         <>
-            <DestinationsView columns={columns} destinations={destinations} />
+            <DestinationsView columns={columns} destinations={destinations} handleClick={handleClick} />
         </>
     )
 }
