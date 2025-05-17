@@ -1,7 +1,6 @@
 import axios from "axios";
-import UserModel from "../model/user_model";
 
-class AuthRepository {
+class DestinationRepository {
   constructor() {
     this.apiUrl = "http://139.59.25.108:9001";
     this.axiosInstance = axios.create({
@@ -18,25 +17,12 @@ class AuthRepository {
       return config;
     });
   }
-  async login(username, password) {
+
+  async addDestination(formData) {
     try {
-      const response = await this.axiosInstance.post("/user/login", {
-        username,
-        password,
-      });
+      const response = await this.axiosInstance.post("/user/login", formData);
 
       if (response.status === 200) {
-        ///Check if authorization exists in headers
-        let bearerToken;
-        if (
-          response.headers.authorization &&
-          response.headers.authorization.startsWith("Bearer ")
-        ) {
-          bearerToken = response.headers.authorization.slice(7);
-        } else {
-          throw new Error("Invalid or missing Authorization header");
-        }
-
         return {
           user: UserModel.fromJson(response.data.data),
           token: bearerToken,
@@ -63,31 +49,6 @@ class AuthRepository {
       }
     }
   }
-
-  saveToken(token) {
-    localStorage.setItem("token", token);
-  }
-
-  saveUser(user) {
-    localStorage.setItem("user", JSON.stringify(user.toJson())); // Serialize user
-  }
-
-  removeToken() {
-    localStorage.removeItem("token");
-  }
-
-  removeUser() {
-    localStorage.removeItem("user");
-  }
-
-  getToken() {
-    return localStorage.getItem("token");
-  }
-
-  getUser() {
-    const userJson = localStorage.getItem("user");
-    return userJson ? UserModel.fromJson(JSON.parse(userJson)) : null; // Parse user
-  }
 }
 
-export default new AuthRepository();
+export default DestinationRepository;

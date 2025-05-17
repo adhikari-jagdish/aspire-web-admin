@@ -6,7 +6,6 @@ import HomeView from "./dashboard/view/home_view";
 import ToursView from "./tours/view/tours_view";
 import PageNotFound from "./common/common_view_components/page_not_found";
 import DestinationsController from "./destinations/controller/destinations_controller";
-import DestinationsAddEditForm from "./destinations/view/destination_add_edit_form";
 
 function App() {
   return (
@@ -17,11 +16,6 @@ function App() {
         <Route path="/" element={<DashboardController />}>
           <Route index path="home" element={<HomeView />} />
           <Route path="destinations" element={<DestinationsController />} />
-
-          <Route
-            path="addEditDestination"
-            element={<DestinationsAddEditForm />}
-          />
           <Route path="tours" element={<ToursView />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
