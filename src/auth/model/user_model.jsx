@@ -23,32 +23,19 @@ class UserModel {
     this.updatedAt = updatedAt;
   }
 
-  toJson() {
-    return {
-      fullName: this.fullName,
-      mobileNumber: this.mobileNumber,
-      countryCode: this.countryCode,
-      email: this.email,
-      isVerified: this.isVerified,
-      userType: this.userType,
-      image: this.image,
-      role: this.role,
-    };
-  }
-
   static fromJson(json) {
     return new UserModel(
-      json._id,
-      json.fullName,
-      json.mobileNumber,
-      json.countryCode,
-      json.email,
-      json.isVerified,
-      json.userType,
-      json.image,
-      json.role,
-      json.createdAt,
-      json.updatedAt
+      json._id || null,
+      json.fullName || "",
+      json.mobileNumber || "",
+      json.countryCode || "",
+      json.email || "",
+      json.isVerified || false,
+      json.userType || "",
+      json.image || "",
+      json.role || "",
+      json.createdAt || null,
+      json.updatedAt || null
     );
   }
 }
