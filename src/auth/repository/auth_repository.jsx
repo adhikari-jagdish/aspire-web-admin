@@ -1,13 +1,14 @@
-import AuthAxiosService from "../../common/service/auth_axios_service";
+import AxiosService from "../../common/service/axios_service";
 import UserModel from "../model/user_model";
 
 class AuthRepository {
   constructor(getToken) {
-    this.axiosService = new AuthAxiosService(getToken); // Pass getToken to AxiosService
+    this.axiosService = new AxiosService(getToken); // Pass getToken to AxiosService
   }
+
   async login(username, password) {
     try {
-      const response = await this.axiosInstance.post("/user/login", {
+      const response = await this.axiosService.post("/auth/signInUser", {
         username,
         password,
       });

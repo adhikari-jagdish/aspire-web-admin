@@ -2,9 +2,16 @@ import DestinationsView from "../view/destinations_view";
 import DestinationAddEditModel from "../components/destination_add_edit_model";
 import { useState } from "react";
 import DestinationRepository from "../repository/destination_repository";
+import useAuth from "../../auth/components/use_auth";
 
 const DestinationsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [error, setError] = useState("");
+  const { getToken } = useAuth();
+
+  // Initialize AuthRepository with getToken from useAuth
+
+  const destinationRepository = new DestinationRepository(getToken);
 
   const handleClick = () => {
     setModalOpen(true);
@@ -13,7 +20,7 @@ const DestinationsController = () => {
   const handleSubmit = async (formData) => {
     console.log("Form submitted:", formData);
     try {
-      const response = await DestinationRepository.addDestination(formData);
+      const response = await destinationRepository.addDestination(formData);
       console.log(response);
     } catch (err) {
       setError(err.message);

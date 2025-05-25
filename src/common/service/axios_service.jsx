@@ -1,10 +1,7 @@
 import axios from "axios";
 
-class AuthAxiosService {
-  constructor(
-    getToken = null,
-    baseURL = process.env.REACT_APP_API_URL || "http://139.59.25.108:9001"
-  ) {
+class AxiosService {
+  constructor(getToken = null, baseURL = "http://localhost:6001") {
     this.axiosInstance = axios.create({
       baseURL,
       headers: { "Content-Type": "application/json" },
@@ -42,6 +39,24 @@ class AuthAxiosService {
   get instance() {
     return this.axiosInstance;
   }
+
+  // Convenience methods
+
+  get(url, config = {}) {
+    return this.axiosInstance.get(url, config);
+  }
+
+  post(url, data = {}, config = {}) {
+    return this.axiosInstance.post(url, data, config);
+  }
+
+  put(url, data = {}, config = {}) {
+    return this.axiosInstance.put(url, data, config);
+  }
+
+  delete(url, config = {}) {
+    return this.axiosInstance.delete(url, config);
+  }
 }
 
-export default AuthAxiosService;
+export default AxiosService;
