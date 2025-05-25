@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { AuthContext } from '../controller/auth_hook';
 
 const LoginView = ({ username, setUsername, password, setPassword, error, onSubmit }) => {
+  const token = useContext(AuthContext)
+  const testObj = useContext(AuthContext)
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
 

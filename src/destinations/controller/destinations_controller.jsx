@@ -7,7 +7,7 @@ const DestinationsController = () => {
     const navigate = useNavigate();
     const handleClick = () => {
         console.log("Add Destination clicked");
-        navigate("addEditDestination");
+        navigate("/addEditDestination");
     }
 
     const columns = [
