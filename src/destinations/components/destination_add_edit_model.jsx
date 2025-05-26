@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { Modal, TextInput, Button, Group, Textarea } from "@mantine/core";
+import ImagePicker from "../../common/common_view_components/image_picker";
 
 const DestinationAddEditModel = ({
   opened,
   onClose,
   isEditDestination,
   handleSubmit,
+  handleImageSelect,
 }) => {
   const [formData, setFormData] = useState({
     title: "",
@@ -41,6 +43,8 @@ const DestinationAddEditModel = ({
         required
         mt="md"
       />
+
+      <ImagePicker onImageSelect={handleImageSelect} />
 
       <Group position="right" mt="md">
         <Button variant="default" onClick={onClose}>
