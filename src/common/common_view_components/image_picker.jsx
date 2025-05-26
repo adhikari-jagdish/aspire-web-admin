@@ -26,47 +26,61 @@ const ImagePicker = ({ onImageSelect }) => {
 
   return (
     <div className="w-full max-w-md mx-auto p-4">
-      <Dropzone
-        onDrop={handleDrop}
-        accept={["image/*"]}
-        maxFiles={1}
-        multiple={false}
-        className="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-blue-500 transition-colors cursor-pointer"
-      >
-        <Group
-          justify="center"
-          gap="xl"
-          mih={60}
-          style={{ pointerEvents: "none" }}
+      {preview == null ? (
+        <Dropzone
+          onDrop={handleDrop}
+          accept={["image/*"]}
+          maxFiles={1}
+          multiple={false}
+          className="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-blue-500 transition-colors cursor-pointer"
         >
-          <Dropzone.Accept>
-            <IconUpload
-              size={52}
-              color="var(--mantine-color-blue-6)"
-              stroke={1.5}
-            />
-          </Dropzone.Accept>
-          <Dropzone.Reject>
-            <IconX size={52} color="var(--mantine-color-red-6)" stroke={1.5} />
-          </Dropzone.Reject>
-          <Dropzone.Idle>
-            <IconPhoto
-              size={52}
-              color="var(--mantine-color-dimmed)"
-              stroke={1.5}
-            />
-          </Dropzone.Idle>
-          <div>
-            <Text size="xl" inline>
-              Select an Image
-            </Text>
-          </div>
-        </Group>
-      </Dropzone>
+          <Group
+            justify="center"
+            gap="xl"
+            mih={60}
+            style={{ pointerEvents: "none" }}
+          >
+            <Dropzone.Accept>
+              <IconUpload
+                size={52}
+                color="var(--mantine-color-blue-6)"
+                stroke={1.5}
+              />
+            </Dropzone.Accept>
+            <Dropzone.Reject>
+              <IconX
+                size={52}
+                color="var(--mantine-color-red-6)"
+                stroke={1.5}
+              />
+            </Dropzone.Reject>
+            <Dropzone.Idle>
+              <IconPhoto
+                size={52}
+                color="var(--mantine-color-dimmed)"
+                stroke={1.5}
+              />
+            </Dropzone.Idle>
+            <div>
+              <Text size="xl" inline>
+                Select an Image
+              </Text>
+            </div>
+          </Group>
+        </Dropzone>
+      ) : (
+        <div className="mt-4">
+          <img
+            src={preview}
+            alt="Selected preview"
+            className="w-full max-h-64 object-cover border-2 border-dashed border-gray-300 rounded-lg p-6"
+          />
+        </div>
+      )}
 
       {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
 
-      {preview && (
+      {/* {preview && (
         <div className="mt-4">
           <img
             src={preview}
@@ -74,7 +88,7 @@ const ImagePicker = ({ onImageSelect }) => {
             className="w-full h-64 object-contain rounded-lg"
           />
         </div>
-      )}
+      )} */}
     </div>
   );
 };
