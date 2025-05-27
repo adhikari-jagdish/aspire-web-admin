@@ -8,6 +8,7 @@ const DestinationsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [error, setError] = useState("");
   const { getToken } = useAuth();
+  const [image, setImage] = useState(null);
 
   // Initialize AuthRepository with getToken from useAuth
 
@@ -17,10 +18,20 @@ const DestinationsController = () => {
     setModalOpen(true);
   };
 
+  ///This is called when user selects an image
+  const handleImageSelect = (file) => {
+    setImage(file);
+    console.log(image.path);
+  };
+
   const handleSubmit = async (formData) => {
-    console.log("Form submitted:", formData);
+    const fD = new FormData();
+    fD.append("file", image);
+    fD.append("title", formData.title);
+    fD.append("description", formData.description);
+    console.log(image.path);
     try {
-      const response = await destinationRepository.addDestination(formData);
+      const response = await destinationRepository.addDestination(fD);
       console.log(response);
     } catch (err) {
       setError(err.message);
@@ -66,6 +77,7 @@ const DestinationsController = () => {
         opened={modalOpen}
         onClose={() => setModalOpen(false)}
         handleSubmit={handleSubmit}
+        handleImageSelect={handleImageSelect}
       />
     </>
   );
