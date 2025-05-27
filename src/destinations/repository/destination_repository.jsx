@@ -5,7 +5,7 @@ class DestinationRepository {
     this.axiosService = new AxiosService(getToken); // Pass getToken to AxiosService
   }
   async addDestination(formData) {
-    console.log(formData);
+    console.log(formData["title"]);
     try {
       const response = await this.axiosService.post(
         "/api/createDestination",

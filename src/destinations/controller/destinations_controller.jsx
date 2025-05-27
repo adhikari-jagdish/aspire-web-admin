@@ -21,17 +21,21 @@ const DestinationsController = () => {
   ///This is called when user selects an image
   const handleImageSelect = (file) => {
     setImage(file);
-    console.log(image.path);
   };
 
   const handleSubmit = async (formData) => {
     const fD = new FormData();
+    console.log(image);
     fD.append("file", image);
     fD.append("title", formData.title);
     fD.append("description", formData.description);
-    console.log(image.path);
+    console.log(fD);
     try {
-      const response = await destinationRepository.addDestination(fD);
+      const response = await destinationRepository.addDestination(fD, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
       console.log(response);
     } catch (err) {
       setError(err.message);
