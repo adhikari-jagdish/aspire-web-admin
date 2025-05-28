@@ -4,7 +4,7 @@ class AxiosService {
   constructor(getToken = null, baseURL = "http://localhost:6001") {
     this.axiosInstance = axios.create({
       baseURL,
-      headers: { "Content-Type": "application/json" },
+      //headers: { "Content-Type": "application/json" },
     });
 
     this.getToken = getToken;

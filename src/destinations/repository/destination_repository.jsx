@@ -5,7 +5,6 @@ class DestinationRepository {
     this.axiosService = new AxiosService(getToken); // Pass getToken to AxiosService
   }
   async addDestination(formData) {
-    console.log(formData["title"]);
     try {
       const response = await this.axiosService.post(
         "/api/createDestination",
@@ -13,9 +12,9 @@ class DestinationRepository {
       );
 
       if (response.status === 200) {
+        console.log(response.data.data.message);
         return {
-          destination: DestinationModel.fromJson(response.data.data),
-          token: bearerToken,
+          data: response.data.data,
         };
       }
       throw new Error(response.data.error || "Oops! Something went wrong!");

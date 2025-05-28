@@ -31,11 +31,7 @@ const DestinationsController = () => {
     fD.append("description", formData.description);
     console.log(fD);
     try {
-      const response = await destinationRepository.addDestination(fD, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await destinationRepository.addDestination(fD);
       console.log(response);
     } catch (err) {
       setError(err.message);
