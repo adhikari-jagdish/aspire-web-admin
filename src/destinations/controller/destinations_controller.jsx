@@ -4,15 +4,16 @@ import { useState } from "react";
 import DestinationRepository from "../repository/destination_repository";
 import useAuth from "../../auth/components/use_auth";
 import { useNotification } from "../../common/hooks/useNotification";
+import useLoadingOverlay from "../../common/hooks/useLoadingOverlay";
 
 const DestinationsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [error, setError] = useState("");
   const { getToken } = useAuth();
   const [image, setImage] = useState(null);
-  const [loading, setLoading] = useState(false);
   const notify = useNotification();
-  // Initialize AuthRepository with getToken from useAuth
+  const { showLoading, hideLoading, LoadingOverlayComponent } =
+    useLoadingOverlay();
 
   const destinationRepository = new DestinationRepository(getToken);
 
@@ -26,7 +27,8 @@ const DestinationsController = () => {
   };
 
   const handleSubmit = async (formData) => {
-    setLoading(true);
+    showLoading();
+    await new Promise((resolve) => setTimeout(resolve, 5000));
     const fD = new FormData();
     fD.append("file", image);
     fD.append("title", formData.title);
@@ -46,7 +48,7 @@ const DestinationsController = () => {
       });
       setError(err.message);
     } finally {
-      setLoading(false);
+      hideLoading();
     }
   };
 
@@ -91,6 +93,8 @@ const DestinationsController = () => {
         handleSubmit={handleSubmit}
         handleImageSelect={handleImageSelect}
       />
+
+      <LoadingOverlayComponent />
     </>
   );
 };
