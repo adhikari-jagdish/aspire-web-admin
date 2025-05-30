@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Modal, TextInput, Button, Group, Textarea } from "@mantine/core";
 import ImagePicker from "../../common/common_view_components/image_picker";
 
@@ -13,6 +13,15 @@ const DestinationAddEditModel = ({
     title: "",
     description: "",
   });
+
+  useEffect(() => {
+    if (isEditDestination && opened) {
+      setFormData({
+        title: isEditDestination.title || "",
+        description: isEditDestination.description || "",
+      });
+    }
+  }, [isEditDestination, opened]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -29,7 +38,7 @@ const DestinationAddEditModel = ({
         label="Title"
         placeholder="Enter destination"
         name="title"
-        value={formData.name}
+        value={formData.title}
         onChange={handleChange}
         required
       />

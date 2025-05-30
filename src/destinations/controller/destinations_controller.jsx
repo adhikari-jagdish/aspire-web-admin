@@ -3,13 +3,15 @@ import DestinationAddEditModel from "../components/destination_add_edit_model";
 import { useState } from "react";
 import DestinationRepository from "../repository/destination_repository";
 import useAuth from "../../auth/components/use_auth";
+import { useNotification } from "../../common/hooks/useNotification";
 
 const DestinationsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [error, setError] = useState("");
   const { getToken } = useAuth();
   const [image, setImage] = useState(null);
-
+  const [loading, setLoading] = useState(false);
+  const notify = useNotification();
   // Initialize AuthRepository with getToken from useAuth
 
   const destinationRepository = new DestinationRepository(getToken);
@@ -24,17 +26,27 @@ const DestinationsController = () => {
   };
 
   const handleSubmit = async (formData) => {
+    setLoading(true);
     const fD = new FormData();
-    console.log(image);
     fD.append("file", image);
     fD.append("title", formData.title);
     fD.append("description", formData.description);
-    console.log(fD);
     try {
       const response = await destinationRepository.addDestination(fD);
-      console.log(response);
+      const responseMessage = response.message;
+      setModalOpen(false);
+      notify({
+        type: "success",
+        message: responseMessage,
+      });
     } catch (err) {
+      notify({
+        type: "error",
+        message: err.message ?? "Something went wrong. Please try again.",
+      });
       setError(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 

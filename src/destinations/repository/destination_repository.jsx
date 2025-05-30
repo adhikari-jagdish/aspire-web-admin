@@ -11,24 +11,23 @@ class DestinationRepository {
         formData
       );
 
-      if (response.status === 200) {
-        console.log(response.data.data.message);
+      if (response.status === (201 || 200)) {
         return {
           data: response.data.data,
+          message: response.data.message,
         };
       }
-      throw new Error(response.data.error || "Oops! Something went wrong!");
+      throw new Error(response.data.message || "Oops! Something went wrong!");
     } catch (error) {
-      console.log(error);
       if (error.response) {
         // Server responded with a status other than 2xx
         throw new Error(
-          error.response.data.error || "Oops! Something went wrong!"
+          error.response.data.message || "Oops! Something went wrong!"
         );
       } else if (error.request) {
-        throw new Error("Failed to connect to the server");
+        throw new Error("Oops! Failed to connect to the server");
       }
-      throw new Error("An error occurred during login");
+      throw new Error("Oops! Something went wrong!");
     }
   }
 }
