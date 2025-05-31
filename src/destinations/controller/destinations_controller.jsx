@@ -1,6 +1,6 @@
 import DestinationsView from "../view/destinations_view";
 import DestinationAddEditModel from "../components/destination_add_edit_model";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DestinationRepository from "../repository/destination_repository";
 import useAuth from "../../auth/components/use_auth";
 import { useNotification } from "../../common/hooks/useNotification";
@@ -8,7 +8,7 @@ import useLoadingOverlay from "../../common/hooks/useLoadingOverlay";
 
 const DestinationsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [error, setError] = useState("");
+  const [destinationList, setDestinationList] = useState([]);
   const { getToken } = useAuth();
   const [image, setImage] = useState(null);
   const notify = useNotification();
@@ -16,6 +16,22 @@ const DestinationsController = () => {
     useLoadingOverlay();
 
   const destinationRepository = new DestinationRepository(getToken);
+
+  useEffect(() => {
+    const fetchDestinations = async () => {
+      try {
+        const destinationsResponse =
+          await destinationRepository.getDestinations();
+        setDestinationList(destinationsResponse.data);
+      } catch (err) {
+        notify({
+          type: "error",
+          message: err.message ?? "Something went wrong. Please try again.",
+        });
+      }
+    };
+    fetchDestinations();
+  }, []);
 
   const handleClick = () => {
     setModalOpen(true);
@@ -58,32 +74,11 @@ const DestinationsController = () => {
     { label: "Image", accessor: "image" },
   ];
 
-  const destinations = [
-    {
-      id: 1,
-      title: "Nepal",
-      description: "Hello this is the description of Nepal",
-      image: "Image Url",
-    },
-    {
-      id: 2,
-      title: "India",
-      description: "Hello this is the description of India",
-      image: "Image Url",
-    },
-    {
-      id: 3,
-      title: "Bhutan",
-      description: "Hello this is the description of Bhutan",
-      image: "Image Url",
-    },
-  ];
-
   return (
     <>
       <DestinationsView
         columns={columns}
-        destinations={destinations}
+        destinations={destinationList}
         handleClick={handleClick}
       />
 

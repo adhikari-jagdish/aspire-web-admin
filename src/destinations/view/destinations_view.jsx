@@ -1,5 +1,5 @@
 import { Title } from "@mantine/core";
-import CustomBookingsTable from "../../customer_bookings/view/customer_bookings_table";
+import CustomTable from "../../common/common_view_components/custom_table";
 import { IconPlus } from "@tabler/icons-react";
 
 const DestinationsView = ({ columns, destinations, handleClick }) => {
@@ -16,7 +16,7 @@ const DestinationsView = ({ columns, destinations, handleClick }) => {
         <Title order={3} mt={20} mb={10} ta="left" c="dark">
           Destinations
         </Title>
-        <CustomBookingsTable
+        <CustomTable
           columns={columns}
           data={destinations}
           shouldShowDelete={true}

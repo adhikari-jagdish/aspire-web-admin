@@ -1,6 +1,6 @@
 import { SimpleGrid, Title } from "@mantine/core";
 import CustomCard from "../../common/common_view_components/custom_card";
-import CustomBookingsTable from "../../customer_bookings/view/customer_bookings_table";
+import CustomTable from "../../common/common_view_components/custom_table";
 
 const HomeView = () => {
   const columns = [
@@ -76,7 +76,7 @@ const HomeView = () => {
         <Title order={3} mt={20} mb={10} ta="left" c="dark">
           Latest Bookings
         </Title>
-        <CustomBookingsTable columns={columns} data={myData} />
+        <CustomTable columns={columns} data={myData} />
       </div>
     </>
   );

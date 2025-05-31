@@ -20,6 +20,12 @@ const DestinationAddEditModel = ({
         title: isEditDestination.title || "",
         description: isEditDestination.description || "",
       });
+    } else {
+      // Clear form for new destination
+      setFormData({
+        title: "",
+        description: "",
+      });
     }
   }, [isEditDestination, opened]);
 
