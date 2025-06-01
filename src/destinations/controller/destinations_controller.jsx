@@ -9,11 +9,13 @@ import useLoadingOverlay from "../../common/hooks/useLoadingOverlay";
 const DestinationsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [destinationList, setDestinationList] = useState([]);
+  const [destination, setDestination] = useState({});
   const { getToken } = useAuth();
   const [image, setImage] = useState(null);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
+  const [isEditDestination, setIsEditDestination] = useState(false);
 
   const destinationRepository = new DestinationRepository(getToken);
 
@@ -35,6 +37,29 @@ const DestinationsController = () => {
 
   const handleClick = () => {
     setModalOpen(true);
+  };
+
+  //Function to trigger when edit button is clicked
+  const handleEditButtonClick = (item) => {
+    setIsEditDestination(true);
+    setDestination(item);
+    setModalOpen(true);
+  };
+
+  const handleDeleteButtonClick = async (item) => {
+    try {
+      showLoading();
+      const response = await destinationRepository.deleteDestination(item.id);
+      notify({ type: "success", message: response.message });
+      setDestinationList((prev) => prev.filter((d) => d.id !== item.id));
+    } catch (err) {
+      notify({
+        type: "error",
+        message: err.message ?? "Failed to delete destination.",
+      });
+    } finally {
+      hideLoading();
+    }
   };
 
   ///This is called when user selects an image
@@ -80,13 +105,20 @@ const DestinationsController = () => {
         columns={columns}
         destinations={destinationList}
         handleClick={handleClick}
+        onEditButtonClick={handleEditButtonClick}
+        onDeleteButtonClick={handleDeleteButtonClick}
       />
 
       <DestinationAddEditModel
         opened={modalOpen}
-        onClose={() => setModalOpen(false)}
+        onClose={() => {
+          setIsEditDestination(false);
+          setModalOpen(false);
+        }}
         handleSubmit={handleSubmit}
         handleImageSelect={handleImageSelect}
+        isEditDestination={isEditDestination}
+        destination={destination}
       />
 
       <LoadingOverlayComponent />

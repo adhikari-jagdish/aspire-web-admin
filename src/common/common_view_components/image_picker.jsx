@@ -3,7 +3,7 @@ import { Group, Text } from "@mantine/core";
 import { IconUpload, IconPhoto, IconX } from "@tabler/icons-react";
 import { Dropzone } from "@mantine/dropzone";
 
-const ImagePicker = ({ onImageSelect }) => {
+const ImagePicker = ({ onImageSelect, defaultImage }) => {
   const [preview, setPreview] = useState(null);
   const [error, setError] = useState(null);
 
@@ -71,7 +71,7 @@ const ImagePicker = ({ onImageSelect }) => {
       ) : (
         <div className="mt-4">
           <img
-            src={preview}
+            src={defaultImage ?? preview}
             alt="Selected preview"
             className="w-full max-h-64 object-cover border-2 border-dashed border-gray-300 rounded-lg p-6"
           />

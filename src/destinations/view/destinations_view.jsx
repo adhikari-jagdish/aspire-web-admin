@@ -2,7 +2,13 @@ import { Title } from "@mantine/core";
 import CustomTable from "../../common/common_view_components/custom_table";
 import { IconPlus } from "@tabler/icons-react";
 
-const DestinationsView = ({ columns, destinations, handleClick }) => {
+const DestinationsView = ({
+  columns,
+  destinations,
+  handleClick,
+  onEditButtonClick,
+  onDeleteButtonClick,
+}) => {
   return (
     <>
       <button
@@ -21,6 +27,8 @@ const DestinationsView = ({ columns, destinations, handleClick }) => {
           data={destinations}
           shouldShowDelete={true}
           shouldShowEdit={true}
+          onEdit={(item) => onEditButtonClick(item)}
+          onDelete={(item) => onDeleteButtonClick(item)}
         />
       </div>
     </>

@@ -8,6 +8,7 @@ const DestinationAddEditModel = ({
   isEditDestination,
   handleSubmit,
   handleImageSelect,
+  destination,
 }) => {
   const [formData, setFormData] = useState({
     title: "",
@@ -17,8 +18,8 @@ const DestinationAddEditModel = ({
   useEffect(() => {
     if (isEditDestination && opened) {
       setFormData({
-        title: isEditDestination.title || "",
-        description: isEditDestination.description || "",
+        title: destination.title || "",
+        description: destination.description || "",
       });
     } else {
       // Clear form for new destination
@@ -59,7 +60,10 @@ const DestinationAddEditModel = ({
         mt="md"
       />
 
-      <ImagePicker onImageSelect={handleImageSelect} />
+      <ImagePicker
+        onImageSelect={handleImageSelect}
+        defaultImage={destination.image}
+      />
 
       <Group position="right" mt="md">
         <Button variant="default" onClick={onClose}>
