@@ -69,7 +69,6 @@ const DestinationsController = () => {
 
   const handleSubmit = async (formData) => {
     showLoading();
-    await new Promise((resolve) => setTimeout(resolve, 5000));
     const fD = new FormData();
     fD.append("file", image);
     fD.append("title", formData.title);
@@ -87,7 +86,6 @@ const DestinationsController = () => {
         type: "error",
         message: err.message ?? "Something went wrong. Please try again.",
       });
-      setError(err.message);
     } finally {
       hideLoading();
     }
