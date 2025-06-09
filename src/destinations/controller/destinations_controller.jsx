@@ -5,6 +5,7 @@ import DestinationRepository from "../repository/destination_repository";
 import useAuth from "../../auth/components/use_auth";
 import { useNotification } from "../../common/hooks/useNotification";
 import useLoadingOverlay from "../../common/hooks/useLoadingOverlay";
+import CustomDialogModal from "../../common/common_view_components/custom_dialog_model";
 
 const DestinationsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -16,6 +17,7 @@ const DestinationsController = () => {
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
   const [isEditDestination, setIsEditDestination] = useState(false);
+  const [isDeleteDestination, setIsDeleteDestination] = useState(false);
 
   const destinationRepository = new DestinationRepository(getToken);
 
@@ -46,12 +48,13 @@ const DestinationsController = () => {
     setModalOpen(true);
   };
 
+  const onDeleteButtonClick = (item) => {
+    setIsDeleteDestination(true);
+  };
+
   const handleDeleteButtonClick = async (item) => {
     try {
       showLoading();
-      const response = await destinationRepository.deleteDestination(item.id);
-      notify({ type: "success", message: response.message });
-      setDestinationList((prev) => prev.filter((d) => d.id !== item.id));
     } catch (err) {
       notify({
         type: "error",
@@ -104,7 +107,7 @@ const DestinationsController = () => {
         destinations={destinationList}
         handleClick={handleClick}
         onEditButtonClick={handleEditButtonClick}
-        onDeleteButtonClick={handleDeleteButtonClick}
+        onDeleteButtonClick={onDeleteButtonClick}
       />
 
       <DestinationAddEditModel
@@ -117,6 +120,14 @@ const DestinationsController = () => {
         handleImageSelect={handleImageSelect}
         isEditDestination={isEditDestination}
         destination={destination}
+      />
+
+      <CustomDialogModal
+        opened={isDeleteDestination}
+        onClose={() => setIsDeleteDestination(false)}
+        title="Alert!!"
+        message="Are you sure you want to delete?"
+        onConfirm={onDeleteButtonClick}
       />
 
       <LoadingOverlayComponent />
