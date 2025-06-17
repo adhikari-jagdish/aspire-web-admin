@@ -1,7 +1,7 @@
 import axios from "axios";
 
 class AxiosService {
-  constructor(getToken = null, baseURL = "http://192.168.1.13:6001") {
+  constructor(getToken = null, baseURL = "http://192.168.1.3:6001") {
     this.axiosInstance = axios.create({
       baseURL,
       //headers: { "Content-Type": "application/json" },

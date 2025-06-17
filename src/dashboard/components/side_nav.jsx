@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 const navItems = [
   { name: "Home", icon: "🏠" },
   { name: "Destinations", icon: "🥾" },
+  {name: "TravelThemes", icon: "🌍"},
   { name: "Tours", icon: "🗺️" },
   { name: "Trekking", icon: "🥾" },
   { name: "Expedition", icon: "⛰️" },

@@ -2,9 +2,9 @@ import { Title } from "@mantine/core";
 import CustomTable from "../../common/common_view_components/custom_table";
 import { IconPlus } from "@tabler/icons-react";
 
-const DestinationsView = ({
+const TravelThemesView = ({
   columns,
-  destinations,
+  travelThemes,
   handleClick,
   onEditButtonClick,
   onDeleteButtonClick,
@@ -21,11 +21,11 @@ const DestinationsView = ({
       </button>
       <div style={{ padding: "16px" }}>
         <Title order={3} mt={20} mb={10} ta="left" c="dark">
-          Destinations
+          Travel Themes
         </Title>
         <CustomTable
           columns={columns}
-          data={destinations}
+          data={travelThemes}
           shouldShowDelete={true}
           shouldShowEdit={true}
           onEdit={(item) => onEditButtonClick(item)}
@@ -37,4 +37,4 @@ const DestinationsView = ({
   );
 };
 
-export default DestinationsView;
+export default TravelThemesView;

@@ -6,6 +6,7 @@ import HomeView from "./dashboard/view/home_view";
 import ToursView from "./tours/view/tours_view";
 import PageNotFound from "./common/common_view_components/page_not_found";
 import DestinationsController from "./destinations/controller/destinations_controller";
+import TravelThemesController from "./Travel Themes/controller/travelThemes_controller";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<DashboardController />}>
           <Route index path="home" element={<HomeView />} />
           <Route path="destinations" element={<DestinationsController />} />
+          <Route path="travelThemes" element={<TravelThemesController />} />
           <Route path="tours" element={<ToursView />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>

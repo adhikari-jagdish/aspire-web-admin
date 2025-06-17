@@ -1,13 +1,16 @@
 import DestinationsView from "../view/destinations_view";
 import DestinationAddEditModel from "../components/destination_add_edit_model";
+import DestinationViewModel from "../components/destination_view_model";
 import { useEffect, useState } from "react";
 import DestinationRepository from "../repository/destination_repository";
 import useAuth from "../../auth/components/use_auth";
 import { useNotification } from "../../common/hooks/useNotification";
 import useLoadingOverlay from "../../common/hooks/useLoadingOverlay";
+import CustomDialogModal from "../../common/common_view_components/custom_dialog_model";
 
 const DestinationsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  const [openedView, setOpenedView] = useState(false);
   const [destinationList, setDestinationList] = useState([]);
   const [destination, setDestination] = useState({});
   const { getToken } = useAuth();
@@ -16,6 +19,9 @@ const DestinationsController = () => {
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
   const [isEditDestination, setIsEditDestination] = useState(false);
+  const [isDeleteDestination, setIsDeleteDestination] = useState(false);
+  const [idToDelete, setIdToDelete] = useState(null);
+  const [idToUpdate, setIdToUpdate] = useState(null);
 
   const destinationRepository = new DestinationRepository(getToken);
 
@@ -35,7 +41,7 @@ const DestinationsController = () => {
     fetchDestinations();
   }, []);
 
-  const handleClick = () => {
+  const handleClick = (item) => {
     setModalOpen(true);
   };
 
@@ -44,14 +50,18 @@ const DestinationsController = () => {
     setIsEditDestination(true);
     setDestination(item);
     setModalOpen(true);
+    setIdToUpdate(item?._id);
   };
 
-  const handleDeleteButtonClick = async (item) => {
+  const onDeleteButtonClick = (item) => {
+    setIsDeleteDestination(true);
+    setIdToDelete(item?._id);
+  };
+  const handleDeleteButtonClick = async () => {
     try {
+      await destinationRepository.deleteDestination(idToDelete);
       showLoading();
-      const response = await destinationRepository.deleteDestination(item.id);
-      notify({ type: "success", message: response.message });
-      setDestinationList((prev) => prev.filter((d) => d.id !== item.id));
+      setDestinationList((prev) => prev.filter((p) => p._id !== idToDelete));
     } catch (err) {
       notify({
         type: "error",
@@ -74,8 +84,17 @@ const DestinationsController = () => {
     fD.append("title", formData.title);
     fD.append("description", formData.description);
     try {
-      const response = await destinationRepository.addDestination(fD);
-      const responseMessage = response.message;
+      let responseMessage;
+      let response;
+     if(isEditDestination){
+       response = await destinationRepository.updateDestination(fD,idToUpdate);
+       setDestinationList(prev => prev.map(item => item._id === idToUpdate ? {...item, title: formData.title, description: formData.description, image: image} : item));
+     } else {
+        response = await destinationRepository.addDestination(fD);
+        setDestinationList(prev => [...prev, response.data])
+     }
+       responseMessage = response.message;
+
       setModalOpen(false);
       notify({
         type: "success",
@@ -89,6 +108,11 @@ const DestinationsController = () => {
     } finally {
       hideLoading();
     }
+
+  };
+  const handleViewButtonClick = (item) => {
+    setOpenedView(true);
+    setDestination(item);
   };
 
   const columns = [
@@ -100,13 +124,23 @@ const DestinationsController = () => {
   return (
     <>
       <DestinationsView
+        opened={modalOpen}
+        onClose={() => setModalOpen(false)}
         columns={columns}
         destinations={destinationList}
         handleClick={handleClick}
         onEditButtonClick={handleEditButtonClick}
-        onDeleteButtonClick={handleDeleteButtonClick}
+        onDeleteButtonClick={onDeleteButtonClick}
+        onViewButtonClick={handleViewButtonClick}
       />
 
+      <DestinationViewModel
+        openedView={openedView}
+        onClose={() => {
+          setOpenedView(false);
+        }}
+        destination={destination}
+      />
       <DestinationAddEditModel
         opened={modalOpen}
         onClose={() => {
@@ -117,6 +151,14 @@ const DestinationsController = () => {
         handleImageSelect={handleImageSelect}
         isEditDestination={isEditDestination}
         destination={destination}
+      />
+
+      <CustomDialogModal
+        opened={isDeleteDestination}
+        onClose={() => setIsDeleteDestination(false)}
+        title="Alert!!"
+        message="Are you sure you want to delete?"
+        onConfirm={handleDeleteButtonClick}
       />
 
       <LoadingOverlayComponent />

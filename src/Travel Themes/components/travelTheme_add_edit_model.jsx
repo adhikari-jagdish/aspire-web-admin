@@ -2,32 +2,29 @@ import { useState, useEffect } from "react";
 import { Modal, TextInput, Button, Group, Textarea } from "@mantine/core";
 import ImagePicker from "../../common/common_view_components/image_picker";
 
-const DestinationAddEditModel = ({
+const TravelThemeAddEditModel = ({
   opened,
   onClose,
-  isEditDestination,
+  isEditTravelTheme,
   handleSubmit,
   handleImageSelect,
-  destination,
+  travelTheme,
 }) => {
   const [formData, setFormData] = useState({
     title: "",
-    description: "",
   });
   useEffect(() => {
-    if (isEditDestination && opened) {
+    if (isEditTravelTheme && opened) {
       setFormData({
-        title: destination.title || "",
-        description: destination.description || "",
+        title: travelTheme.title || "",
       });
     } else {
-      // Clear form for new destination
+      // Clear form for new travel theme
       setFormData({
         title: "",
-        description: "",
       });
     }
-  }, [isEditDestination, opened]);
+  }, [isEditTravelTheme, opened]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -37,31 +34,21 @@ const DestinationAddEditModel = ({
     <Modal
       opened={opened}
       onClose={onClose}
-      title={isEditDestination ? "Edit Destination" : "Add Destination"}
+      title={isEditTravelTheme ? "Edit Travel Theme" : "Add Travel Theme"}
       centered
     >
       <TextInput
         label="Title"
-        placeholder="Enter destination"
+        placeholder="Enter Travel Theme"
         name="title"
         value={formData.title}
         onChange={handleChange}
         required
       />
-      <Textarea
-        rows={8}
-        label="Description"
-        placeholder="Enter Description"
-        name="description"
-        value={formData.description}
-        onChange={handleChange}
-        required
-        mt="md"
-      />
 
       <ImagePicker
         onImageSelect={handleImageSelect}
-        defaultImage={destination.image}
+        defaultImage={travelTheme.image}
       />
 
       <Group position="right" mt="md">
@@ -74,4 +61,4 @@ const DestinationAddEditModel = ({
   );
 };
 
-export default DestinationAddEditModel;
+export default TravelThemeAddEditModel;
