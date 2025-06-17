@@ -36,7 +36,9 @@ const AuthController = () => {
     setError("");
     try {
       const { token, user } = await authRepository.login(username, password);
+      
       saveAuth(token, user);
+      console.log({user})
       // Navigate to dashboard on success
       navigate("/home");
     } catch (err) {

@@ -1,36 +1,36 @@
-import DestinationsView from "../view/destinations_view";
-import DestinationAddEditModel from "../components/destination_add_edit_model";
-import DestinationViewModel from "../components/destination_view_model";
 import { useEffect, useState } from "react";
-import DestinationRepository from "../repository/destination_repository";
 import useAuth from "../../auth/components/use_auth";
 import { useNotification } from "../../common/hooks/useNotification";
 import useLoadingOverlay from "../../common/hooks/useLoadingOverlay";
 import CustomDialogModal from "../../common/common_view_components/custom_dialog_model";
+import TravelThemeRepository from "../repository/travelTheme_repository";
+import TravelThemesView from "../view/travelThemes_view";
+import TravelThemeViewModel from "../components/travelTheme_view_model";
+import TravelThemeAddEditModel from "../components/travelTheme_add_edit_model";
 
-const DestinationsController = () => {
+const TravelThemesController = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [openedView, setOpenedView] = useState(false);
-  const [destinationList, setDestinationList] = useState([]);
-  const [destination, setDestination] = useState({});
+  const [travelThemeList, setTravelThemeList] = useState([]);
+  const [travelTheme, setTravelTheme] = useState({});
   const { getToken } = useAuth();
   const [image, setImage] = useState(null);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
-  const [isEditDestination, setIsEditDestination] = useState(false);
-  const [isDeleteDestination, setIsDeleteDestination] = useState(false);
+  const [isEditTravelTheme, setIsEditTravelTheme] = useState(false);
+  const [isDeleteTravelTheme, setIsDeleteTravelTheme] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
   const [idToUpdate, setIdToUpdate] = useState(null);
 
-  const destinationRepository = new DestinationRepository(getToken);
+  const travelThemeRepository = new TravelThemeRepository(getToken);
 
   useEffect(() => {
-    const fetchDestinations = async () => {
+    const fetchTravelThemes = async () => {
       try {
-        const destinationsResponse =
-          await destinationRepository.getDestinations();
-        setDestinationList(destinationsResponse.data);
+        const travelThemesResponse =
+          await travelThemeRepository.getTravelThemes();
+        setTravelThemeList(travelThemesResponse.data);
       } catch (err) {
         notify({
           type: "error",
@@ -38,7 +38,7 @@ const DestinationsController = () => {
         });
       }
     };
-    fetchDestinations();
+    fetchTravelThemes();
   }, []);
 
   const handleClick = (item) => {
@@ -47,21 +47,21 @@ const DestinationsController = () => {
 
   //Function to trigger when edit button is clicked
   const handleEditButtonClick = (item) => {
-    setIsEditDestination(true);
-    setDestination(item);
+    setIsEditTravelTheme(true);
+    setTravelTheme(item);
     setModalOpen(true);
     setIdToUpdate(item?._id);
   };
 
   const onDeleteButtonClick = (item) => {
-    setIsDeleteDestination(true);
+    setIsDeleteTravelTheme(true);
     setIdToDelete(item?._id);
   };
   const handleDeleteButtonClick = async () => {
     try {
-      await destinationRepository.deleteDestination(idToDelete);
+      await travelThemeRepository.deleteTravelTheme(idToDelete);
       showLoading();
-      setDestinationList((prev) => prev.filter((p) => p._id !== idToDelete));
+      setTravelThemeList((prev) => prev.filter((p) => p._id !== idToDelete));
     } catch (err) {
       notify({
         type: "error",
@@ -82,16 +82,15 @@ const DestinationsController = () => {
     const fD = new FormData();
     fD.append("file", image);
     fD.append("title", formData.title);
-    fD.append("description", formData.description);
     try {
       let responseMessage;
       let response;
-     if(isEditDestination){
-       response = await destinationRepository.updateDestination(fD,idToUpdate);
-       setDestinationList(prev => prev.map(item => item._id === idToUpdate ? {...item, title: formData.title, description: formData.description, image: image} : item));
+     if(isEditTravelTheme){
+       response = await travelThemeRepository.updateTravelTheme(fD,idToUpdate);
+       setTravelThemeList(prev => prev.map(item => item._id === idToUpdate ? {...item, title: formData.title, image: image} : item));
      } else {
-        response = await destinationRepository.addDestination(fD);
-        setDestinationList(prev => [...prev, response.data])
+        response = await travelThemeRepository.addTravelTheme(fD);
+        setTravelThemeList(prev => [...prev, response.data])
      }
        responseMessage = response.message;
 
@@ -112,50 +111,49 @@ const DestinationsController = () => {
   };
   const handleViewButtonClick = (item) => {
     setOpenedView(true);
-    setDestination(item);
+    setTravelTheme(item);
   };
 
   const columns = [
     { label: "Title", accessor: "title" },
-    { label: "Description", accessor: "description" },
     { label: "Image", accessor: "image" },
   ];
 
   return (
     <>
-      <DestinationsView
+      <TravelThemesView
         opened={modalOpen}
         onClose={() => setModalOpen(false)}
         columns={columns}
-        destinations={destinationList}
+        travelThemes={travelThemeList}
         handleClick={handleClick}
         onEditButtonClick={handleEditButtonClick}
         onDeleteButtonClick={onDeleteButtonClick}
         onViewButtonClick={handleViewButtonClick}
       />
 
-      <DestinationViewModel
+      <TravelThemeViewModel
         openedView={openedView}
         onClose={() => {
           setOpenedView(false);
         }}
-        destination={destination}
+        travelTheme={travelTheme}
       />
-      <DestinationAddEditModel
+      <TravelThemeAddEditModel
         opened={modalOpen}
         onClose={() => {
-          setIsEditDestination(false);
+          setIsEditTravelTheme(false);
           setModalOpen(false);
         }}
         handleSubmit={handleSubmit}
         handleImageSelect={handleImageSelect}
-        isEditDestination={isEditDestination}
-        destination={destination}
+        isEditTravelTheme={isEditTravelTheme}
+        travelTheme={travelTheme}
       />
 
       <CustomDialogModal
-        opened={isDeleteDestination}
-        onClose={() => setIsDeleteDestination(false)}
+        opened={isDeleteTravelTheme}
+        onClose={() => setIsDeleteTravelTheme(false)}
         title="Alert!!"
         message="Are you sure you want to delete?"
         onConfirm={handleDeleteButtonClick}
@@ -166,4 +164,4 @@ const DestinationsController = () => {
   );
 };
 
-export default DestinationsController;
+export default TravelThemesController;

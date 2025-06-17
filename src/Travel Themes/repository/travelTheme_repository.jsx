@@ -1,15 +1,15 @@
 import AxiosService from "../../common/service/axios_service";
 
-class DestinationRepository {
+class TravelThemeRepository {
   constructor(getToken) {
     this.axiosService = new AxiosService(getToken); // Pass getToken to AxiosService
   }
 
-  //Function to add a new destination
-  async addDestination(formData, destinationId) {
+  //Function to add a new travel Theme
+  async addTravelTheme(formData) {
     try {
       const response = await this.axiosService.post(
-        "/api/createDestination",
+        "/api/createTravelTheme",
         formData
       );
 
@@ -34,11 +34,11 @@ class DestinationRepository {
   }
 
   
-  //Function to update  destination
-  async updateDestination(formData, destinationId) {
+  //Function to update  travelTheme
+  async updateTravelTheme(formData, travelThemeId) {
     try {
       const response = await this.axiosService.put(
-        "/api/updateDestination/"+destinationId,
+        "/api/updateTravelTheme/"+travelThemeId,
         formData
       );
       if (response.status >= 200 || response.status <  300) {
@@ -63,9 +63,9 @@ class DestinationRepository {
   }
 
   //Function to get all destinations
-  async getDestinations() {
+  async getTravelThemes() {
     try {
-      const response = await this.axiosService.get("/api/getDestinations");
+      const response = await this.axiosService.get("/api/getTravelThemes");
       if (response.status === 200) {
         return {
           data: response.data.data,
@@ -86,11 +86,10 @@ class DestinationRepository {
     }
   }
 
-  //Function to get all destinations
-  async deleteDestination(destinationId) {
+  async deleteTravelTheme(travelThemeId) {
     try {
       const response = await this.axiosService.delete(
-        `/api/deleteDestination/${destinationId}`
+        `/api/deleteTravelTheme/${travelThemeId}`
       );
 
       if (response.status === 200) {
@@ -114,4 +113,4 @@ class DestinationRepository {
   }
 }
 
-export default DestinationRepository;
+export default TravelThemeRepository;

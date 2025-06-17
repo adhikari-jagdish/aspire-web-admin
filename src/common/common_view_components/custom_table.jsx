@@ -11,7 +11,6 @@ const CustomTable = ({
   shouldShowDelete = false,
 }) => {
   const safeColumns = Array.isArray(columns) ? columns : [];
-
   return (
     <Box
       style={{
@@ -31,14 +30,14 @@ const CustomTable = ({
           <Table.Thead>
             <Table.Tr>
               <Table.Th style={{ backgroundColor: "#f1f3f5" }}>SN</Table.Th>
-              {safeColumns.map((col) => (
-                <Table.Th
+              {safeColumns.map((col) => {
+                return <Table.Th
                   key={col.accessor}
                   style={{ backgroundColor: "#f1f3f5" }}
                 >
                   {col.label}
                 </Table.Th>
-              ))}
+              })} 
               <Table.Th style={{ backgroundColor: "#f1f3f5", width: "210px" }}>
                 Actions
               </Table.Th>
@@ -52,14 +51,16 @@ const CustomTable = ({
                 </Table.Td>
               </Table.Tr>
             ) : (
-              data.map((item, index) => (
-                <Table.Tr
+              data.map((item, index) => {
+
+                console.log(data)
+                 return <Table.Tr
                   key={item.id || index}
                   className="hover:bg-gray-50 transition-colors"
                 >
                   <Table.Td>{index + 1}</Table.Td>
-                  {safeColumns.map((col) => (
-                    <Table.Td key={col.accessor}>
+                  {safeColumns.map((col) => {
+                   return <Table.Td key={col.accessor}>
                       {col.accessor === "image" ? (
                         <img
                           src={item[col.accessor]}
@@ -76,7 +77,7 @@ const CustomTable = ({
                         </span>
                       )}
                     </Table.Td>
-                  ))}
+                  })}
                   <Table.Td>
                     <Group spacing="xs">
                       <Button
@@ -115,7 +116,7 @@ const CustomTable = ({
                     </Group>
                   </Table.Td>
                 </Table.Tr>
-              ))
+            })
             )}
           </Table.Tbody>
         </Table>
