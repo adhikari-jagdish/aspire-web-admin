@@ -88,7 +88,7 @@ const DestinationsController = () => {
       let response;
      if(isEditDestination){
        response = await destinationRepository.updateDestination(fD,idToUpdate);
-       setDestinationList(prev => prev.map(item => item._id === idToUpdate ? {...item, title: formData.title, description: formData.description, image: image} : item));
+       setDestinationList(prev => prev.map(item => item._id === idToUpdate ? {...item, title: formData.title, description: formData.description, image: image || item.image} : item));
      } else {
         response = await destinationRepository.addDestination(fD);
         setDestinationList(prev => [...prev, response.data])

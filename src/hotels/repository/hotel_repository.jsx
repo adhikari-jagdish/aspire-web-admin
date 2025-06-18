@@ -1,15 +1,15 @@
 import AxiosService from "../../common/service/axios_service";
 
-class DestinationRepository {
+class HotelRepository {
   constructor(getToken) {
     this.axiosService = new AxiosService(getToken); // Pass getToken to AxiosService
   }
 
-  //Function to add a new destination
-  async addDestination(formData) {
+  //Function to add a new travel Theme
+  async createHotel(formData) {
     try {
       const response = await this.axiosService.post(
-        "/api/createDestination",
+        "/api/createHotel",
         formData
       );
 
@@ -34,11 +34,11 @@ class DestinationRepository {
   }
 
   
-  //Function to update  destination
-  async updateDestination(formData, destinationId) {
+  //Function to update  travelTheme
+  async updateHotel(formData, hotelId) {
     try {
       const response = await this.axiosService.put(
-        "/api/updateDestination/"+destinationId,
+        "/api/updateHotel/"+hotelId,
         formData
       );
       if (response.status >= 200 || response.status <  300) {
@@ -62,10 +62,10 @@ class DestinationRepository {
     }
   }
 
-  //Function to get all destinations
-  async getDestinations() {
+  //Function to get all hotels
+  async getHotels() {
     try {
-      const response = await this.axiosService.get("/api/getDestinations");
+      const response = await this.axiosService.get("/api/getHotels");
       if (response.status === 200) {
         return {
           data: response.data.data,
@@ -86,11 +86,10 @@ class DestinationRepository {
     }
   }
 
-  //Function to get all destinations
-  async deleteDestination(destinationId) {
+  async deleteHotel(hotelId) {
     try {
       const response = await this.axiosService.delete(
-        `/api/deleteDestination/${destinationId}`
+        `/api/deleteHotel/${hotelId}`
       );
 
       if (response.status === 200) {
@@ -114,4 +113,4 @@ class DestinationRepository {
   }
 }
 
-export default DestinationRepository;
+export default HotelRepository;

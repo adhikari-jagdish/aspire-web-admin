@@ -53,9 +53,8 @@ const CustomTable = ({
             ) : (
               data.map((item, index) => {
 
-                console.log(data)
                  return <Table.Tr
-                  key={item.id || index}
+                  key={item._id || index}
                   className="hover:bg-gray-50 transition-colors"
                 >
                   <Table.Td>{index + 1}</Table.Td>
@@ -71,11 +70,24 @@ const CustomTable = ({
                             objectFit: "cover",
                           }}
                         />
-                      ) : (
+                      ) :
+                      col.accessor === 'rate' ? <div>
+                        {item[col.accessor].map((rateItem, idx) => (
+                          <ul key={idx} className="w-[300px]">
+                          <li className="list-disc font-medium">{rateItem.roomCategory}</li>
+                          <li>
+                            NPR: {rateItem.rateInNPR} | USD: {rateItem.rateInUSD} | INR: {rateItem.rateInINR} |
+                             BDT: {rateItem.rateInBDT}
+                          </li>
+                          </ul>
+                        ))}
+                      </div>  : (
+                        col.accessor === "destinationId"? <span className="w-[250px]">{item[col.accessor]}</span>:
                         <span className="line-clamp-3 overflow-hidden">
                           {item[col.accessor]}
                         </span>
-                      )}
+                      )
+                       }
                     </Table.Td>
                   })}
                   <Table.Td>
