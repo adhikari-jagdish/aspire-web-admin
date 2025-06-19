@@ -26,7 +26,8 @@ const HotelsController = () => {
   const { getToken } = useAuth();
   const [image, setImage] = useState(null);
   const notify = useNotification();
-  const { showLoading, hideLoading, LoadingOverlayComponent } = useLoadingOverlay();
+  const { showLoading, hideLoading, LoadingOverlayComponent } =
+    useLoadingOverlay();
   const [isEditHotel, setIsEditHotel] = useState(false);
   const [isDeleteHotel, setIsDeleteHotel] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
@@ -96,7 +97,15 @@ const HotelsController = () => {
   };
 
   const handleSubmit = async (formData) => {
-    if (!formData.destinationId || !formData.title || !formData.city || !formData.rating || !formData.overview || !formData.hotelCategory || ( !formData.rate && !isEditHotel)) {
+    if (
+      !formData.destinationId ||
+      !formData.title ||
+      !formData.city ||
+      !formData.rating ||
+      !formData.overview ||
+      !formData.hotelCategory ||
+      (!formData.rate && !isEditHotel)
+    ) {
       notify({
         type: "error",
         message: "All fields are required.",
@@ -114,11 +123,14 @@ const HotelsController = () => {
     fD.append("rating", formData.rating);
     fD.append("overview", formData.overview);
     fD.append("hotelCategory", formData.hotelCategory);
-    fD.append("rate", formData.rate);
-for (let pair of fD.entries()) {
-  console.log(pair[0] + ": ", pair[1]);
-}
-console.log("rate is:", formData.rate, "Type:", typeof formData.rate, "Is Array:", Array.isArray(formData.rate));
+    fD.append("rate", JSON.stringify(formData.rate));
+    for (let pair of fD.entries()) {
+      console.log(pair[0] + ": ", pair[1]);
+    }
+    // Log FormData entries
+    for (let [key, value] of fD.entries()) {
+      console.log(`FormData ${key}:`, value);
+    }
 
     try {
       let responseMessage;
@@ -128,13 +140,23 @@ console.log("rate is:", formData.rate, "Type:", typeof formData.rate, "Is Array:
         setHotelList((prev) =>
           prev.map((item) =>
             item._id === idToUpdate
-              ? { ...item, destinationId: formData.destinationId,  title: formData.title, city: formData.city, rating: formData.rating, overview: formData.overview, hotelCategory: formData.hotelCategory, rate: formData.rate || item.rate, image: image || item.image }
+              ? {
+                  ...item,
+                  destinationId: formData.destinationId,
+                  title: formData.title,
+                  city: formData.city,
+                  rating: formData.rating,
+                  overview: formData.overview,
+                  hotelCategory: formData.hotelCategory,
+                  rate: formData.rate || item.rate,
+                  image: image || item.image,
+                }
               : item
           )
         );
       } else {
         response = await hotelRepository.createHotel(fD);
-        console.log(response)
+        console.log(response);
         setHotelList((prev) => [...prev, response.data]);
       }
       responseMessage = response.message;
@@ -207,7 +229,6 @@ console.log("rate is:", formData.rate, "Type:", typeof formData.rate, "Is Array:
         handleImageSelect={handleImageSelect}
         isEditHotel={isEditHotel}
         hotel={hotel}
-
       />
       <CustomDialogModal
         opened={isDeleteHotel}

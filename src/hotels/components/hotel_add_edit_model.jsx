@@ -32,9 +32,9 @@ const HotelAddEditModel = ({
         rateInNPR: 0,
         rateInUSD: 0,
         rateInINR: 0,
-        rateInBDT: 0,
       },
     ],
+    image: null,
   });
   useEffect(() => {
     if (isEditHotel && opened) {
@@ -62,9 +62,9 @@ const HotelAddEditModel = ({
             rateInNPR: 0,
             rateInUSD: 0,
             rateInINR: 0,
-            rateInBDT: 0,
           },
         ],
+        image: null,
       });
     }
   }, [isEditHotel, opened]);
@@ -74,32 +74,32 @@ const HotelAddEditModel = ({
   };
 
   const handleRateChange = (idx, field, value) => {
-        const updatedRates = formData.rate.map((item,  i) =>  i === idx ? {...item, [field]: value}: item );
+    const updatedRates = formData.rate.map((item, i) =>
+      i === idx ? { ...item, [field]: value } : item
+    );
 
-        setFormData({...formData, rate: updatedRates});
-  }
+    setFormData({ ...formData, rate: updatedRates });
+  };
 
   const addRateRow = () => {
     setFormData({
-        ...formData, 
-        rate: [
-            ...formData.rate,
-          {
-            roomCategory: "",
-            rateInNPR: 0,
-            rateInUSD: 0,
-            rateInINR: 0,
-            rateInBDT: 0,
-          },
-        ],
-        
-    })
-  }
-  
+      ...formData,
+      rate: [
+        ...formData.rate,
+        {
+          roomCategory: "",
+          rateInNPR: 0,
+          rateInUSD: 0,
+          rateInINR: 0,
+        },
+      ],
+    });
+  };
+
   const removeRateRow = (idx) => {
-    const updatedRates = formData.rate.filter((_, i) =>i !==idx);
-    setFormData({...formData, rate: updatedRates});   
-  }
+    const updatedRates = formData.rate.filter((_, i) => i !== idx);
+    setFormData({ ...formData, rate: updatedRates });
+  };
   return (
     <Modal
       opened={opened}
@@ -181,7 +181,9 @@ const HotelAddEditModel = ({
               <input
                 label="Room Category"
                 value={rateItem.roomCategory}
-                onChange={(e) => handleRateChange(idx, 'roomCategory', e.target.value)}
+                onChange={(e) =>
+                  handleRateChange(idx, "roomCategory", e.target.value)
+                }
                 placeholder="Enter Room Category"
                 name="roomCategory"
                 required
@@ -193,55 +195,53 @@ const HotelAddEditModel = ({
               <TextInput
                 label="NPR"
                 value={rateItem.rateInNPR}
-                 onChange={(e) => handleRateChange(idx, 'rateInNPR', e.target.value)}
+                onChange={(e) =>
+                  handleRateChange(idx, "rateInNPR", e.target.value)
+                }
                 placeholder="Enter Rate in NPR"
                 name="rateInNPR"
                 required
-               labelProps={{ style: { fontSize: '13px', fontWeight: 500 } }}
-                
+                labelProps={{ style: { fontSize: "13px", fontWeight: 500 } }}
               />
 
               <TextInput
                 label="USD"
                 value={rateItem.rateInUSD}
-                onChange={(e) => handleRateChange(idx, 'rateInUSD', e.target.value)}
+                onChange={(e) =>
+                  handleRateChange(idx, "rateInUSD", e.target.value)
+                }
                 placeholder="Enter Rate in USD"
                 name="rateInUSD"
                 required
-               labelProps={{ style: { fontSize: '13px', fontWeight: 500 } }}
-
+                labelProps={{ style: { fontSize: "13px", fontWeight: 500 } }}
               />
 
               <TextInput
                 label="INR"
                 value={rateItem.rateInINR}
-                onChange={(e) => handleRateChange(idx, 'rateInINR', e.target.value)}
+                onChange={(e) =>
+                  handleRateChange(idx, "rateInINR", e.target.value)
+                }
                 placeholder="Enter Rate in INR"
                 name="rateInINR"
                 required
-               labelProps={{ style: { fontSize: '13px', fontWeight: 500 } }}
-
-              />
-
-              <TextInput
-                label="BDT"
-                value={rateItem.rateInBDT}
-                onChange={(e) => handleRateChange(idx, 'rateInBDT', e.target.value)}
-                placeholder="Enter Rate in BDT"
-                name="rateInBDT"
-                required
-               labelProps={{ style: { fontSize: '13px', fontWeight: 500 } }}
-
+                labelProps={{ style: { fontSize: "13px", fontWeight: 500 } }}
               />
 
               <div className="flex justify-end h-[35px] gap-2 mt-5 ">
                 {formData.rate.length > 1 && (
-                  <button onClick={() => removeRateRow(idx)} className=" bg-red-200 text-red-600  w-fit px-2 py-1 cursor-pointer hover:bg-red-300 rounded flex items-center justify-center gap-1 text-xl">
+                  <button
+                    onClick={() => removeRateRow(idx)}
+                    className=" bg-red-200 text-red-600  w-fit px-2 py-1 cursor-pointer hover:bg-red-300 rounded flex items-center justify-center gap-1 text-xl"
+                  >
                     <IconTrash size={14} />
                   </button>
                 )}
 
-                <button onClick={() => addRateRow(idx)} className=" bg-green-200 text-green-600   px-2 py-1 cursor-pointer hover:bg-green-300 rounded ">
+                <button
+                  onClick={() => addRateRow(idx)}
+                  className=" bg-green-200 text-green-600   px-2 py-1 cursor-pointer hover:bg-green-300 rounded "
+                >
                   <IconPlus size={14} />
                 </button>
               </div>
