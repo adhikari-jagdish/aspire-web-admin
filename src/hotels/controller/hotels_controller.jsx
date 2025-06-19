@@ -17,6 +17,7 @@ import HotelsView from "../view/hotel_view";
 import HotelViewModel from "../components/hotel_view_model";
 import HotelAddEditModel from "../components/hotel_add_edit_model";
 import CustomDialogModal from "../../common/common_view_components/custom_dialog_model";
+import DestinationRepository from "../../destinations/repository/destination_repository";
 
 const HotelsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -51,6 +52,25 @@ const HotelsController = () => {
       }
     };
     fetchTravelThemes();
+  }, []);
+
+const [destinationList, setDestinationList] = useState([]);
+    const destinationRepository = new DestinationRepository(getToken);
+
+  useEffect(() => {
+    const fetchDestinations = async () => {
+      try {
+        const destinationsResponse =
+          await destinationRepository.getDestinations();
+        setDestinationList(destinationsResponse.data);
+      } catch (err) {
+        notify({
+          type: "error",
+          message: err.message ?? "Something went wrong. Please try again.",
+        });
+      }
+    };
+    fetchDestinations();
   }, []);
 
   const handleClick = () => {
@@ -124,14 +144,6 @@ const HotelsController = () => {
     fD.append("overview", formData.overview);
     fD.append("hotelCategory", formData.hotelCategory);
     fD.append("rate", JSON.stringify(formData.rate));
-    for (let pair of fD.entries()) {
-      console.log(pair[0] + ": ", pair[1]);
-    }
-    // Log FormData entries
-    for (let [key, value] of fD.entries()) {
-      console.log(`FormData ${key}:`, value);
-    }
-
     try {
       let responseMessage;
       let response;
@@ -156,7 +168,6 @@ const HotelsController = () => {
         );
       } else {
         response = await hotelRepository.createHotel(fD);
-        console.log(response);
         setHotelList((prev) => [...prev, response.data]);
       }
       responseMessage = response.message;
@@ -185,7 +196,7 @@ const HotelsController = () => {
   };
 
   const columns = [
-    { label: "DestinationId", accessor: "destinationId" },
+    { label: "Destination", accessor: "destinationId" },
     { label: "Title", accessor: "title" },
     { label: "City", accessor: "city" },
     { label: "Rating", accessor: "rating" },
@@ -211,11 +222,13 @@ const HotelsController = () => {
         onEditButtonClick={handleEditButtonClick}
         onDeleteButtonClick={onDeleteButtonClick}
         onViewButtonClick={handleViewButtonClick}
+        destinationList={destinationList}
       />
       <HotelViewModel
         openedView={openedView}
         onClose={() => setOpenedView(false)}
         hotel={hotel}
+        destinationList={destinationList}
       />
       <HotelAddEditModel
         opened={modalOpen}
@@ -229,6 +242,7 @@ const HotelsController = () => {
         handleImageSelect={handleImageSelect}
         isEditHotel={isEditHotel}
         hotel={hotel}
+        destinationList={destinationList}
       />
       <CustomDialogModal
         opened={isDeleteHotel}

@@ -8,6 +8,7 @@ import PageNotFound from "./common/common_view_components/page_not_found";
 import DestinationsController from "./destinations/controller/destinations_controller";
 import TravelThemesController from "./Travel Themes/controller/travelThemes_controller";
 import HotelsController from "./hotels/controller/hotels_controller";
+import CarouselsController from "./Carousels/controller/carousels_controller";
 
 function App() {
   return (
@@ -20,6 +21,8 @@ function App() {
           <Route path="destinations" element={<DestinationsController />} />
           <Route path="travelThemes" element={<TravelThemesController />} />
           <Route path="hotels" element={<HotelsController />} />
+          {/* <Route path="hotelCategory" element={<HotelsCategoryController />} /> */}
+          <Route path="carousels" element={<CarouselsController />} />
           <Route path="tours" element={<ToursView />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>

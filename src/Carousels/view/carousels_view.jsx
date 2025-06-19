@@ -1,20 +1,15 @@
 import { Title } from "@mantine/core";
 import CustomTable from "../../common/common_view_components/custom_table";
 import { IconPlus } from "@tabler/icons-react";
-import DestinationRepository from "../../destinations/repository/destination_repository";
-import { useEffect, useState } from "react";
-import useAuth from "../../auth/components/use_auth";
 
-const HotelsView = ({
+const CarouselsView = ({
   columns,
-  hotels,
+  carousels,
   handleClick,
   onEditButtonClick,
   onDeleteButtonClick,
-  onViewButtonClick,
-  destinationList
+  onViewButtonClick
 }) => {
- 
   return (
     <>
       <button
@@ -26,21 +21,20 @@ const HotelsView = ({
       </button>
       <div style={{ padding: "16px" }}>
         <Title order={3} mt={20} mb={10} ta="left" c="dark">
-        Hotels
+          Carousels
         </Title>
         <CustomTable
           columns={columns}
-          data={hotels}
+          data={carousels}
           shouldShowDelete={true}
           shouldShowEdit={true}
           onEdit={(item) => onEditButtonClick(item)}
           onDelete={(item) => onDeleteButtonClick(item)}
           onView={item => onViewButtonClick(item)}
-          destinationList={destinationList}
         />
       </div>
     </>
   );
 };
 
-export default HotelsView;
+export default CarouselsView;

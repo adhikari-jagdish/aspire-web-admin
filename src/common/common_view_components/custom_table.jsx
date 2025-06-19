@@ -1,5 +1,10 @@
 import { Table, ScrollArea, Box, Button, Group } from "@mantine/core";
-import { IconEye, IconPencil, IconTrash } from "@tabler/icons-react";
+import {
+  IconCircleLetterG,
+  IconEye,
+  IconPencil,
+  IconTrash,
+} from "@tabler/icons-react";
 
 const CustomTable = ({
   columns = [],
@@ -9,6 +14,7 @@ const CustomTable = ({
   onDelete,
   shouldShowEdit = false,
   shouldShowDelete = false,
+  destinationList,
 }) => {
   const safeColumns = Array.isArray(columns) ? columns : [];
   return (
@@ -31,13 +37,15 @@ const CustomTable = ({
             <Table.Tr>
               <Table.Th style={{ backgroundColor: "#f1f3f5" }}>SN</Table.Th>
               {safeColumns.map((col) => {
-                return <Table.Th
-                  key={col.accessor}
-                  style={{ backgroundColor: "#f1f3f5" }}
-                >
-                  {col.label}
-                </Table.Th>
-              })} 
+                return (
+                  <Table.Th
+                    key={col.accessor}
+                    style={{ backgroundColor: "#f1f3f5" }}
+                  >
+                    {col.label}
+                  </Table.Th>
+                );
+              })}
               <Table.Th style={{ backgroundColor: "#f1f3f5", width: "210px" }}>
                 Actions
               </Table.Th>
@@ -51,84 +59,96 @@ const CustomTable = ({
                 </Table.Td>
               </Table.Tr>
             ) : (
-              data.map((item, index) => {
+              data?.map((item, index) => {
+                console.log(data)
+                return (
+                  <Table.Tr
+                    key={item._id || index}
+                    className="hover:bg-gray-50 transition-colors"
+                  >
+                    <Table.Td>{index + 1}</Table.Td>
+                    {safeColumns.map((col) => {
+                      return (
+                        <Table.Td key={col.accessor}>
+                          {col.accessor === "image" ? (
+                            <img
+                              src={item[col.accessor]}
+                              alt={index + 1}
+                              style={{
+                                width: "80px",
+                                height: "60px",
+                                objectFit: "cover",
+                              }}
+                            />
+                          ) : col.accessor === "rate" ? (
+                            <div>
+                              {item[col.accessor].map((rateItem, idx) => (
+                                <ul key={idx} className="w-[200px]">
+                                  <li className="list-disc font-medium">
+                                    {rateItem.roomCategory}
+                                  </li>
+                                  <li>
+                                    NPR: {rateItem.rateInNPR} | USD:{" "}
+                                    {rateItem.rateInUSD} | INR:{" "}
+                                    {rateItem.rateInINR}
+                                  </li>
+                                </ul>
+                              ))}
+                            </div>
+                          ) : col.accessor === "destinationId" ? (
+                            <span className="w-[250px]">
+                              {destinationList?.find(
+                                (d) => d._id === item.destinationId
+                              )?.title || "N/A"}
+                            </span>
+                          ) : (
+                            <span className="line-clamp-3 overflow-hidden">
+                              {item[col.accessor]}
+                            </span>
+                          )}
+                        </Table.Td>
+                      );
+                    })}
+                    <Table.Td>
+                      <Group spacing="xs">
+                        <Button
+                          size="xs"
+                          color="blue"
+                          variant="subtle"
+                          onClick={() => onView?.(item)}
+                        >
+                          <IconEye size={16} />
+                        </Button>
+                        {shouldShowEdit ? (
+                          <Button
+                            size="xs"
+                            color="orange"
+                            variant="subtle"
+                            onClick={() => onEdit?.(item)}
+                          >
+                            <IconPencil size={16} />
+                          </Button>
+                        ) : (
+                          <></> // Or nothing or any fallback like <span>-</span>
+                        )}
 
-                 return <Table.Tr
-                  key={item._id || index}
-                  className="hover:bg-gray-50 transition-colors"
-                >
-                  <Table.Td>{index + 1}</Table.Td>
-                  {safeColumns.map((col) => {
-                   return <Table.Td key={col.accessor}>
-                      {col.accessor === "image" ? (
-                        <img
-                          src={item[col.accessor]}
-                          alt={index + 1}
-                          style={{
-                            width: "80px",
-                            height: "60px",
-                            objectFit: "cover",
-                          }}
-                        />
-                      ) :
-                      col.accessor === 'rate' ? <div>
-                        {item[col.accessor].map((rateItem, idx) => (
-                          <ul key={idx} className="w-[300px]">
-                          <li className="list-disc font-medium">{rateItem.roomCategory}</li>
-                          <li>
-                            NPR: {rateItem.rateInNPR} | USD: {rateItem.rateInUSD} | INR: {rateItem.rateInINR} |
-                             BDT: {rateItem.rateInBDT}
-                          </li>
-                          </ul>
-                        ))}
-                      </div>  : (
-                        col.accessor === "destinationId"? <span className="w-[250px]">{item[col.accessor]}</span>:
-                        <span className="line-clamp-3 overflow-hidden">
-                          {item[col.accessor]}
-                        </span>
-                      )
-                       }
+                        {shouldShowDelete ? (
+                          <Button
+                            size="xs"
+                            color="red"
+                            variant="subtle"
+                            onClick={() => onDelete?.(item)}
+                          >
+                            <IconTrash size={16} />
+                          </Button>
+                        ) : (
+                          <></> // Or nothing or any fallback like <span>-</span>
+                        )}
+                      </Group>
                     </Table.Td>
-                  })}
-                  <Table.Td>
-                    <Group spacing="xs">
-                      <Button
-                        size="xs"
-                        color="blue"
-                        variant="subtle"
-                        onClick={() => onView?.(item)}
-                      >
-                        <IconEye size={16} />
-                      </Button>
-                      {shouldShowEdit ? (
-                        <Button
-                          size="xs"
-                          color="orange"
-                          variant="subtle"
-                          onClick={() => onEdit?.(item)}
-                        >
-                          <IconPencil size={16} />
-                        </Button>
-                      ) : (
-                        <></> // Or nothing or any fallback like <span>-</span>
-                      )}
-
-                      {shouldShowDelete ? (
-                        <Button
-                          size="xs"
-                          color="red"
-                          variant="subtle"
-                          onClick={() => onDelete?.(item)}
-                        >
-                          <IconTrash size={16} />
-                        </Button>
-                      ) : (
-                        <></> // Or nothing or any fallback like <span>-</span>
-                      )}
-                    </Group>
-                  </Table.Td>
-                </Table.Tr>
-            })
+                  </Table.Tr>
+                );
+              })
             )}
           </Table.Tbody>
         </Table>

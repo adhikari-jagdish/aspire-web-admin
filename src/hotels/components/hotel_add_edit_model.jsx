@@ -6,9 +6,12 @@ import {
   Group,
   Textarea,
   Stack,
+  Menu,
 } from "@mantine/core";
 import ImagePicker from "../../common/common_view_components/image_picker";
-import { IconPlus, IconTrash } from "@tabler/icons-react";
+import { IconPlus, IconSearch, IconTrash } from "@tabler/icons-react";
+import DestinationRepository from "../../destinations/repository/destination_repository";
+import useAuth from "../../auth/components/use_auth";
 
 const HotelAddEditModel = ({
   opened,
@@ -17,8 +20,8 @@ const HotelAddEditModel = ({
   handleSubmit,
   handleImageSelect,
   hotel,
+  destinationList
 }) => {
-  // const [rates, setRates] = useState
   const [formData, setFormData] = useState({
     destinationId: "",
     title: "",
@@ -36,6 +39,12 @@ const HotelAddEditModel = ({
     ],
     image: null,
   });
+
+  const [DestinationCategory, setDestinationCategory] =
+    useState("");
+
+
+
   useEffect(() => {
     if (isEditHotel && opened) {
       setFormData({
@@ -46,7 +55,10 @@ const HotelAddEditModel = ({
         overview: hotel.overview || "",
         hotelCategory: hotel.hotelCategory || "",
         rate: hotel.rate || null,
+        image: hotel.image || null
       });
+   setDestinationCategory(hotel.destinationId || "");
+
     } else {
       // Clear form for new travel theme
       setFormData({
@@ -66,6 +78,7 @@ const HotelAddEditModel = ({
         ],
         image: null,
       });
+          setDestinationCategory("");
     }
   }, [isEditHotel, opened]);
 
@@ -100,6 +113,19 @@ const HotelAddEditModel = ({
     const updatedRates = formData.rate.filter((_, i) => i !== idx);
     setFormData({ ...formData, rate: updatedRates });
   };
+
+
+ const handleDestinationSelect = (e) => {
+  const selectedId = e.target.value;
+  setDestinationCategory(selectedId);
+  setFormData(prev => ({
+    ...prev,
+    destinationId: selectedId,
+  }));
+};
+
+
+
   return (
     <Modal
       opened={opened}
@@ -107,14 +133,34 @@ const HotelAddEditModel = ({
       title={isEditHotel ? "Edit Hotel" : "Add Hotel"}
       centered
     >
-      <TextInput
+      {/* <TextInput
         label="Destination Id"
         placeholder="Enter Destination Id"
         name="destinationId"
         value={formData.destinationId}
         onChange={handleChange}
         required
-      />
+      /> */}
+      <div className="flex flex-col">
+        <label htmlFor="destinations" className="font-medium text-[15px]">
+          Destinations
+        </label>
+
+        <select
+          name="destinations"
+          id="destinations"
+          className="border outline-blue-200 border-gray-400 p-1 rounded"
+          style={{ fontSize: "14px" }}
+          value={DestinationCategory}
+          onChange={handleDestinationSelect}
+        >
+          <option value=""> Select Destination </option>
+
+          {destinationList.map((d) => (
+              <option key={d._id} value={d._id || ""}>{d?.title}</option>
+          ))}
+        </select>
+      </div>
 
       <TextInput
         label="Title"
@@ -152,14 +198,37 @@ const HotelAddEditModel = ({
         required
       />
 
-      <TextInput
+      {/* <TextInput
         label="Hotel Category"
         placeholder="Enter Hotel Category"
         name="hotelCategory"
         value={formData.hotelCategory}
         onChange={handleChange}
         required
-      />
+      /> */}
+      <div className="flex flex-col">
+        <label htmlFor="hotelCategory" className="font-medium text-[15px]">
+          Hotel Category
+        </label>
+
+        <select
+          name="hotelCategory"
+          className="border outline-blue-200 border-gray-400 p-1 rounded text-xl"
+          style={{ fontSize: "14px" }}
+          value={hotel.hotelCategory}
+          onChange={handleChange}
+        >
+          <option value=""> Select Category </option>
+          <option value="budget">Budget</option>
+          <option value="standard">Standard</option>
+          <option value="deluxe">Deluxe</option>
+          <option value="luxury">Luxury</option>
+          <option value="boutique">Boutique</option>
+          <option value="resort">Resort</option>
+          <option value="hostel">Hostel</option>
+          <option value="apartment">Serviced Apartment</option>
+        </select>
+      </div>
 
       {/* <TextInput
         label="Rate"
@@ -169,11 +238,11 @@ const HotelAddEditModel = ({
         onChange={handleChange}
         required
       /> */}
-      <div style={{ marginTop: 20 }}>
+      <div style={{ marginTop: 5 }}>
         <h3 className="font-medium">Rate Info</h3>
 
         {formData.rate.map((rateItem, idx) => (
-          <div className="border border-gray-400 rounded p-2 space-y-3 mt-1">
+          <div className="border border-gray-400 rounded p-2 space-y-3 mt-">
             <div className="flex flex-col gap-2">
               <label htmlFor="roomCategory" className="text-[14px] font-medium">
                 Room Category

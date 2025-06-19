@@ -1,6 +1,7 @@
 import { Image, Modal, Stack, Text, Title } from "@mantine/core";
 
-const HotelViewModel = ({ openedView, onClose, hotel }) => {
+const HotelViewModel = ({ openedView, onClose, hotel, destinationList }) => {
+  const destination = destinationList?.find(d => d._id === hotel.destinationId);
   return (
     <Modal
       opened={openedView}
@@ -13,9 +14,9 @@ const HotelViewModel = ({ openedView, onClose, hotel }) => {
       {hotel ? (
         <Stack spacing="sm" className="text-[14px]">
          <Title style={{ fontWeight: "500", fontSize: "15px" }} order={4}>
-            Destination Id
+            Destination 
           </Title>
-          <Text inherit>{hotel?.destinationId}</Text>
+          <Text inherit>{destination?.title}</Text>
 
           <Title style={{ fontWeight: "500", fontSize: "15px" }} order={4}>
             Title
@@ -57,19 +58,19 @@ const HotelViewModel = ({ openedView, onClose, hotel }) => {
           </div>
 
 
-          {/* {travelTheme?.image && (
+          {hotel?.image && (
             <>
               <Title style={{ fontWeight: "500", fontSize: "15px" }} order={4}>
                 Image
               </Title>
               <Image
-                src={travelTheme.image}
+                src={hotel.image}
                 alt="Travel Theme"
                 readius="md"
                 withPlaceHolder
               />
             </>
-          )} */}
+          )}
         </Stack>
       ) : (
         <Text color="dimmed">No Hotel data available.</Text>

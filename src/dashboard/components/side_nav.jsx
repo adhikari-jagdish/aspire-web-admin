@@ -12,6 +12,8 @@ const navItems = [
   { name: "Contact", icon: "📞" },
   { name: "Gallery", icon: "📸" },
   { name: "Hotels", icon: "🏨" },
+  {name: "Hotel Category", icon: "⭐"},
+  {name: "Carousels", icon: "⭐"},
   { name: "Vehicles", icon: "🚗" },
 ];
 
