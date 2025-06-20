@@ -37,7 +37,7 @@ const HotelsController = () => {
   const hotelRepository = new HotelRepository(getToken);
 
   useEffect(() => {
-    const fetchTravelThemes = async () => {
+    const fetchHotels = async () => {
       try {
         showLoading();
         const hotelsResponse = await hotelRepository.getHotels();
@@ -51,11 +51,11 @@ const HotelsController = () => {
         hideLoading();
       }
     };
-    fetchTravelThemes();
+    fetchHotels();
   }, []);
 
-const [destinationList, setDestinationList] = useState([]);
-    const destinationRepository = new DestinationRepository(getToken);
+  const [destinationList, setDestinationList] = useState([]);
+  const destinationRepository = new DestinationRepository(getToken);
 
   useEffect(() => {
     const fetchDestinations = async () => {
