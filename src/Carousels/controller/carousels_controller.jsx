@@ -132,7 +132,6 @@ const CarouselsController = () => {
   const handleViewButtonClick = (item) => {
     setOpenedView(true);
     setCarousel(item);
-    console.log(item)
   };
 
   const columns = [

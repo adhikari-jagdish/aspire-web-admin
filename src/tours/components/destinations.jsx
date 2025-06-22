@@ -1,0 +1,66 @@
+import DestinationRepository from "../../destinations/repository/destination_repository";
+import useAuth from "../../auth/components/use_auth";
+import { useEffect, useState } from "react";
+import { Title } from "@mantine/core";
+import { useNotification } from "../../common/hooks/useNotification";
+
+const Destinations = () => {
+  const [destinationList, setDestinationList] = useState([]);
+  const { getToken } = useAuth();
+  const notify = useNotification();
+
+
+  const destinationRepository = new DestinationRepository(getToken);
+  useEffect(() => {
+    //get all destinations
+    const fetchDestinations = async () => {
+      try {
+        const destinationResponse =
+          await destinationRepository.getDestinations();
+        setDestinationList(destinationResponse.data);
+      } catch (error) {
+        notify({
+          type: "error",
+          message: error.message ?? "Something went wrong. Please try again.",
+        });
+      }
+    };
+    fetchDestinations();
+  }, []);
+  return (
+    <div className="p-2">
+      <Title
+        order={4}
+        mt={20}
+        mb={10}
+        ta="left"
+        c="dark"
+        className="flex flex-col"
+      >
+        Destinations
+        <span className=" border border-b-1 w-[110px]"></span>
+      </Title>
+
+      <ul className="flex gap-5 font-normal  pl-2 flex-wrap">
+        {destinationList?.map((d, idx) => {
+          const inputId = `destination-${d?._id || idx}`;
+          return (
+            <li className="space-x-2 " key={d?._id || idx}>
+              <input
+                type="checkbox"
+                id={inputId}
+                name="destination"
+                className="w-4 h-4 mr-1 cursor-pointer"
+              />
+              <label htmlFor={inputId} className="cursor-pointer">
+                {d?.title}
+              </label>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+};
+
+export default Destinations;

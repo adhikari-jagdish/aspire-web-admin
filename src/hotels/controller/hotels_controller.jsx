@@ -188,7 +188,6 @@ const HotelsController = () => {
       hideLoading();
     }
   };
-  // console.log(hotelList)
 
   const handleViewButtonClick = (item) => {
     setOpenedView(true);

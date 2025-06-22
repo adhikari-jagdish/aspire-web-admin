@@ -60,7 +60,6 @@ const CustomTable = ({
               </Table.Tr>
             ) : (
               data?.map((item, index) => {
-                console.log(data)
                 return (
                   <Table.Tr
                     key={item._id || index}
