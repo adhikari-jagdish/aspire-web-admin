@@ -41,7 +41,6 @@ const Hotels = () => {
   const removeHotelRow = (idx) => {
     setSelectedHotels((prev) => prev.filter((_, i) => i !== idx));
   };
-
   return (
     <div className="pl-2 w-full space-y-4">
             <div className="flex items-center w-[700px] gap-5">
@@ -63,10 +62,11 @@ const Hotels = () => {
               >
                 <option value="">List of Hotels</option>
                 {hotelList?.map((h, idx) => (
-                  <option value={h?.title} key={h._id || idx}>
+                    <option value={h?.title} key={h._id || idx}>
                     {h?.title}
                   </option>
                 ))}
+
               </select>
             </div>
 
@@ -79,6 +79,7 @@ const Hotels = () => {
                     className="bg-gray-100 px-2 py-1 rounded flex justify-between "
                   >
                     {hotel}
+                  
                     <button
                       onClick={() => removeHotelRow(idx)}
                       className=" bg-red-200 text-red-600  w-fit px-2 py-1 cursor-pointer hover:bg-red-300 rounded flex items-center justify-center gap-1 text-xl"

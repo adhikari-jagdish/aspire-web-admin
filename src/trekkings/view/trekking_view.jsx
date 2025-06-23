@@ -1,8 +1,9 @@
-import { Title } from "@mantine/core";
-import { IconPlus } from "@tabler/icons-react";
-import React from "react";
+import { Title } from '@mantine/core'
+import { IconPlus } from '@tabler/icons-react'
+import React from 'react'
 
-const ToursView = () => {
+const trekking_view = () => {
+
   return (
     <>
       <button
@@ -14,7 +15,7 @@ const ToursView = () => {
       </button>
       <div style={{ padding: "16px" }}>
         <Title order={3} mt={20} mb={10} ta="left" c="dark">
-          Tours
+          Trekkings
         </Title>
         {/* <CustomTable
           columns={columns}
@@ -27,7 +28,7 @@ const ToursView = () => {
         /> */}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default ToursView;
+export default trekking_view

@@ -34,7 +34,7 @@ const TitleDuration = () => {
           {durationDays.map((day) => (
             <option value="1" key={day}>
               {" "}
-              {day} {day > 9 ? " Days" : "Day"}{" "}
+              {day} {day > 1 ? " Days" : "Day"}{" "}
             </option>
           ))}
         </select>
