@@ -25,6 +25,7 @@ const DestinationsController = () => {
 
   const destinationRepository = new DestinationRepository(getToken);
 
+
   useEffect(() => {
     const fetchDestinations = async () => {
       try {
@@ -120,7 +121,6 @@ const DestinationsController = () => {
     { label: "Description", accessor: "description" },
     { label: "Image", accessor: "image" },
   ];
-
   return (
     <>
       <DestinationsView

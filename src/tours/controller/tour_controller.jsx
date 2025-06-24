@@ -1,103 +1,100 @@
 import { useEffect, useState } from "react";
-import HotelRepository from "../repository/hotel_repository";
 import useAuth from "../../auth/components/use_auth";
 import useLoadingOverlay from "../../common/hooks/useLoadingOverlay";
 import { useNotification } from "../../common/hooks/useNotification";
-import HotelsView from "../view/hotel_view";
-import HotelViewModel from "../components/hotel_view_model";
-import HotelAddEditModel from "../components/hotel_add_edit_model";
 import CustomDialogModal from "../../common/common_view_components/custom_dialog_model";
-import DestinationRepository from "../../destinations/repository/destination_repository";
-
-const HotelsController = () => {
+import TourRepository from "../repository/tour_repository";
+import ToursView from "../view/tours_view";
+import ToursAddEditForm from "../view/tours_add_edit_form";
+const ToursController = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [openedView, setOpenedView] = useState(false);
-  const [hotelList, setHotelList] = useState([]);
-  const [hotel, setHotel] = useState({});
+  const [tourList, setTourList] = useState([]);
+  const [tour, setTour] = useState({});
   const { getToken } = useAuth();
   const [image, setImage] = useState(null);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
-  const [isEditHotel, setIsEditHotel] = useState(false);
-  const [isDeleteHotel, setIsDeleteHotel] = useState(false);
+  const [isEditTour, setIsEditTour] = useState(false);
+  const [isDeleteTour, setIsDeleteTour] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
   const [idToUpdate, setIdToUpdate] = useState(null);
 
-  const hotelRepository = new HotelRepository(getToken);
+  const tourRepository = new TourRepository(getToken);
 
   useEffect(() => {
-    const fetchHotels = async () => {
+    const fetchTours = async () => {
       try {
         showLoading();
-        const hotelsResponse = await hotelRepository.getHotels();
-        setHotelList(hotelsResponse.data || []);
+        const tourResponse = await tourRepository.getTourPackages();
+        setTourList(tourResponse.data || []);
       } catch (err) {
         notify({
           type: "error",
-          message: err.message ?? "Failed to fetch hotels.",
+          message: err.message ?? "Failed to fetch Tours.",
         });
       } finally {
         hideLoading();
       }
     };
-    fetchHotels();
+    fetchTours();
   }, []);
 
-  const [destinationList, setDestinationList] = useState([]);
-  const destinationRepository = new DestinationRepository(getToken);
+  // const [destinationList, setDestinationList] = useState([]);
+  // const destinationRepository = new DestinationRepository(getToken);
 
-  useEffect(() => {
-    const fetchDestinations = async () => {
-      try {
-        const destinationsResponse =
-          await destinationRepository.getDestinations();
-        setDestinationList(destinationsResponse.data);
-      } catch (err) {
-        notify({
-          type: "error",
-          message: err.message ?? "Something went wrong. Please try again.",
-        });
-      }
-    };
-    fetchDestinations();
-  }, []);
+  // useEffect(() => {
+  //   const fetchDestinations = async () => {
+  //     try {
+  //       const destinationsResponse =
+  //         await destinationRepository.getDestinations();
+  //       setDestinationList(destinationsResponse.data);
+  //     } catch (err) {
+  //       notify({
+  //         type: "error",
+  //         message: err.message ?? "Something went wrong. Please try again.",
+  //       });
+  //     }
+  //   };
+  //   fetchDestinations();
+  // }, []);
 
   const handleClick = () => {
     setModalOpen(true);
-    setHotel({});
+    setTour({});
     setImage(null);
   };
 
   const handleEditButtonClick = (item) => {
-    setIsEditHotel(true);
-    setHotel(item);
+    setIsEditTour(true);
+    setTour(item);
     setModalOpen(true);
     setIdToUpdate(item?._id);
     setImage(null);
   };
 
   const onDeleteButtonClick = (item) => {
-    setIsDeleteHotel(true);
+    setIsDeleteTour(true);
     setIdToDelete(item?._id);
   };
 
   const handleDeleteButtonClick = async () => {
-    const previousList = hotelList;
-    setHotelList((prev) => prev.filter((p) => p._id !== idToDelete));
+    const previousList = tourList;
+    setTourList((prev) => prev.filter((p) => p._id !== idToDelete));
     try {
       showLoading();
-      await hotelRepository.deleteHotel(idToDelete);
-      notify({ type: "success", message: "Hotel deleted successfully." });
+      await tourRepository.deleteTour(idToDelete);
+      notify({ type: "success", message: "Tour deleted successfully." });
     } catch (err) {
-      setHotelList(previousList);
+      setTourList(previousList);
       notify({
         type: "error",
         message: err.message ?? "Failed to delete travel theme.",
       });
     } finally {
       hideLoading();
-      setIsDeleteHotel(false);
+      setIsDeleteTour(false);
       setIdToDelete(null);
     }
   };
@@ -109,12 +106,17 @@ const HotelsController = () => {
   const handleSubmit = async (formData) => {
     if (
       !formData.destinationId ||
+      !formData.travelThemeId ||
       !formData.title ||
-      !formData.city ||
-      !formData.rating ||
+      !formData.duration  ||
       !formData.overview ||
-      !formData.hotelCategory ||
-      (!formData.rate && !isEditHotel)
+      !formData.packageInclusions  ||
+      !formData.itinerary  ||
+      !formData.inclusions  ||
+      !formData.exclusions  ||
+      !formData.hotels||
+      !formData.packageRate||
+      (!formData.discount && !isEditTour)
     ) {
       notify({
         type: "error",
@@ -128,43 +130,53 @@ const HotelsController = () => {
       fD.append("file", image);
     }
     fD.append("destinationId", formData.destinationId);
+    fD.append("travelThemeId", formData.travelThemeId);
     fD.append("title", formData.title);
-    fD.append("city", formData.city);
-    fD.append("rating", formData.rating);
+    fD.append("duration", formData.duration);
     fD.append("overview", formData.overview);
-    fD.append("hotelCategory", formData.hotelCategory);
-    fD.append("rate", JSON.stringify(formData.rate));
+    fD.append("packageInclusions", formData.packageInclusions);
+    fD.append("itinerary", formData.itinerary);
+    fD.append("inclusions", formData.inclusions);
+    fD.append("exclusions", formData.exclusions);
+    fD.append("hotels", formData.hotels);
+    fD.append("packageRate", formData.packageRate);
+    fD.append("discount", formData.discount );
     try {
       let responseMessage;
       let response;
-      if (isEditHotel) {
-        response = await hotelRepository.updateHotel(fD, idToUpdate);
-        setHotelList((prev) =>
+      if (isEditTour) {
+        response = await tourRepository.updateHotel(fD, idToUpdate);
+        setTourList((prev) =>
           prev.map((item) =>
             item._id === idToUpdate
               ? {
                   ...item,
                   destinationId: formData.destinationId,
+                  travelThemeId: formData.travelThemeId,
                   title: formData.title,
-                  city: formData.city,
-                  rating: formData.rating,
+                  duration: formData.duration,
                   overview: formData.overview,
-                  hotelCategory: formData.hotelCategory,
-                  rate: formData.rate || item.rate,
+                  packageInclusions: formData.packageInclusions,
+                  itinerary: formData.itinerary,
+                  inclusions: formData.inclusions,
+                  exclusions: formData.exclusions,
+                  hotels: formData.hotels,
+                  packageRate: formData.packageRate ,
+                  discount : formData.discount,
                   image: image || item.image,
                 }
               : item
           )
         );
       } else {
-        response = await hotelRepository.createHotel(fD);
-        setHotelList((prev) => [...prev, response.data]);
+        response = await tourRepository.createTourPackage(fD);
+        setTourList((prev) => [...prev, response.data]);
       }
       responseMessage = response.message;
       setModalOpen(false);
       setImage(null);
-      setIsEditHotel(false);
-      setHotel({});
+      setIsEditTour(false);
+      setTour({});
       notify({
         type: "success",
         message: responseMessage,
@@ -181,61 +193,65 @@ const HotelsController = () => {
 
   const handleViewButtonClick = (item) => {
     setOpenedView(true);
-    setHotel(item);
+    setTour(item);
   };
 
   const columns = [
     { label: "Destination", accessor: "destinationId" },
+    { label: "Travel Theme", accessor: "travelThemeId" },
     { label: "Title", accessor: "title" },
-    { label: "City", accessor: "city" },
-    { label: "Rating", accessor: "rating" },
+    { label: "Duration", accessor: "duration" },
     { label: "Overview", accessor: "overview" },
-    { label: "HotelCategory", accessor: "hotelCategory" },
-    { label: "Rate", accessor: "rate" },
+    { label: "Package Inclusions", accessor: "packageInclusions" },
+    { label: "Itinerary", accessor: "itinerary" },
+    { label: "Inclusions", accessor: "inclusions" },
+    { label: "exclusions", accessor: "exclusions" },
+    { label: "Hotels", accessor: "hotels" },
+    { label: "Package Rate", accessor: "packageRate" },
+    { label: "Discount", accessor: "discount" },
     { label: "Image", accessor: "image" },
   ];
-
   return (
     <>
-      <HotelsView
+      <ToursView
         opened={modalOpen}
         onClose={() => {
           setModalOpen(false);
-          setIsEditHotel(false);
-          setHotel({});
-          setImage(null);
+          setIsEditTour(false);
+          setTour({});
+          // setImage(null);
         }}
         columns={columns}
-        hotels={hotelList}
+        tours={tourList}
         handleClick={handleClick}
         onEditButtonClick={handleEditButtonClick}
         onDeleteButtonClick={onDeleteButtonClick}
         onViewButtonClick={handleViewButtonClick}
         destinationList={destinationList}
       />
-      <HotelViewModel
+      <TourViewModel
         openedView={openedView}
         onClose={() => setOpenedView(false)}
-        hotel={hotel}
+        tour={tour}
         destinationList={destinationList}
       />
-      <HotelAddEditModel
+      <ToursAddEditForm 
         opened={modalOpen}
         onClose={() => {
-          setIsEditHotel(false);
+          setIsEditTour(false);
           setModalOpen(false);
-          setHotel({});
+          setTour({});
           setImage(null);
         }}
         handleSubmit={handleSubmit}
         handleImageSelect={handleImageSelect}
-        isEditHotel={isEditHotel}
-        hotel={hotel}
+        isEditTour={isEditTour}
+        tour={tour}
         destinationList={destinationList}
       />
       <CustomDialogModal
-        opened={isDeleteHotel}
-        onClose={() => setIsDeleteHotel(false)}
+        opened={isDeleteTour}
+        onClose={() => setIsDeleteTour(false)}
         title="Alert!!"
         message="Are you sure you want to delete?"
         onConfirm={handleDeleteButtonClick}
@@ -245,4 +261,4 @@ const HotelsController = () => {
   );
 };
 
-export default HotelsController;
+export default ToursController;

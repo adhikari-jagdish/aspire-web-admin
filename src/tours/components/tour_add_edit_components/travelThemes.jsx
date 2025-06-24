@@ -4,7 +4,7 @@ import { Title } from "@mantine/core";
 import useAuth from "../../../auth/components/use_auth";
 import { useNotification } from "../../../common/hooks/useNotification";
 
-const TravelThemes = () => {
+const TravelThemes = ({value, onChange}) => {
   const [travelThemeList, setTravelThemeList] = useState([]);
   const { getToken } = useAuth();
 const notify = useNotification();
@@ -28,8 +28,14 @@ const notify = useNotification();
     };
     fetchTravelThemes();
   }, []);
+
+  const handleChange = (id) => {
+    const updated = value.includes(id)? value.filter(v => v !== id) : [...value, id];
+
+    onChange({target : { name: 'travelThemeId', value: updated}})
+  }
   return (
-    <div className="p-2">
+    <div>
       <Title
         order={4}
         mt={20}
@@ -50,8 +56,11 @@ const notify = useNotification();
               <input
                 type="checkbox"
                 id={inputId}
-                name="destination"
+                name="travelThemeId"
                 className="w-4 h-4 mr-1 cursor-pointer"
+                checked={value.includes(t?._id)}
+                value={t?._id}
+                onChange={() => handleChange(t?._id)}
               />
               <label htmlFor={inputId} className="cursor-pointer">
                 {t?.title}

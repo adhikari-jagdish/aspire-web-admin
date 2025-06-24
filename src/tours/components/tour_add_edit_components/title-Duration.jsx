@@ -1,4 +1,4 @@
-const TitleDuration = () => {
+const TitleDuration = ({titleName, durationName, titleValue, durationValue, onChange}) => {
   //duration days
   let durationDays = [];
 
@@ -7,7 +7,7 @@ const TitleDuration = () => {
   }
 
   return (
-    <div className="flex gap-30 pl-2">
+    <div className="flex gap-30">
       <div className="flex flex-col w-[600px] gap-2">
         <label htmlFor="title" className="text-xl font-bold">
           Title
@@ -15,6 +15,8 @@ const TitleDuration = () => {
         <input
           type="text"
           name="title"
+          value={titleValue}
+          onChange={onChange}
           id="title"
           className="border border-gray-500 outline-0 rounded ml-1 h-[40px] pl-2"
           placeholder="Enter title"
@@ -28,11 +30,13 @@ const TitleDuration = () => {
         <select
           name="duration"
           id="duration"
+          value={durationValue}
+          onChange={onChange}
           className="border border-gray-500 outline-0 rounded ml-1 h-[40px] cursor-pointer "
         >
           <option value="">Max 100 Days</option>
           {durationDays.map((day) => (
-            <option value="1" key={day}>
+            <option value={day} key={day}>
               {" "}
               {day} {day > 1 ? " Days" : "Day"}{" "}
             </option>

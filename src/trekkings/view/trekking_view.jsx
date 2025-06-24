@@ -1,6 +1,7 @@
 import { Title } from '@mantine/core'
 import { IconPlus } from '@tabler/icons-react'
 import React from 'react'
+import TrekkingAddEditForm from './trekking_add_edit_form'
 
 const trekking_view = () => {
 
@@ -26,6 +27,7 @@ const trekking_view = () => {
           onDelete={(item) => onDeleteButtonClick(item)}
           onView={item => onViewButtonClick(item)}
         /> */}
+        <TrekkingAddEditForm />
       </div>
     </>
   )

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Title } from "@mantine/core";
 import { useNotification } from "../../../common/hooks/useNotification";
 
-const Destinations = () => {
+const Destinations = ({ value, onChange}) => {
   const [destinationList, setDestinationList] = useState([]);
   const { getToken } = useAuth();
   const notify = useNotification();
@@ -27,8 +27,14 @@ const Destinations = () => {
     };
     fetchDestinations();
   }, []);
+
+  const handleChange  = (id) => {
+    const updated = value.includes(id)? value.filter(v => v !== id): [...value, id];
+
+    onChange({target: {name: 'destinationId', value: updated}})
+  }
   return (
-    <div className="p-2">
+    <div>
       <Title
         order={4}
         mt={20}
@@ -49,8 +55,11 @@ const Destinations = () => {
               <input
                 type="checkbox"
                 id={inputId}
-                name="destination"
+                name="destinationId"
                 className="w-4 h-4 mr-1 cursor-pointer"
+                value={d?._id}
+                checked={value.includes(d?._id)}
+                onChange={() => handleChange(d?._id)}
               />
               <label htmlFor={inputId} className="cursor-pointer">
                 {d?.title}

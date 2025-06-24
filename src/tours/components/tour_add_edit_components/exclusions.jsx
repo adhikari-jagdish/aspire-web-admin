@@ -4,16 +4,32 @@ import { RichTextEditor } from "@mantine/tiptap";
 import Underline from "@tiptap/extension-underline";
 import Strike from "@tiptap/extension-strike"; 
 import { Title } from "@mantine/core";
+import { useEffect } from "react";
 
-const Exclusions = () => {
+const Exclusions = ({name, value, onChange}) => {
     //Inclusion editor
-       const inclusionEditor = useEditor({
+       const exclusionEditor = useEditor({
               extensions: [StarterKit, Underline, Strike],
-              content: "",
+              content: value || "",
+              onUpdate ({editor}) {
+                const html = editor.getHTML();
+                if(onChange){
+                  onChange({
+                  target: {name,
+                  value: html}
+                })
+                }
+              }
             });
+
+            useEffect(() => {
+              if(exclusionEditor && value !== exclusionEditor.getHTML()){
+                exclusionEditor.commands.setContent(value || "", false);
+              }
+            },[exclusionEditor, value])
     
   return (
-       <div className="pl-2 w-[1030px]">
+       <div className="w-[1030px]">
                 <Title
                   order={4}
                   mt={20}
@@ -27,7 +43,7 @@ const Exclusions = () => {
                 </Title>
     
                 <RichTextEditor
-                  editor={inclusionEditor}
+                  editor={exclusionEditor}
                   className="border border-gray-500 rounded"
                 >
                   <RichTextEditor.Toolbar sticky stickyOffset={60}>

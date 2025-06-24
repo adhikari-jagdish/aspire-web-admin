@@ -10,6 +10,7 @@ import TravelThemesController from "./Travel Themes/controller/travelThemes_cont
 import HotelsController from "./hotels/controller/hotels_controller";
 import CarouselsController from "./Carousels/controller/carousels_controller";
 import TrekkingView from "./trekkings/view/trekking_view";
+import ToursAddEditForm from "./tours/view/tours_add_edit_form";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           {/* <Route path="hotelCategory" element={<HotelsCategoryController />} /> */}
           <Route path="carousels" element={<CarouselsController />} />
           <Route path="tours" element={<ToursView />} />
+          <Route path="tours/addTourPackage" element={<ToursAddEditForm />} />
           <Route path="trekkings" element={<TrekkingView />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
