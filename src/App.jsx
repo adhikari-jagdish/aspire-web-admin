@@ -9,8 +9,9 @@ import DestinationsController from "./destinations/controller/destinations_contr
 import TravelThemesController from "./Travel Themes/controller/travelThemes_controller";
 import HotelsController from "./hotels/controller/hotels_controller";
 import CarouselsController from "./Carousels/controller/carousels_controller";
-import TrekkingView from "./trekkings/view/trekking_view";
-import ToursAddEditForm from "./tours/view/tours_add_edit_form";
+import TrekkingView from "./trekkings/view/trekkings_view";
+import ToursAddEditForm from "./tours/view/tour_add_edit_form";
+import TrekkingAddEditForm from "./trekkings/view/trekking_add_edit_form";
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
           <Route path="tours" element={<ToursView />} />
           <Route path="tours/addTourPackage" element={<ToursAddEditForm />} />
           <Route path="trekkings" element={<TrekkingView />} />
+          <Route path="trekkings/addTrekkingPackage" element={<TrekkingAddEditForm />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>

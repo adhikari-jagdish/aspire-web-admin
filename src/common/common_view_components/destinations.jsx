@@ -1,8 +1,8 @@
-import DestinationRepository from "../../../destinations/repository/destination_repository";
-import useAuth from "../../../auth/components/use_auth";
+import DestinationRepository from "../../destinations/repository/destination_repository";
+import useAuth from "../../auth/components/use_auth";
 import { useEffect, useState } from "react";
 import { Title } from "@mantine/core";
-import { useNotification } from "../../../common/hooks/useNotification";
+import { useNotification } from "../hooks/useNotification";
 
 const Destinations = ({ value, onChange}) => {
   const [destinationList, setDestinationList] = useState([]);
@@ -29,7 +29,7 @@ const Destinations = ({ value, onChange}) => {
   }, []);
 
   const handleChange  = (id) => {
-    const updated = value.includes(id)? value.filter(v => v !== id): [...value, id];
+    const updated = value?.includes(id)? value.filter(v => v !== id): [...value, id];
 
     onChange({target: {name: 'destinationId', value: updated}})
   }
@@ -58,7 +58,7 @@ const Destinations = ({ value, onChange}) => {
                 name="destinationId"
                 className="w-4 h-4 mr-1 cursor-pointer"
                 value={d?._id}
-                checked={value.includes(d?._id)}
+                checked={value?.includes(d?._id)}
                 onChange={() => handleChange(d?._id)}
               />
               <label htmlFor={inputId} className="cursor-pointer">

@@ -4,9 +4,9 @@ import useLoadingOverlay from "../../common/hooks/useLoadingOverlay";
 import { useNotification } from "../../common/hooks/useNotification";
 import CustomDialogModal from "../../common/common_view_components/custom_dialog_model";
 import TourRepository from "../repository/tour_repository";
-import ToursView from "../view/tours_view";
 import ToursAddEditForm from "../view/tours_add_edit_form";
-const ToursController = () => {
+import ToursView from '../view/tours_view'
+const TrekkingsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [openedView, setOpenedView] = useState(false);
   const [tourList, setTourList] = useState([]);
@@ -261,4 +261,4 @@ const ToursController = () => {
   );
 };
 
-export default ToursController;
+export default TrekkingsController;

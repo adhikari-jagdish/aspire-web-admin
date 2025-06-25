@@ -12,7 +12,7 @@ import TravelThemes from "../../common/common_view_components/travelThemes";
 import PackageRate from "../../common/common_view_components/packageRate";
 import PackageInclusions from "../../common/common_view_components/packageInclusions";
 
-const TrekkingsAddEditForm = ({
+const ToursAddEditForm = ({
   opened,
   onClose,
   isEditTour,
@@ -169,4 +169,4 @@ const TrekkingsAddEditForm = ({
   );
 };
 
-export default TrekkingsAddEditForm;
+export default ToursAddEditForm;

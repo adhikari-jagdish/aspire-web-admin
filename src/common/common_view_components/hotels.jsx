@@ -1,6 +1,6 @@
-import HotelRepository from "../../../hotels/repository/hotel_repository";
-import useAuth from "../../../auth/components/use_auth";
-import { useNotification } from "../../../common/hooks/useNotification";
+import HotelRepository from "../../hotels/repository/hotel_repository";
+import useAuth from "../../auth/components/use_auth";
+import { useNotification } from "../hooks/useNotification";
 import { useEffect, useState } from "react";
 import { Title } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
