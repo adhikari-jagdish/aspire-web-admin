@@ -5,7 +5,7 @@ import { useNotification } from "../../common/hooks/useNotification";
 import CustomDialogModal from "../../common/common_view_components/custom_dialog_model";
 import TourRepository from "../repository/tour_repository";
 import ToursAddEditForm from "../view/tour_add_edit_form";
-import ToursView from '../view/tours_view'
+import ToursView from "../view/tours_view";
 const ToursController = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [openedView, setOpenedView] = useState(false);
@@ -108,14 +108,14 @@ const ToursController = () => {
       !formData.destinationId ||
       !formData.travelThemeId ||
       !formData.title ||
-      !formData.duration  ||
+      !formData.duration ||
       !formData.overview ||
-      !formData.packageInclusions  ||
-      !formData.itinerary  ||
-      !formData.inclusions  ||
-      !formData.exclusions  ||
-      !formData.hotels||
-      !formData.packageRate||
+      !formData.packageInclusions ||
+      !formData.itinerary ||
+      !formData.inclusions ||
+      !formData.exclusions ||
+      !formData.hotels ||
+      !formData.packageRate ||
       (!formData.discount && !isEditTour)
     ) {
       notify({
@@ -140,7 +140,7 @@ const ToursController = () => {
     fD.append("exclusions", formData.exclusions);
     fD.append("hotels", formData.hotels);
     fD.append("packageRate", formData.packageRate);
-    fD.append("discount", formData.discount );
+    fD.append("discount", formData.discount);
     try {
       let responseMessage;
       let response;
@@ -161,8 +161,8 @@ const ToursController = () => {
                   inclusions: formData.inclusions,
                   exclusions: formData.exclusions,
                   hotels: formData.hotels,
-                  packageRate: formData.packageRate ,
-                  discount : formData.discount,
+                  packageRate: formData.packageRate,
+                  discount: formData.discount,
                   image: image || item.image,
                 }
               : item
@@ -235,7 +235,7 @@ const ToursController = () => {
         tour={tour}
         destinationList={destinationList}
       />
-      <ToursAddEditForm 
+      <ToursAddEditForm
         opened={modalOpen}
         onClose={() => {
           setIsEditTour(false);
