@@ -12,13 +12,13 @@ import TravelThemes from "../../common/common_view_components/travelThemes";
 import PackageRate from "../../common/common_view_components/packageRate";
 import PackageInclusions from "../../common/common_view_components/packageInclusions";
 
-const TrekkingsAddEditForm = ({
+const AdventuresAddEditForm = ({
   opened,
   onClose,
-  isEditTrekking,
+  isEditAdventure,
   handleSubmit,
   handleImageSelect,
-  trekking,
+  adventure,
 }) => {
   const [formData, setFormData] = useState({
     destinationId: "",
@@ -36,26 +36,25 @@ const TrekkingsAddEditForm = ({
     image: null,
   });
 
-
   useEffect(() => {
-    if (isEditTrekking && opened) {
+    if (isEditAdventure && opened) {
       setFormData({
-        destinationId: trekking.destinationId || "",
-        travelThemeId: trekking.travelThemeId || "",
-        title: trekking.title || "",
-        duration: trekking.duration || "",
-        overview: trekking.overview || "",
-        packageInclusions: trekking.packageInclusions || "",
-        itinerary: trekking.itinerary,
-        inclusions: trekking.inclusions || "",
-        exclusions: trekking.exclusions || "",
-        hotels: trekking.hotels || "",
-        packageRate: trekking.packageRate || "",
-        discount: trekking.discount || "",
-        image: trekking.image || null,
+        destinationId: adventure.destinationId || "",
+        travelThemeId: adventure.travelThemeId || "",
+        title: adventure.title || "",
+        duration: adventure.duration || "",
+        overview: adventure.overview || "",
+        packageInclusions: adventure.packageInclusions || "",
+        itinerary: adventure.itinerary,
+        inclusions: adventure.inclusions || "",
+        exclusions: adventure.exclusions || "",
+        hotels: adventure.hotels || "",
+        packageRate: adventure.packageRate || "",
+        discount: adventure.discount || "",
+        image: adventure.image || null,
       });
     } else {
-      // Clear form for new trekking package
+      // Clear form for new tour package
       setFormData({
         destinationId: [],
         travelThemeId: [],
@@ -72,7 +71,7 @@ const TrekkingsAddEditForm = ({
         image: null,
       });
     }
-  }, [isEditTrekking, opened]);
+  }, [isEditAdventure, opened]);
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -80,92 +79,92 @@ const TrekkingsAddEditForm = ({
     <>
       <div className="text-[15px] pl-2">
         <Title mt={20} mb={10} ta="center" c="dark">
-          Trekking Packages
+          Adventure Packages
         </Title>
         <div className="space-y-6">
-        {/* Destinations */}
-        <Destinations value={formData.destinationId} onChange={handleChange} />
-        {/* Travel Themes */}
-        <TravelThemes value={formData.travelThemeId} onChange={handleChange} />
+          {/* Destinations */}
+          <Destinations
+            value={formData.destinationId}
+            onChange={handleChange}
+          />
+          {/* Travel Themes */}
+          <TravelThemes
+            value={formData.travelThemeId}
+            onChange={handleChange}
+          />
 
-        {/* Title & Duration */}
-        <TitleDuration
-          titleName="title"
-          durationName="duration"
-          titleValue={formData.title}
-          durationValue={formData.duration}
-          onChange={handleChange}
-        />
+          {/* Title & Duration */}
+          <TitleDuration
+            titleName="title"
+            durationName="duration"
+            titleValue={formData.title}
+            durationValue={formData.duration}
+            onChange={handleChange}
+          />
 
-        {/* Overview */}
+          {/* Overview */}
 
-        <Overview
-          name="overview"
-          value={formData.overview}
-          onChange={handleChange}
-        />
+          <Overview
+            name="overview"
+            value={formData.overview}
+            onChange={handleChange}
+          />
 
-        {/* Package inclusion */}
-        <PackageInclusions
-          name="packageInclusions"
-          value={formData.packageInclusions}
-          onChange={handleChange}
-        />
-        {/* Itinerary */}
+          {/* Package inclusion */}
+          <PackageInclusions
+            name="packageInclusions"
+            value={formData.packageInclusions}
+            onChange={handleChange}
+          />
+          {/* Itinerary */}
 
-        <Itinerary
+          <Itinerary
             name="itinerary"
             value={formData.itinerary}
             onChange={handleChange}
           />
 
-        {/* Package Rate */}
-        <PackageRate 
-        name="packageRate" 
-        onChange={handleChange}
-         />
+          {/* Package Rate */}
+          <PackageRate name="packageRate" onChange={handleChange} />
 
-        {/* Inclusions  */}
+          {/* Inclusions  */}
 
-        <Inclusions
+          <Inclusions
             name="inclusions"
             value={formData.inclusions}
             onChange={handleChange}
           />
 
-        {/* Exclusions  */}
+          {/* Exclusions  */}
 
-        <Exclusions
+          <Exclusions
             name="exclusions"
             value={formData.exclusions}
             onChange={handleChange}
           />
 
-        {/* Hotels */}
+          {/* Hotels */}
 
-        <Hotels 
-        name="hotels" 
-        onChange={handleChange} />
+          <Hotels name="hotels" onChange={handleChange} />
 
-        {/*  Image & Discount  */}
-        <ImageDiscount
+          {/*  Image & Discount  */}
+          <ImageDiscount
             imageName="image"
             discountName="discount"
             discountValue={formData.discount}
             onChange={handleChange}
           />
-      </div>
-      <div className="flex items-center justify-end pr-10 pb-4 gap-4">
-        <Button variant="default"  onClick={() => window.history.back()}>
-          {" "}
-         
-          Cancel
-        </Button>
-        <Button onClick={() => handleSubmit(formData)}>Submit</Button>{" "}
-      </div>
+        </div>
+        <div className="flex items-center justify-end pr-10 pb-4 gap-4">
+          <Button variant="default" onClick={() => window.history.back()}>
+            {" "}
+            Cancel
+          </Button>
+          <Button onClick={() => handleSubmit(formData)}>Submit</Button>{" "}
+        </div>
       </div>
     </>
   );
 };
 
-export default TrekkingsAddEditForm;
+export default AdventuresAddEditForm;

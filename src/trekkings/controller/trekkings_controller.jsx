@@ -3,32 +3,33 @@ import useAuth from "../../auth/components/use_auth";
 import useLoadingOverlay from "../../common/hooks/useLoadingOverlay";
 import { useNotification } from "../../common/hooks/useNotification";
 import CustomDialogModal from "../../common/common_view_components/custom_dialog_model";
-import TourRepository from "../repository/tour_repository";
-import ToursAddEditForm from "../view/tours_add_edit_form";
-import ToursView from '../view/tours_view'
+import TourRepository from "../repository/trekking_repository";
+import TrekkingsView from "../view/trekkings_view";
+import TrekkingsAddEditForm from "../view/trekking_add_edit_form";
+import TrekkingRepository from "../repository/trekking_repository";
 const TrekkingsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [openedView, setOpenedView] = useState(false);
-  const [tourList, setTourList] = useState([]);
-  const [tour, setTour] = useState({});
+  const [trekkingList, setTrekkingList] = useState([]);
+  const [trekking, setTrekking] = useState({});
   const { getToken } = useAuth();
   const [image, setImage] = useState(null);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
-  const [isEditTour, setIsEditTour] = useState(false);
-  const [isDeleteTour, setIsDeleteTour] = useState(false);
+  const [isEditTrekking, setIsEditTrekking] = useState(false);
+  const [isDeleteTrekking, setIsDeleteTrekking] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
   const [idToUpdate, setIdToUpdate] = useState(null);
 
-  const tourRepository = new TourRepository(getToken);
+  const trekkingRepository = new TrekkingRepository(getToken);
 
   useEffect(() => {
     const fetchTours = async () => {
       try {
         showLoading();
-        const tourResponse = await tourRepository.getTourPackages();
-        setTourList(tourResponse.data || []);
+        const trekkingResponse = await trekkingRepository.getTrekkingPackages();
+        setTrekkingList(trekkingResponse.data || []);
       } catch (err) {
         notify({
           type: "error",
@@ -62,39 +63,39 @@ const TrekkingsController = () => {
 
   const handleClick = () => {
     setModalOpen(true);
-    setTour({});
+    setTrekking({});
     setImage(null);
   };
 
   const handleEditButtonClick = (item) => {
-    setIsEditTour(true);
-    setTour(item);
+    setIsEditTrekking(true);
+    setTrekking(item);
     setModalOpen(true);
     setIdToUpdate(item?._id);
     setImage(null);
   };
 
   const onDeleteButtonClick = (item) => {
-    setIsDeleteTour(true);
+    setIsDeleteTrekking(true);
     setIdToDelete(item?._id);
   };
 
   const handleDeleteButtonClick = async () => {
-    const previousList = tourList;
-    setTourList((prev) => prev.filter((p) => p._id !== idToDelete));
+    const previousList = trekkingList;
+    setTrekkingList((prev) => prev.filter((p) => p._id !== idToDelete));
     try {
       showLoading();
-      await tourRepository.deleteTour(idToDelete);
-      notify({ type: "success", message: "Tour deleted successfully." });
+      await trekkingRepository.deleteTrekking(idToDelete);
+      notify({ type: "success", message: "Trekking deleted successfully." });
     } catch (err) {
-      setTourList(previousList);
+      setTrekkingList(previousList);
       notify({
         type: "error",
-        message: err.message ?? "Failed to delete travel theme.",
+        message: err.message ?? "Failed to delete trekking package.",
       });
     } finally {
       hideLoading();
-      setIsDeleteTour(false);
+      setIsDeleteTrekking(false);
       setIdToDelete(null);
     }
   };
@@ -144,9 +145,9 @@ const TrekkingsController = () => {
     try {
       let responseMessage;
       let response;
-      if (isEditTour) {
-        response = await tourRepository.updateHotel(fD, idToUpdate);
-        setTourList((prev) =>
+      if (isEditTrekking) {
+        response = await trekkingRepository.updateTrekkingPackage(fD, idToUpdate);
+        setTrekkingList((prev) =>
           prev.map((item) =>
             item._id === idToUpdate
               ? {
@@ -169,14 +170,14 @@ const TrekkingsController = () => {
           )
         );
       } else {
-        response = await tourRepository.createTourPackage(fD);
-        setTourList((prev) => [...prev, response.data]);
+        response = await trekkingRepository.createTrekkingPackage(fD);
+        setTrekkingList((prev) => [...prev, response.data]);
       }
       responseMessage = response.message;
       setModalOpen(false);
       setImage(null);
-      setIsEditTour(false);
-      setTour({});
+      setIsEditTrekking(false);
+      setTrekking({});
       notify({
         type: "success",
         message: responseMessage,
@@ -193,7 +194,7 @@ const TrekkingsController = () => {
 
   const handleViewButtonClick = (item) => {
     setOpenedView(true);
-    setTour(item);
+    setTrekking(item);
   };
 
   const columns = [
@@ -213,41 +214,41 @@ const TrekkingsController = () => {
   ];
   return (
     <>
-      <ToursView
+      <TrekkingsView
         opened={modalOpen}
         onClose={() => {
           setModalOpen(false);
-          setIsEditTour(false);
+          setIsEditTrekking(false);
           setTour({});
           // setImage(null);
         }}
         columns={columns}
-        tours={tourList}
+        trekkings={trekkingList}
         handleClick={handleClick}
         onEditButtonClick={handleEditButtonClick}
         onDeleteButtonClick={onDeleteButtonClick}
         onViewButtonClick={handleViewButtonClick}
-        destinationList={destinationList}
+        // destinationList={destinationList}
       />
-      <TourViewModel
+      {/* <TourViewModel
         openedView={openedView}
         onClose={() => setOpenedView(false)}
         tour={tour}
         destinationList={destinationList}
-      />
-      <ToursAddEditForm 
+      /> */}
+      <TrekkingsAddEditForm 
         opened={modalOpen}
         onClose={() => {
-          setIsEditTour(false);
+          setIsEditTrekking(false);
           setModalOpen(false);
-          setTour({});
+          setTrekking({});
           setImage(null);
         }}
         handleSubmit={handleSubmit}
         handleImageSelect={handleImageSelect}
-        isEditTour={isEditTour}
-        tour={tour}
-        destinationList={destinationList}
+        isEditTrekking={isEditTrekking}
+        trekking={trekking}
+        // destinationList={destinationList}
       />
       <CustomDialogModal
         opened={isDeleteTour}

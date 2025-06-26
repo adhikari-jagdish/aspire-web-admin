@@ -3,32 +3,32 @@ import useAuth from "../../auth/components/use_auth";
 import useLoadingOverlay from "../../common/hooks/useLoadingOverlay";
 import { useNotification } from "../../common/hooks/useNotification";
 import CustomDialogModal from "../../common/common_view_components/custom_dialog_model";
-import TourRepository from "../repository/tour_repository";
-import ToursAddEditForm from "../view/tour_add_edit_form";
-import ToursView from "../view/tours_view";
-const ToursController = () => {
+import PeakClimbingRepository from "../repository/peakClimbing_repository";
+import PeakClimbingsView from "../view/peakClimbings_view";
+import PeakClimbingsAddEditForm from "../view/peakClimbing_add_edit_form";
+const PeakClimbingsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [openedView, setOpenedView] = useState(false);
-  const [tourList, setTourList] = useState([]);
-  const [tour, setTour] = useState({});
+  const [peakClimbingList, setPeakClimbingList] = useState([]);
+  const [peakClimbing, setPeakClimbing] = useState({});
   const { getToken } = useAuth();
   const [image, setImage] = useState(null);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
-  const [isEditTour, setIsEditTour] = useState(false);
-  const [isDeleteTour, setIsDeleteTour] = useState(false);
+  const [isEditPeakClimbing, setIsEditPeakClimbing] = useState(false);
+  const [isDeletePeakClimbing, setIsDeletePeakClimbing] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
   const [idToUpdate, setIdToUpdate] = useState(null);
 
-  const tourRepository = new TourRepository(getToken);
+  const peakClimbingRepository = new PeakClimbingRepository(getToken);
 
   useEffect(() => {
-    const fetchTours = async () => {
+    const fetchPeakClimbings = async () => {
       try {
         showLoading();
-        const tourResponse = await tourRepository.getTourPackages();
-        setTourList(tourResponse.data || []);
+        const peakClimbingResponse = await peakClimbingRepository.getPeakClimbingPackages();
+        setPeakClimbingList(peakClimbingResponse.data || []);
       } catch (err) {
         notify({
           type: "error",
@@ -38,7 +38,7 @@ const ToursController = () => {
         hideLoading();
       }
     };
-    fetchTours();
+    fetchPeakClimbings();
   }, []);
 
   // const [destinationList, setDestinationList] = useState([]);
@@ -62,39 +62,39 @@ const ToursController = () => {
 
   const handleClick = () => {
     setModalOpen(true);
-    setTour({});
+    setPeakClimbing({});
     setImage(null);
   };
 
   const handleEditButtonClick = (item) => {
-    setIsEditTour(true);
-    setTour(item);
+    setIsEditPeakClimbing(true);
+    setPeakClimbing(item);
     setModalOpen(true);
     setIdToUpdate(item?._id);
     setImage(null);
   };
 
   const onDeleteButtonClick = (item) => {
-    setIsDeleteTour(true);
+    setIsDeletePeakClimbing(true);
     setIdToDelete(item?._id);
   };
 
   const handleDeleteButtonClick = async () => {
-    const previousList = tourList;
-    setTourList((prev) => prev.filter((p) => p._id !== idToDelete));
+    const previousList = peakClimbingList;
+    setPeakClimbingList((prev) => prev.filter((p) => p._id !== idToDelete));
     try {
       showLoading();
-      await tourRepository.deleteTour(idToDelete);
-      notify({ type: "success", message: "Tour deleted successfully." });
+      await PeakClimbingRepository.deletePeakClimbingPackage(idToDelete);
+      notify({ type: "success", message: "Peak Climbing deleted successfully." });
     } catch (err) {
-      setTourList(previousList);
+      setPeakClimbingList(previousList);
       notify({
         type: "error",
-        message: err.message ?? "Failed to delete travel theme.",
+        message: err.message ?? "Failed to delete Peak Climbing package.",
       });
     } finally {
       hideLoading();
-      setIsDeleteTour(false);
+      setIsDeletePeakClimbing(false);
       setIdToDelete(null);
     }
   };
@@ -144,9 +144,9 @@ const ToursController = () => {
     try {
       let responseMessage;
       let response;
-      if (isEditTour) {
-        response = await tourRepository.updateHotel(fD, idToUpdate);
-        setTourList((prev) =>
+      if (isEditPeakClimbing) {
+        response = await PeakClimbingRepository.updatePeakClimbingPackage(fD, idToUpdate);
+        setPeakClimbingList((prev) =>
           prev.map((item) =>
             item._id === idToUpdate
               ? {
@@ -169,14 +169,14 @@ const ToursController = () => {
           )
         );
       } else {
-        response = await tourRepository.createTourPackage(fD);
-        setTourList((prev) => [...prev, response.data]);
+        response = await PeakClimbingRepository.createPeakClimbingPackage(fD);
+        setPeakClimbingList((prev) => [...prev, response.data]);
       }
       responseMessage = response.message;
       setModalOpen(false);
       setImage(null);
-      setIsEditTour(false);
-      setTour({});
+      setIsEditPeakClimbing(false);
+      setPeakClimbing({});
       notify({
         type: "success",
         message: responseMessage,
@@ -193,7 +193,7 @@ const ToursController = () => {
 
   const handleViewButtonClick = (item) => {
     setOpenedView(true);
-    setTour(item);
+    setPeakClimbing(item);
   };
 
   const columns = [
@@ -213,45 +213,45 @@ const ToursController = () => {
   ];
   return (
     <>
-      <ToursView
+      <PeakClimbingsView
         opened={modalOpen}
         onClose={() => {
           setModalOpen(false);
-          setIsEditTour(false);
-          setTour({});
+          setIsEditPeakClimbing(false);
+          setPeakClimbing({});
           // setImage(null);
         }}
         columns={columns}
-        tours={tourList}
+        peakClimbings={peakClimbingList}
         handleClick={handleClick}
         onEditButtonClick={handleEditButtonClick}
         onDeleteButtonClick={onDeleteButtonClick}
         onViewButtonClick={handleViewButtonClick}
         // destinationList={destinationList}
       />
-      <TourViewModel
+      {/* <peakClimbingViewModel
         openedView={openedView}
         onClose={() => setOpenedView(false)}
         tour={tour}
         destinationList={destinationList}
-      />
-      <ToursAddEditForm
+      /> */}
+      <PeakClimbingsAddEditForm
         opened={modalOpen}
         onClose={() => {
-          setIsEditTour(false);
+          setIsEditPeakClimbing(false);
           setModalOpen(false);
-          setTour({});
+          setPeakClimbing({});
           setImage(null);
         }}
         handleSubmit={handleSubmit}
         handleImageSelect={handleImageSelect}
-        isEditTour={isEditTour}
-        tour={tour}
+        isEditPeakClimbing={isEditPeakClimbing}
+        peakClimbing={peakClimbing}
         // destinationList={destinationList}
       />
       <CustomDialogModal
-        opened={isDeleteTour}
-        onClose={() => setIsDeleteTour(false)}
+        opened={isDeletePeakClimbing}
+        onClose={() => setIsDeletePeakClimbing(false)}
         title="Alert!!"
         message="Are you sure you want to delete?"
         onConfirm={handleDeleteButtonClick}
@@ -261,4 +261,4 @@ const ToursController = () => {
   );
 };
 
-export default ToursController;
+export default PeakClimbingsController;

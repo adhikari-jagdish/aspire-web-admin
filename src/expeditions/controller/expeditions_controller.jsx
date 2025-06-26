@@ -6,29 +6,32 @@ import CustomDialogModal from "../../common/common_view_components/custom_dialog
 import TourRepository from "../repository/tour_repository";
 import ToursAddEditForm from "../view/tour_add_edit_form";
 import ToursView from "../view/tours_view";
-const ToursController = () => {
+import ExpeditionRepository from "../repository/expedition_repository";
+import ExpeditionsView from "../view/expeditions_view";
+import ExpeditionsAddEditForm from "../view/expedition_add_edit_form";
+const ExpeditionsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [openedView, setOpenedView] = useState(false);
-  const [tourList, setTourList] = useState([]);
-  const [tour, setTour] = useState({});
+  const [expeditionList, setExpeditionList] = useState([]);
+  const [expedition, setExpedition] = useState({});
   const { getToken } = useAuth();
   const [image, setImage] = useState(null);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
-  const [isEditTour, setIsEditTour] = useState(false);
-  const [isDeleteTour, setIsDeleteTour] = useState(false);
+  const [isEditExpedition, setIsEditExpedition] = useState(false);
+  const [isDeleteExpedition, setIsDeleteExpedition] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
   const [idToUpdate, setIdToUpdate] = useState(null);
 
-  const tourRepository = new TourRepository(getToken);
+  const expeditionRepository = new ExpeditionRepository(getToken);
 
   useEffect(() => {
-    const fetchTours = async () => {
+    const fetchExpeditions = async () => {
       try {
         showLoading();
-        const tourResponse = await tourRepository.getTourPackages();
-        setTourList(tourResponse.data || []);
+        const expeditionResponse = await expeditionRepository.getExpeditionPackages();
+        setExpeditionList(expeditionResponse.data || []);
       } catch (err) {
         notify({
           type: "error",
@@ -38,7 +41,7 @@ const ToursController = () => {
         hideLoading();
       }
     };
-    fetchTours();
+    fetchExpeditions();
   }, []);
 
   // const [destinationList, setDestinationList] = useState([]);
@@ -62,39 +65,39 @@ const ToursController = () => {
 
   const handleClick = () => {
     setModalOpen(true);
-    setTour({});
+    setExpedition({});
     setImage(null);
   };
 
   const handleEditButtonClick = (item) => {
-    setIsEditTour(true);
-    setTour(item);
+    setIsEditExpedition(true);
+    setExpedition(item);
     setModalOpen(true);
     setIdToUpdate(item?._id);
     setImage(null);
   };
 
   const onDeleteButtonClick = (item) => {
-    setIsDeleteTour(true);
+    setIsDeleteExpedition(true);
     setIdToDelete(item?._id);
   };
 
   const handleDeleteButtonClick = async () => {
-    const previousList = tourList;
-    setTourList((prev) => prev.filter((p) => p._id !== idToDelete));
+    const previousList = expeditionList;
+    setExpeditionList((prev) => prev.filter((p) => p._id !== idToDelete));
     try {
       showLoading();
-      await tourRepository.deleteTour(idToDelete);
-      notify({ type: "success", message: "Tour deleted successfully." });
+      await expeditionRepository.deleteExpeditionPackage(idToDelete);
+      notify({ type: "success", message: "Expedition deleted successfully." });
     } catch (err) {
-      setTourList(previousList);
+      setExpeditionList(previousList);
       notify({
         type: "error",
-        message: err.message ?? "Failed to delete travel theme.",
+        message: err.message ?? "Failed to delete Expedition package.",
       });
     } finally {
       hideLoading();
-      setIsDeleteTour(false);
+      setIsDeleteExpedition(false);
       setIdToDelete(null);
     }
   };
@@ -144,9 +147,9 @@ const ToursController = () => {
     try {
       let responseMessage;
       let response;
-      if (isEditTour) {
-        response = await tourRepository.updateHotel(fD, idToUpdate);
-        setTourList((prev) =>
+      if (isEditExpedition) {
+        response = await expeditionRepository.updateExpeditionPackage(fD, idToUpdate);
+        setExpeditionList((prev) =>
           prev.map((item) =>
             item._id === idToUpdate
               ? {
@@ -169,14 +172,14 @@ const ToursController = () => {
           )
         );
       } else {
-        response = await tourRepository.createTourPackage(fD);
-        setTourList((prev) => [...prev, response.data]);
+        response = await expeditionRepository.createExpeditionPackage(fD);
+        setExpeditionList((prev) => [...prev, response.data]);
       }
       responseMessage = response.message;
       setModalOpen(false);
       setImage(null);
-      setIsEditTour(false);
-      setTour({});
+      setIsEditExpedition(false);
+      setExpedition({});
       notify({
         type: "success",
         message: responseMessage,
@@ -193,7 +196,7 @@ const ToursController = () => {
 
   const handleViewButtonClick = (item) => {
     setOpenedView(true);
-    setTour(item);
+    setExpedition(item);
   };
 
   const columns = [
@@ -213,45 +216,45 @@ const ToursController = () => {
   ];
   return (
     <>
-      <ToursView
+      <ExpeditionsView
         opened={modalOpen}
         onClose={() => {
           setModalOpen(false);
-          setIsEditTour(false);
-          setTour({});
+          setIsEditExpedition(false);
+          setExpedition({});
           // setImage(null);
         }}
         columns={columns}
-        tours={tourList}
+        expeditions={expeditionList}
         handleClick={handleClick}
         onEditButtonClick={handleEditButtonClick}
         onDeleteButtonClick={onDeleteButtonClick}
         onViewButtonClick={handleViewButtonClick}
         // destinationList={destinationList}
       />
-      <TourViewModel
+      {/* <ExpeditionViewModel
         openedView={openedView}
         onClose={() => setOpenedView(false)}
         tour={tour}
         destinationList={destinationList}
-      />
-      <ToursAddEditForm
+      /> */}
+      <ExpeditionsAddEditForm
         opened={modalOpen}
         onClose={() => {
-          setIsEditTour(false);
+          setIsEditExpedition(false);
           setModalOpen(false);
-          setTour({});
+          setExpedition({});
           setImage(null);
         }}
         handleSubmit={handleSubmit}
         handleImageSelect={handleImageSelect}
-        isEditTour={isEditTour}
-        tour={tour}
+        isEditExpedition={isEditExpedition}
+        expedition={expedition}
         // destinationList={destinationList}
       />
       <CustomDialogModal
-        opened={isDeleteTour}
-        onClose={() => setIsDeleteTour(false)}
+        opened={isDeleteExpedition}
+        onClose={() => setIsDeleteExpedition(false)}
         title="Alert!!"
         message="Are you sure you want to delete?"
         onConfirm={handleDeleteButtonClick}
@@ -261,4 +264,4 @@ const ToursController = () => {
   );
 };
 
-export default ToursController;
+export default ExpeditionsController;

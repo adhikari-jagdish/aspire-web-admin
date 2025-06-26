@@ -6,7 +6,7 @@ import Strike from "@tiptap/extension-strike";
 import { Title } from "@mantine/core";
 import { useEffect } from "react";
 
-const Overview = ({ name, value, onChange }) => {
+const Overview = ({parent, name, value, onChange }) => {
   //Overview editor
   const overviewEditor = useEditor({
     extensions: [StarterKit, Underline, Strike],
@@ -32,7 +32,7 @@ const Overview = ({ name, value, onChange }) => {
 
   return (
     <div className="w-[1030px]">
-      <Title
+      {(parent !== 'about' || parent !== 'contact') && <Title
         order={4}
         mt={20}
         mb={10}
@@ -42,7 +42,7 @@ const Overview = ({ name, value, onChange }) => {
       >
         Overview
         <span className=" border border-b-1 w-[80px]"></span>
-      </Title>
+      </Title>}
 
       <RichTextEditor
         editor={overviewEditor}

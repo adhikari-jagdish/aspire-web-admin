@@ -1,16 +1,20 @@
 import { Title } from "@mantine/core";
-import { IconPlus } from "@tabler/icons-react";
-import { useNavigate } from "react-router-dom";
 import CustomTable from "../../common/common_view_components/custom_table";
+import { IconPlus } from "@tabler/icons-react";
+import Overview from "../../common/common_view_components/overview";
 
-const TrekkingsView = ({columns, shouldShowDelete, shouldShowEdit,  onEditButtonClick,onDeleteButtonClick, onViewButtonClick}) => {
-
-
-  const nav = useNavigate();
+const ContactView = ({
+  columns,
+  destinations,
+  handleClick,
+  onEditButtonClick,
+  onDeleteButtonClick,
+  onViewButtonClick
+}) => {
   return (
     <>
       <button
-        onClick={() => nav('/trekkings/addTrekkingPackage')}
+        onClick={handleClick}
         className="fixed bottom-15 right-6 bg-blue-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-blue-800 hover:cursor-pointer transition-colors duration-200 z-50 duration-200 z-50"
         aria-label="Add new item"
       >
@@ -18,21 +22,21 @@ const TrekkingsView = ({columns, shouldShowDelete, shouldShowEdit,  onEditButton
       </button>
       <div style={{ padding: "16px" }}>
         <Title order={3} mt={20} mb={10} ta="left" c="dark">
-          Trekkings
+          Contact
         </Title>
-        <CustomTable
+        {/* <CustomTable
           columns={columns}
-          // data={destinations}
+          data={destinations}
           shouldShowDelete={true}
           shouldShowEdit={true}
           onEdit={(item) => onEditButtonClick(item)}
           onDelete={(item) => onDeleteButtonClick(item)}
           onView={item => onViewButtonClick(item)}
-        />
-
+        /> */}
+        <Overview parent="about"/>
       </div>
     </>
   );
 };
 
-export default TrekkingsView;
+export default ContactView;
