@@ -1,4 +1,4 @@
-import { Button, Title } from "@mantine/core";
+import { Button, Title, Modal, Group } from "@mantine/core";
 import TitleDuration from "../../common/common_view_components/title-Duration";
 import Overview from "../../common/common_view_components/overview";
 import Itinerary from "../../common/common_view_components/itinerary";
@@ -12,89 +12,123 @@ import TravelThemes from "../../common/common_view_components/travelThemes";
 import PackageRate from "../../common/common_view_components/packageRate";
 import PackageInclusions from "../../common/common_view_components/packageInclusions";
 
+// Define initial form state for type safety and consistency
+const initialFormState = {
+  destinationId: "",
+  travelThemeId: "",
+  title: "",
+  duration: "",
+  overview: "",
+  packageInclusions: "",
+  itinerary: [],
+  inclusions: [],
+  exclusions: [],
+  hotels: [],
+  packageRate: "",
+  discount: "",
+  image: null,
+};
+
 const ToursAddEditForm = ({
-  opened,
+  onOpen,
   onClose,
   isEditTour,
   handleSubmit,
   handleImageSelect,
-  tour,
-  test,
+  tour = {},
+  idToUpdate,
 }) => {
-  const [formData, setFormData] = useState({
-    destinationId: "",
-    travelThemeId: "",
-    title: "",
-    duration: 0,
-    overview: "",
-    packageInclusions: "",
-    itinerary: [],
-    inclusions: [],
-    exclusions: [],
-    hotels: [],
-    packageRate: 0,
-    discount: 0,
-    image: null,
-  });
+  const [formData, setFormData] = useState(initialFormState);
 
+  // Debug prop passing
   useEffect(() => {
-    if (isEditTour && opened) {
+    console.log("ToursAddEditForm props:", {
+      handleSubmit,
+      type: typeof handleSubmit,
+      isEditTour,
+      idToUpdate,
+      tour,
+    });
+  }, [handleSubmit, isEditTour, idToUpdate, tour]);
+
+  // Initialize form data
+  useEffect(() => {
+    if (isEditTour && opened && tour) {
       setFormData({
         destinationId: tour.destinationId || "",
         travelThemeId: tour.travelThemeId || "",
         title: tour.title || "",
-        duration: tour.duration || "",
+        duration: String(tour.duration || ""),
         overview: tour.overview || "",
         packageInclusions: tour.packageInclusions || "",
-        itinerary: tour.itinerary,
-        inclusions: tour.inclusions || "",
-        exclusions: tour.exclusions || "",
-        hotels: tour.hotels || "",
-        packageRate: tour.packageRate || "",
-        discount: tour.discount || "",
+        itinerary: Array.isArray(tour.itinerary) ? tour.itinerary : [],
+        inclusions: Array.isArray(tour.inclusions) ? tour.inclusions : [],
+        exclusions: Array.isArray(tour.exclusions) ? tour.exclusions : [],
+        hotels: Array.isArray(tour.hotels) ? tour.hotels : [],
+        packageRate: String(tour.packageRate || ""),
+        discount: String(tour.discount ?? ""),
         image: tour.image || null,
       });
     } else {
-      // Clear form for new tour package
-      setFormData({
-        destinationId: [],
-        travelThemeId: [],
-        title: "",
-        duration: "",
-        overview: "",
-        packageInclusions: "",
-        itinerary: [],
-        inclusions: [],
-        exclusions: [],
-        hotels: [],
-        packageRate: "",
-        discount: "",
-        image: null,
-      });
+      setFormData(initialFormState);
     }
-  }, [isEditTour, opened]);
+  }, [isEditTour, opened, tour]);
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
+
+  const onImageChange = (image) => {
+    setFormData((prev) => ({ ...prev, image }));
+    if (handleImageSelect) {
+      handleImageSelect(image);
+    }
+  };
+
+  const onSubmit = () => {
+    if (typeof handleSubmit !== "function") {
+      console.error("handleSubmit is not a function:", handleSubmit);
+      return;
+    }
+    console.log("Submitting form with:", {
+      formData,
+      image: formData.image,
+      isEditTour,
+      idToUpdate,
+    });
+    handleSubmit(formData, formData.image, isEditTour, idToUpdate);
+  };
+
   return (
-    <>
-      <div className="text-[15px] pl-2">
-        <Title mt={20} mb={10} ta="center" c="dark">
+    <Modal
+      opened={onOpen}
+      onClose={onClose}
+      title={
+        <Title order={2} ta="center" c="dark">
           Tour Packages
         </Title>
+      }
+      size="lg"
+      centered
+      padding="lg"
+      radius="md"
+    >
+      <div className="text-[15px]">
         <div className="space-y-6">
-          {/* Destinations */}
           <Destinations
+            name="destinationId"
             value={formData.destinationId}
             onChange={handleChange}
           />
-          {/* Travel Themes */}
           <TravelThemes
+            name="travelThemeId"
             value={formData.travelThemeId}
             onChange={handleChange}
           />
-
-          {/* Title & Duration */}
           <TitleDuration
             titleName="title"
             durationName="duration"
@@ -102,69 +136,65 @@ const ToursAddEditForm = ({
             durationValue={formData.duration}
             onChange={handleChange}
           />
-
-          {/* Overview */}
-
           <Overview
             name="overview"
             value={formData.overview}
             onChange={handleChange}
           />
-
-          {/* Package inclusion */}
           <PackageInclusions
             name="packageInclusions"
             value={formData.packageInclusions}
             onChange={handleChange}
           />
-          {/* Itinerary */}
-
           <Itinerary
             name="itinerary"
             value={formData.itinerary}
+            onChange={(value) =>
+              setFormData((prev) => ({ ...prev, itinerary: value }))
+            }
+          />
+          <PackageRate
+            name="packageRate"
+            value={formData.packageRate}
             onChange={handleChange}
           />
-
-          {/* Package Rate */}
-          <PackageRate name="packageRate" onChange={handleChange} />
-
-          {/* Inclusions  */}
-
           <Inclusions
             name="inclusions"
             value={formData.inclusions}
-            onChange={handleChange}
+            onChange={(value) =>
+              setFormData((prev) => ({ ...prev, inclusions: value }))
+            }
           />
-
-          {/* Exclusions  */}
-
           <Exclusions
             name="exclusions"
             value={formData.exclusions}
-            onChange={handleChange}
+            onChange={(value) =>
+              setFormData((prev) => ({ ...prev, exclusions: value }))
+            }
           />
-
-          {/* Hotels */}
-
-          <Hotels name="hotels" onChange={handleChange} />
-
-          {/*  Image & Discount  */}
+          <Hotels
+            name="hotels"
+            value={formData.hotels}
+            onChange={(value) =>
+              setFormData((prev) => ({ ...prev, hotels: value }))
+            }
+          />
           <ImageDiscount
             imageName="image"
             discountName="discount"
             discountValue={formData.discount}
             onChange={handleChange}
+            onImageChange={onImageChange}
           />
         </div>
-        <div className="flex items-center justify-end pr-10 pb-4 gap-4">
-          <Button variant="default" onClick={() => window.history.back()}>
-            {" "}
+        <Group position="right" mt="md" pr={10} pb={4} spacing="sm">
+          <Button variant="default" onClick={onClose}>
             Cancel
           </Button>
-          <Button onClick={() => handleSubmit(formData)}>Submit</Button>{" "}
-        </div>
+          <Button onClick={onSubmit}>Submit</Button>
+        </Group>
       </div>
-    </>
+    </Modal>
   );
 };
 

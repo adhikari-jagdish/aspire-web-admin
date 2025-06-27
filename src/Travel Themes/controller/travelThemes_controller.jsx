@@ -16,7 +16,8 @@ const TravelThemesController = () => {
   const { getToken } = useAuth();
   const [image, setImage] = useState(null);
   const notify = useNotification();
-  const { showLoading, hideLoading, LoadingOverlayComponent } = useLoadingOverlay();
+  const { showLoading, hideLoading, LoadingOverlayComponent } =
+    useLoadingOverlay();
   const [isEditTravelTheme, setIsEditTravelTheme] = useState(false);
   const [isDeleteTravelTheme, setIsDeleteTravelTheme] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
@@ -28,7 +29,8 @@ const TravelThemesController = () => {
     const fetchTravelThemes = async () => {
       try {
         showLoading();
-        const travelThemesResponse = await travelThemeRepository.getTravelThemes();
+        const travelThemesResponse =
+          await travelThemeRepository.getTravelThemes();
         setTravelThemeList(travelThemesResponse.data || []);
       } catch (err) {
         notify({
@@ -67,7 +69,10 @@ const TravelThemesController = () => {
     try {
       showLoading();
       await travelThemeRepository.deleteTravelTheme(idToDelete);
-      notify({ type: "success", message: "Travel theme deleted successfully." });
+      notify({
+        type: "success",
+        message: "Travel theme deleted successfully.",
+      });
     } catch (err) {
       setTravelThemeList(previousList);
       notify({
@@ -103,7 +108,10 @@ const TravelThemesController = () => {
       let responseMessage;
       let response;
       if (isEditTravelTheme) {
-        response = await travelThemeRepository.updateTravelTheme(fD, idToUpdate);
+        response = await travelThemeRepository.updateTravelTheme(
+          fD,
+          idToUpdate
+        );
         setTravelThemeList((prev) =>
           prev.map((item) =>
             item._id === idToUpdate
@@ -178,7 +186,6 @@ const TravelThemesController = () => {
         handleImageSelect={handleImageSelect}
         isEditTravelTheme={isEditTravelTheme}
         travelTheme={travelTheme}
- год
       />
       <CustomDialogModal
         opened={isDeleteTravelTheme}

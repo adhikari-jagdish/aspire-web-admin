@@ -22,7 +22,6 @@ import AdventuresView from "./adventures/view/adventures_view";
 import AboutView from "./about/view/about_view";
 import ContactView from "./contact/view/contact_view";
 
-
 function App() {
   return (
     <>
@@ -37,18 +36,13 @@ function App() {
           {/* <Route path="hotelCategory" element={<HotelsCategoryController />} /> */}
           <Route path="carousels" element={<CarouselsController />} />
           <Route path="tours" element={<ToursView />} />
-          <Route path="tours/addTourPackage" element={<ToursAddEditForm />} />
           <Route path="trekkings" element={<TrekkingsView />} />
-          <Route path="trekkings/addTrekkingPackage" element={<TrekkingAddEditForm />} />
           <Route path="expeditions" element={<ExpeditionsView />} />
-          <Route path="expeditions/addExpeditionPackage" element={<ExpeditionsAddEditForm />} />
           <Route path="peakClimbings" element={<PeakClimbingsView />} />
-          <Route path="peakClimbings/addPeakClimbingPackage" element={<PeakClimbingsAddEditForm />} />
           <Route path="adventures" element={<AdventuresView />} />
-          <Route path="adventures/addAdventurePackage" element={<AdventuresAddEditForm />} />
-          
-          <Route path="/about"  element={<AboutView />}/>
-          <Route path="/contact"  element={<ContactView />}/>
+
+          <Route path="/about" element={<AboutView />} />
+          <Route path="/contact" element={<ContactView />} />
 
           <Route path="*" element={<PageNotFound />} />
         </Route>
