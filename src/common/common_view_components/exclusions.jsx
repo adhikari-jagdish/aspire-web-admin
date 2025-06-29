@@ -29,7 +29,7 @@ const Exclusions = ({name, value, onChange}) => {
             },[exclusionEditor, value])
     
   return (
-       <div className="w-[1030px]">
+       <div className="max-w-[1030px]">
                 <Title
                   order={4}
                   mt={20}

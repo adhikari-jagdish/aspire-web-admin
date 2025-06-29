@@ -5,36 +5,35 @@ import Itinerary from "../../common/common_view_components/itinerary";
 import Inclusions from "../../common/common_view_components/inclusions";
 import Exclusions from "../../common/common_view_components/exclusions";
 import Hotels from "../../common/common_view_components/hotels";
-import ImageDiscount from "../../common/common_view_components/image-discount";
+import FileDiscount from "../../common/common_view_components/image-discount";
 import { useEffect, useState } from "react";
 import Destinations from "../../common/common_view_components/destinations";
 import TravelThemes from "../../common/common_view_components/travelThemes";
 import PackageRate from "../../common/common_view_components/packageRate";
-import PackageInclusions from "../../common/common_view_components/packageInclusions";
+// import PackageInclusions from "../../common/common_view_components/packageInclusions";
 
 // Define initial form state for type safety and consistency
 const initialFormState = {
-  destinationId: "",
-  travelThemeId: "",
+  destinationIds: "",
+  travelThemeIds: "",
   title: "",
-  duration: "",
+  duration: 0,
   overview: "",
-  packageInclusions: "",
+  packageInclusions: ["68512dd3ca679719a771a676"],
   itinerary: [],
   inclusions: [],
   exclusions: [],
   hotels: [],
   packageRate: "",
-  discount: "",
-  image: null,
+  discountInPercentage: 0,
+  file: null,
 };
-
 const ToursAddEditForm = ({
-  onOpen,
+  opened,
   onClose,
   isEditTour,
   handleSubmit,
-  handleImageSelect,
+  handleFileSelect,
   tour = {},
   idToUpdate,
 }) => {
@@ -53,12 +52,13 @@ const ToursAddEditForm = ({
 
   // Initialize form data
   useEffect(() => {
+    setFormData()
     if (isEditTour && opened && tour) {
       setFormData({
-        destinationId: tour.destinationId || "",
-        travelThemeId: tour.travelThemeId || "",
+        destinationIds: tour.destinationIds || "",
+        travelThemeIds: tour.travelThemeIds || "",
         title: tour.title || "",
-        duration: String(tour.duration || ""),
+        duration: String(tour.duration || 0),
         overview: tour.overview || "",
         packageInclusions: tour.packageInclusions || "",
         itinerary: Array.isArray(tour.itinerary) ? tour.itinerary : [],
@@ -66,8 +66,8 @@ const ToursAddEditForm = ({
         exclusions: Array.isArray(tour.exclusions) ? tour.exclusions : [],
         hotels: Array.isArray(tour.hotels) ? tour.hotels : [],
         packageRate: String(tour.packageRate || ""),
-        discount: String(tour.discount ?? ""),
-        image: tour.image || null,
+        discountInPercentage: String(tour.discountInPercentage ?? 0),
+        file: tour.file || null,
       });
     } else {
       setFormData(initialFormState);
@@ -82,10 +82,10 @@ const ToursAddEditForm = ({
     }));
   };
 
-  const onImageChange = (image) => {
-    setFormData((prev) => ({ ...prev, image }));
-    if (handleImageSelect) {
-      handleImageSelect(image);
+  const onFileChange = (file) => {
+    setFormData((prev) => ({ ...prev, file }));
+    if (handleFileSelect) {
+      handleFileSelect(file);
     }
   };
 
@@ -96,20 +96,20 @@ const ToursAddEditForm = ({
     }
     console.log("Submitting form with:", {
       formData,
-      image: formData.image,
+      file: formData.file,
       isEditTour,
       idToUpdate,
     });
-    handleSubmit(formData, formData.image, isEditTour, idToUpdate);
+    handleSubmit(formData, formData.file, isEditTour, idToUpdate);
   };
 
   return (
     <Modal
-      opened={onOpen}
+      opened={opened}
       onClose={onClose}
       title={
         <Title order={2} ta="center" c="dark">
-          Tour Packages
+          Add Tour Packages
         </Title>
       }
       size="lg"
@@ -120,13 +120,13 @@ const ToursAddEditForm = ({
       <div className="text-[15px]">
         <div className="space-y-6">
           <Destinations
-            name="destinationId"
-            value={formData.destinationId}
+            name="destinationIds"
+            value={formData.destinationIds}
             onChange={handleChange}
           />
           <TravelThemes
-            name="travelThemeId"
-            value={formData.travelThemeId}
+            name="travelThemeIds"
+            value={formData.travelThemeIds}
             onChange={handleChange}
           />
           <TitleDuration
@@ -141,17 +141,18 @@ const ToursAddEditForm = ({
             value={formData.overview}
             onChange={handleChange}
           />
-          <PackageInclusions
+          {/* <PackageInclusions
             name="packageInclusions"
             value={formData.packageInclusions}
             onChange={handleChange}
-          />
+          /> */}
           <Itinerary
             name="itinerary"
             value={formData.itinerary}
-            onChange={(value) =>
-              setFormData((prev) => ({ ...prev, itinerary: value }))
-            }
+            onChange={handleChange}
+            // onChange={(value) =>
+            //   setFormData((prev) => ({ ...prev, itinerary: value }))
+            // }
           />
           <PackageRate
             name="packageRate"
@@ -161,6 +162,7 @@ const ToursAddEditForm = ({
           <Inclusions
             name="inclusions"
             value={formData.inclusions}
+            // onChange={handleChange}
             onChange={(value) =>
               setFormData((prev) => ({ ...prev, inclusions: value }))
             }
@@ -168,23 +170,28 @@ const ToursAddEditForm = ({
           <Exclusions
             name="exclusions"
             value={formData.exclusions}
-            onChange={(value) =>
-              setFormData((prev) => ({ ...prev, exclusions: value }))
-            }
+            onChange={handleChange}
+
+            // onChange={(value) =>
+            //   setFormData((prev) => ({ ...prev, exclusions: value }))}
+            
           />
+
           <Hotels
             name="hotels"
             value={formData.hotels}
-            onChange={(value) =>
-              setFormData((prev) => ({ ...prev, hotels: value }))
-            }
-          />
-          <ImageDiscount
-            imageName="image"
-            discountName="discount"
-            discountValue={formData.discount}
             onChange={handleChange}
-            onImageChange={onImageChange}
+
+            // onChange={(value) =>
+            //   setFormData((prev) => ({ ...prev, hotels: value }))
+            // }
+          />
+          <FileDiscount
+            fileName="file"
+            discountName="discountInPercentage"
+            discountValue={formData.discountInPercentage}
+            onChange={handleChange}
+            onFileChange={onFileChange}
           />
         </div>
         <Group position="right" mt="md" pr={10} pb={4} spacing="sm">

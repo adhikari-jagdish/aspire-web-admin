@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Title } from "@mantine/core";
 import { useNotification } from "../hooks/useNotification";
 
-const Destinations = ({ value, onChange}) => {
+const Destinations = ({ name, value, onChange}) => {
   const [destinationList, setDestinationList] = useState([]);
   const { getToken } = useAuth();
   const notify = useNotification();
@@ -31,7 +31,7 @@ const Destinations = ({ value, onChange}) => {
   const handleChange  = (id) => {
     const updated = value?.includes(id)? value.filter(v => v !== id): [...value, id];
 
-    onChange({target: {name: 'destinationId', value: updated}})
+    onChange({target: {name, value: updated}})
   }
   return (
     <div>

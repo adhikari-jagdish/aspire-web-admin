@@ -3,24 +3,19 @@ import DashboardController from "./dashboard/controller/dashboard_controller";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 import HomeView from "./dashboard/view/home_view";
-import ToursView from "./tours/view/tours_view";
 import PageNotFound from "./common/common_view_components/page_not_found";
 import DestinationsController from "./destinations/controller/destinations_controller";
 import TravelThemesController from "./Travel Themes/controller/travelThemes_controller";
 import HotelsController from "./hotels/controller/hotels_controller";
 import CarouselsController from "./Carousels/controller/carousels_controller";
-import TrekkingView from "./trekkings/view/trekkings_view";
-import ToursAddEditForm from "./tours/view/tour_add_edit_form";
-import TrekkingAddEditForm from "./trekkings/view/trekking_add_edit_form";
 import ExpeditionsView from "./Expeditions/view/expeditions_view";
-import TrekkingsView from "./trekkings/view/trekkings_view";
-import ExpeditionsAddEditForm from "./Expeditions/view/expedition_add_edit_form";
 import PeakClimbingsView from "./peak climbings/view/peakClimbings_view";
-import PeakClimbingsAddEditForm from "./peak climbings/view/peakClimbing_add_edit_form";
-import AdventuresAddEditForm from "./adventures/view/adventure_add_edit_form";
 import AdventuresView from "./adventures/view/adventures_view";
 import AboutView from "./about/view/about_view";
 import ContactView from "./contact/view/contact_view";
+import ToursController from './tours/controller/tours_controller'
+import TrekkingsController from './trekkings/controller/trekkings_controller'
+
 
 function App() {
   return (
@@ -35,8 +30,8 @@ function App() {
           <Route path="hotels" element={<HotelsController />} />
           {/* <Route path="hotelCategory" element={<HotelsCategoryController />} /> */}
           <Route path="carousels" element={<CarouselsController />} />
-          <Route path="tours" element={<ToursView />} />
-          <Route path="trekkings" element={<TrekkingsView />} />
+          <Route path="tours" element={<ToursController />} />
+          <Route path="trekkings" element={<TrekkingsController />} />
           <Route path="expeditions" element={<ExpeditionsView />} />
           <Route path="peakClimbings" element={<PeakClimbingsView />} />
           <Route path="adventures" element={<AdventuresView />} />

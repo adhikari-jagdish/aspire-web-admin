@@ -15,9 +15,8 @@ const Inclusions = ({name, value, onChange}) => {
                 const html = editor.getHTML();
 
                 if(onChange){
-                  onChange( {
-                    target: {name, value: html}
-                  })
+                  onChange( html
+                  )
                 }
               }
             });

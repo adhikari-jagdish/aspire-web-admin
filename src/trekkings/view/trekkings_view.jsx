@@ -3,14 +3,18 @@ import { IconPlus } from "@tabler/icons-react";
 import { useNavigate } from "react-router-dom";
 import CustomTable from "../../common/common_view_components/custom_table";
 
-const TrekkingsView = ({columns, shouldShowDelete, shouldShowEdit,  onEditButtonClick,onDeleteButtonClick, onViewButtonClick}) => {
-
-
+const TrekkingsView = ({
+  columns,
+  handleClick,
+  onEditButtonClick,
+  onDeleteButtonClick,
+  onViewButtonClick,
+}) => {
   const nav = useNavigate();
   return (
     <>
       <button
-        onClick={() => nav('/trekkings/addTrekkingPackage')}
+        onClick={handleClick}
         className="fixed bottom-15 right-6 bg-blue-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-blue-800 hover:cursor-pointer transition-colors duration-200 z-50 duration-200 z-50"
         aria-label="Add new item"
       >
@@ -27,9 +31,8 @@ const TrekkingsView = ({columns, shouldShowDelete, shouldShowEdit,  onEditButton
           shouldShowEdit={true}
           onEdit={(item) => onEditButtonClick(item)}
           onDelete={(item) => onDeleteButtonClick(item)}
-          onView={item => onViewButtonClick(item)}
+          onView={(item) => onViewButtonClick(item)}
         />
-
       </div>
     </>
   );

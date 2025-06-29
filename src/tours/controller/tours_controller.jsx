@@ -6,14 +6,13 @@ import CustomDialogModal from "../../common/common_view_components/custom_dialog
 import TourRepository from "../repository/tour_repository";
 import ToursAddEditForm from "../view/tour_add_edit_form";
 import ToursView from "../view/tours_view";
-
 const ToursController = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [openedView, setOpenedView] = useState(false);
   const [tourList, setTourList] = useState([]);
   const [tour, setTour] = useState({});
   const { getToken } = useAuth();
-  //const [image, setImage] = useState(null);
+  const [file, setFile] = useState(null);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
@@ -42,10 +41,29 @@ const ToursController = () => {
     fetchTours();
   }, []);
 
+  // const [destinationList, setDestinationList] = useState([]);
+  // const destinationRepository = new DestinationRepository(getToken);
+
+  // useEffect(() => {
+  //   const fetchDestinations = async () => {
+  //     try {
+  //       const destinationsResponse =
+  //         await destinationRepository.getDestinations();
+  //       setDestinationList(destinationsResponse.data);
+  //     } catch (err) {
+  //       notify({
+  //         type: "error",
+  //         message: err.message ?? "Something went wrong. Please try again.",
+  //       });
+  //     }
+  //   };
+  //   fetchDestinations();
+  // }, []);
+
   const handleClick = () => {
-    console.log("Button Clicked");
     setModalOpen(true);
     setTour({});
+    setFile(null);
   };
 
   const handleEditButtonClick = (item) => {
@@ -53,7 +71,7 @@ const ToursController = () => {
     setTour(item);
     setModalOpen(true);
     setIdToUpdate(item?._id);
-    setImage(null);
+    setFile(null);
   };
 
   const onDeleteButtonClick = (item) => {
@@ -81,72 +99,63 @@ const ToursController = () => {
     }
   };
 
-  const handleImageSelect = (file) => {
-    setImage(file);
+  const handleFileSelect = (file) => {
+    console.log(file)
+    setFile(file);
   };
 
-  const handleSubmit = async (formData, image, isEditTour, idToUpdate) => {
-    const requiredFields = [
-      "destinationId",
-      "travelThemeId",
-      "title",
-      "duration",
-      "overview",
-      "packageInclusions",
-      "itinerary",
-      "inclusions",
-      "exclusions",
-      "hotels",
-      "packageRate",
-    ];
-
-    const missingFields = requiredFields.filter((field) => !formData[field]);
+  const handleSubmit = async (formData) => {
+    console.log(formData)
     if (
-      missingFields.length > 0 ||
-      (!isEditTour && formData.discount == null)
+      !formData.destinationIds ||
+      !formData.travelThemeIds ||
+      !formData.title ||
+      !formData.duration ||
+      !formData.overview ||
+      !formData.packageInclusions ||
+      !formData.itinerary ||
+      !formData.inclusions ||
+      !formData.exclusions ||
+      !formData.hotels ||
+      !formData.packageRate ||
+      (!formData.discountInPercentage && !isEditTour)
     ) {
       notify({
         type: "error",
-        message: `Missing required fields: ${missingFields.join(", ")}${
-          !isEditTour && formData.discount == null ? ", discount" : ""
-        }`,
+        message: "All fields are required.",
       });
       return;
     }
-
     showLoading();
     const fD = new FormData();
-    if (image) {
-      fD.append("file", image);
+    if (file) {
+      fD.append("file", file);
     }
-    fD.append("destinationId", formData.destinationId);
-    fD.append("travelThemeId", formData.travelThemeId);
+    fD.append("destinationIds", JSON.stringify(formData.destinationIds));
+    fD.append("travelThemeIds", JSON.stringify(formData.travelThemeIds));
     fD.append("title", formData.title);
-    fD.append("duration", formData.duration);
+    fD.append("duration", parseInt(formData.duration));
     fD.append("overview", formData.overview);
-    fD.append("packageInclusions", formData.packageInclusions);
-    fD.append("itinerary", formData.itinerary);
-    fD.append("inclusions", formData.inclusions);
-    fD.append("exclusions", formData.exclusions);
-    fD.append("hotels", formData.hotels);
-    fD.append("packageRate", formData.packageRate);
-    fD.append("discount", formData.discount);
+    fD.append("packageInclusions", JSON.stringify(formData.packageInclusions));
+    fD.append("itinerary", JSON.stringify(formData.itinerary));
+    fD.append("inclusions", JSON.stringify([formData.inclusions]));
+    fD.append("exclusions", JSON.stringify([formData.exclusions]));
+    fD.append("hotels", JSON.stringify(formData.hotels));
+    fD.append("packageRate", JSON.stringify(formData.packageRate));
+    fD.append("discountInPercentage", parseInt(formData.discountInPercentage));
+    
     try {
       let responseMessage;
       let response;
       if (isEditTour) {
-        // Verify tour exists in tourList
-        if (!idToUpdate) {
-          throw new Error("Invalid tour ID for update.");
-        }
         response = await tourRepository.updateHotel(fD, idToUpdate);
         setTourList((prev) =>
           prev.map((item) =>
             item._id === idToUpdate
               ? {
                   ...item,
-                  destinationId: formData.destinationId,
-                  travelThemeId: formData.travelThemeId,
+                  destinationIds: formData.destinationIds,
+                  travelThemeIds: formData.travelThemeIds,
                   title: formData.title,
                   duration: formData.duration,
                   overview: formData.overview,
@@ -156,8 +165,8 @@ const ToursController = () => {
                   exclusions: formData.exclusions,
                   hotels: formData.hotels,
                   packageRate: formData.packageRate,
-                  discount: formData.discount,
-                  image: image || item.image,
+                  discountInPercentage: formData.discountInPercentage,
+                  file: file || item.file,
                 }
               : item
           )
@@ -166,9 +175,10 @@ const ToursController = () => {
         response = await tourRepository.createTourPackage(fD);
         setTourList((prev) => [...prev, response.data]);
       }
+
       responseMessage = response.message;
       setModalOpen(false);
-      setImage(null);
+      setFile(null);
       setIsEditTour(false);
       setTour({});
       notify({
@@ -191,8 +201,8 @@ const ToursController = () => {
   };
 
   const columns = [
-    { label: "Destination", accessor: "destinationId" },
-    { label: "Travel Theme", accessor: "travelThemeId" },
+    { label: "Destination", accessor: "destinationIds" },
+    { label: "Travel Theme", accessor: "travelThemeIds" },
     { label: "Title", accessor: "title" },
     { label: "Duration", accessor: "duration" },
     { label: "Overview", accessor: "overview" },
@@ -203,7 +213,7 @@ const ToursController = () => {
     { label: "Hotels", accessor: "hotels" },
     { label: "Package Rate", accessor: "packageRate" },
     { label: "Discount", accessor: "discount" },
-    { label: "Image", accessor: "image" },
+    { label: "File", accessor: "file" },
   ];
   return (
     <>
@@ -213,6 +223,7 @@ const ToursController = () => {
           setModalOpen(false);
           setIsEditTour(false);
           setTour({});
+          setFile(null);
         }}
         columns={columns}
         tours={tourList}
@@ -220,17 +231,24 @@ const ToursController = () => {
         onEditButtonClick={handleEditButtonClick}
         onDeleteButtonClick={onDeleteButtonClick}
         onViewButtonClick={handleViewButtonClick}
+        // destinationList={destinationList}
       />
-
+      {/* <TourViewModel
+        openedView={openedView}
+        onClose={() => setOpenedView(false)}
+        tour={tour}
+        destinationList={destinationList}
+      /> */}
       <ToursAddEditForm
-        onOpen={modalOpen}
+        opened={modalOpen}
         onClose={() => {
           setIsEditTour(false);
           setModalOpen(false);
           setTour({});
+          setFile(null);
         }}
         handleSubmit={handleSubmit}
-        handleImageSelect={handleImageSelect}
+        handleFileSelect={handleFileSelect}
         isEditTour={isEditTour}
         tour={tour}
         // destinationList={destinationList}

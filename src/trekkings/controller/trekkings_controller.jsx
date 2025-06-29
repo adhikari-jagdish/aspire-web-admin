@@ -220,7 +220,7 @@ const TrekkingsController = () => {
           setModalOpen(false);
           setIsEditTrekking(false);
           setTour({});
-          // setImage(null);
+          setImage(null);
         }}
         columns={columns}
         trekkings={trekkingList}
@@ -251,7 +251,7 @@ const TrekkingsController = () => {
         // destinationList={destinationList}
       />
       <CustomDialogModal
-        opened={isDeleteTour}
+        opened={isDeleteTrekking}
         onClose={() => setIsDeleteTour(false)}
         title="Alert!!"
         message="Are you sure you want to delete?"

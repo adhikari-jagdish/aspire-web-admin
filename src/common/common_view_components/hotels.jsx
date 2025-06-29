@@ -54,7 +54,7 @@ const Hotels = ({ name, onChange }) => {
 
   return (
     <div className="w-full space-y-4">
-      <div className="flex items-center w-[700px] gap-5">
+      <div className="flex items-center w-[100%] gap-5">
         <Title
           order={4}
           mt={20}

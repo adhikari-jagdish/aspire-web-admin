@@ -60,7 +60,7 @@ const PackageInclusions = ({name, value, onChange}) => {
   };
 
   return (
-    <div className="pl-2 w-[1030px] space-y-4">
+    <div className="pl-2 max-w-[1030px] space-y-4">
       <Title
         order={4}
         mt={20}
@@ -97,7 +97,7 @@ const PackageInclusions = ({name, value, onChange}) => {
                   <RichTextEditor.Content className="h-[200px] [&_ul]:list-disc [&_ol]:list-decimal" />
                 </RichTextEditor> */}
 
-      <div className="border border-gray-400 w-[900px] flex items-center justify-center space-x-2 rounded  ">
+      <div className="border border-gray-400 max-w-[900px] flex items-center justify-center space-x-2 rounded  ">
         <input
           type="text"
           value={packageInclusion}
@@ -123,7 +123,7 @@ const PackageInclusions = ({name, value, onChange}) => {
         )}
       </div>
 
-      <ul className="pl-5 pt-2 pb-2 w-[900px] rounded space-y-2 border border-gray-400">
+      <ul className="pl-5 pt-2 pb-2 max-w-[900px] rounded space-y-2 border border-gray-400">
         {packageInclusions.length > 0 ? packageInclusions?.map((item, idx) => (
           <>
             <li className="flex items-center justify-between pr-2">

@@ -21,8 +21,8 @@ const TrekkingsAddEditForm = ({
   trekking,
 }) => {
   const [formData, setFormData] = useState({
-    destinationId: "",
-    travelThemeId: "",
+    destinationIds: "",
+    travelThemeIds: "",
     title: "",
     duration: 0,
     overview: "",
@@ -40,8 +40,8 @@ const TrekkingsAddEditForm = ({
   useEffect(() => {
     if (isEditTrekking && opened) {
       setFormData({
-        destinationId: trekking.destinationId || "",
-        travelThemeId: trekking.travelThemeId || "",
+        destinationIds: trekking.destinationIds || "",
+        travelThemeIds: trekking.travelThemeIds || "",
         title: trekking.title || "",
         duration: trekking.duration || "",
         overview: trekking.overview || "",
@@ -72,7 +72,7 @@ const TrekkingsAddEditForm = ({
         image: null,
       });
     }
-  }, [isEditTrekking, opened]);
+  }, [isEditTrekking, opened, trekking]);
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };

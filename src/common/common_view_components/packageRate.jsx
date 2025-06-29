@@ -5,11 +5,11 @@ import { useState } from "react";
 const hotelCategories = ["Budget", "Standard", "Deluxe", "Luxury", "Boutique"];
 const initialRate = {
   hotelCategory: "",
-  rateInNPR: 0,
-  rateInUSD: 0,
-  rateInINR: 0,
-  rateInBDT: 0,
-  rateInEUR: 0,
+  rateInNPR: null,
+  rateInUSD: null,
+  rateInINR: null,
+  rateInBDT: null,
+  rateInEUR: null,
 };
 
 const currencyFields = [
@@ -29,16 +29,17 @@ const PackageRate = ({ name, onChange }) => {
   };
 
   const handleUpdate = (idx, field, value) => {
+    const isNumericField  = field.startsWith('rateIn');
+    const parsedValue = isNumericField ? parseFloat (value) || 0: value;
     setPackageRates((prev) => {
       const updated = prev.map((item, i) =>
-        i === idx ? { ...item, [field]: value } : item
+        i === idx ? { ...item, [field]: parsedValue } : item
       );
       onChange({ target: { name: "packageRate", value: updated } });
 
       return updated;
     });
   };
-
   //disable selected hotel
   const selectedHotels = packageRates
     ?.map((p) => p.hotelCategory)
@@ -48,7 +49,7 @@ const PackageRate = ({ name, onChange }) => {
     setPackageRates((prev) => prev.filter((_, i) => i !== idx));
   return (
     <div>
-      <div className="w-[85%] flex justify-between items-center">
+      <div className="w-[100%] flex justify-between items-center">
         <Title
           order={4}
           mt={20}
@@ -69,7 +70,7 @@ const PackageRate = ({ name, onChange }) => {
         </button>
       </div>
 
-      <div className="border border-gray-400 p-2 rounded w-[85%] space-y-6">
+      <div className="border border-gray-400 p-2 rounded w-[100%] space-y-6">
         {packageRates.length > 0 ? (
           packageRates.map((p, idx) => (
             <div key={idx} className="space-y-4">
@@ -81,7 +82,7 @@ const PackageRate = ({ name, onChange }) => {
                   Hotel Category:
                 </label>
                 <select
-                  className="border border-gray-400 p-1 rounded text-xl text-center w-[690px] outline-0"
+                  className="border border-gray-400 p-1 rounded text-xl text-center w-[290px] outline-0"
                   value={p.hotelCategory}
                   onChange={(e) =>
                     handleUpdate(idx, "hotelCategory", e.target.value)
