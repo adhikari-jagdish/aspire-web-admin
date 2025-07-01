@@ -1,8 +1,7 @@
 import { useState } from "react";
-import ImagePicker from "./image_picker";
 import FilePicker from "./file_picker";
 
-const ImageDiscount = ({fileName, discountName, discountValue, onChange, onFileChange}) => {
+const FileDiscount = ({fileName, discountName, discountValue, onChange, onFileChange}) => {
      const [file, setFile] = useState(null);
 
   const handleFileSelect = (file) => {
@@ -47,4 +46,4 @@ const ImageDiscount = ({fileName, discountName, discountValue, onChange, onFileC
   )
 }
 
-export default ImageDiscount;
+export default FileDiscount;

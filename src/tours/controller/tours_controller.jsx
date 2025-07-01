@@ -4,8 +4,12 @@ import useLoadingOverlay from "../../common/hooks/useLoadingOverlay";
 import { useNotification } from "../../common/hooks/useNotification";
 import CustomDialogModal from "../../common/common_view_components/custom_dialog_model";
 import TourRepository from "../repository/tour_repository";
-import ToursAddEditForm from "../view/tour_add_edit_form";
 import ToursView from "../view/tours_view";
+import DestinationRepository from "../../destinations/repository/destination_repository";
+import ToursViewModel from "../components/tours_view_model";
+import ToursAddEditModel from "../components/tour_add_edit_model";
+import TravelThemeRepository from "../../Travel Themes/repository/travelTheme_repository";
+
 const ToursController = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [openedView, setOpenedView] = useState(false);
@@ -41,25 +45,43 @@ const ToursController = () => {
     fetchTours();
   }, []);
 
-  // const [destinationList, setDestinationList] = useState([]);
-  // const destinationRepository = new DestinationRepository(getToken);
+  const [destinationList, setDestinationList] = useState([]);
+  const destinationRepository = new DestinationRepository(getToken);
 
-  // useEffect(() => {
-  //   const fetchDestinations = async () => {
-  //     try {
-  //       const destinationsResponse =
-  //         await destinationRepository.getDestinations();
-  //       setDestinationList(destinationsResponse.data);
-  //     } catch (err) {
-  //       notify({
-  //         type: "error",
-  //         message: err.message ?? "Something went wrong. Please try again.",
-  //       });
-  //     }
-  //   };
-  //   fetchDestinations();
-  // }, []);
+  useEffect(() => {
+    const fetchDestinations = async () => {
+      try {
+        const destinationsResponse =
+          await destinationRepository.getDestinations();
+        setDestinationList(destinationsResponse.data);
+      } catch (err) {
+        notify({
+          type: "error",
+          message: err.message ?? "Something went wrong. Please try again.",
+        });
+      }
+    };
+    fetchDestinations();
+  }, []);
 
+  const [travelThemeList, setTravelThemeList] = useState([]);
+  const travelThemeRepository = new TravelThemeRepository(getToken);
+
+  useEffect(() => {
+    const fetchTravelThemes = async () => {
+      try {
+        const travelThemesResponse =
+          await travelThemeRepository.getTravelThemes();
+        setTravelThemeList(travelThemesResponse.data);
+      } catch (err) {
+        notify({
+          type: "error",
+          message: err.message ?? "Something went wrong. Please try again.",
+        });
+      }
+    };
+    fetchTravelThemes();
+  }, []);
   const handleClick = () => {
     setModalOpen(true);
     setTour({});
@@ -84,7 +106,7 @@ const ToursController = () => {
     setTourList((prev) => prev.filter((p) => p._id !== idToDelete));
     try {
       showLoading();
-      await tourRepository.deleteTour(idToDelete);
+      await tourRepository.deleteTourPackage(idToDelete);
       notify({ type: "success", message: "Tour deleted successfully." });
     } catch (err) {
       setTourList(previousList);
@@ -100,12 +122,10 @@ const ToursController = () => {
   };
 
   const handleFileSelect = (file) => {
-    console.log(file)
     setFile(file);
   };
 
   const handleSubmit = async (formData) => {
-    console.log(formData)
     if (
       !formData.destinationIds ||
       !formData.travelThemeIds ||
@@ -202,17 +222,17 @@ const ToursController = () => {
 
   const columns = [
     { label: "Destination", accessor: "destinationIds" },
-    { label: "Travel Theme", accessor: "travelThemeIds" },
+    // { label: "Travel Theme", accessor: "travelThemeIds" },
     { label: "Title", accessor: "title" },
     { label: "Duration", accessor: "duration" },
-    { label: "Overview", accessor: "overview" },
-    { label: "Package Inclusions", accessor: "packageInclusions" },
-    { label: "Itinerary", accessor: "itinerary" },
-    { label: "Inclusions", accessor: "inclusions" },
-    { label: "exclusions", accessor: "exclusions" },
-    { label: "Hotels", accessor: "hotels" },
-    { label: "Package Rate", accessor: "packageRate" },
-    { label: "Discount", accessor: "discount" },
+    // { label: "Overview", accessor: "overview" },
+    // { label: "Package Inclusions", accessor: "packageInclusions" },
+    // { label: "Itinerary", accessor: "itinerary" },
+    // { label: "Inclusions", accessor: "inclusions" },
+    // { label: "exclusions", accessor: "exclusions" },
+    // { label: "Hotels", accessor: "hotels" },
+    // { label: "Package Rate", accessor: "packageRate" },
+    { label: "Discount", accessor: "discountInPercentage" },
     { label: "File", accessor: "file" },
   ];
   return (
@@ -231,15 +251,17 @@ const ToursController = () => {
         onEditButtonClick={handleEditButtonClick}
         onDeleteButtonClick={onDeleteButtonClick}
         onViewButtonClick={handleViewButtonClick}
-        // destinationList={destinationList}
+        destinationList={destinationList}
+        travelThemeList = {travelThemeList}
       />
-      {/* <TourViewModel
+      <ToursViewModel
         openedView={openedView}
         onClose={() => setOpenedView(false)}
         tour={tour}
         destinationList={destinationList}
-      /> */}
-      <ToursAddEditForm
+        travelThemeList={travelThemeList}
+      />
+      <ToursAddEditModel
         opened={modalOpen}
         onClose={() => {
           setIsEditTour(false);
@@ -251,7 +273,8 @@ const ToursController = () => {
         handleFileSelect={handleFileSelect}
         isEditTour={isEditTour}
         tour={tour}
-        // destinationList={destinationList}
+        destinationList={destinationList}
+        travelThemeList={travelThemeList}
       />
       <CustomDialogModal
         opened={isDeleteTour}

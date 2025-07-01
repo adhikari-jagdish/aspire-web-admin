@@ -1,6 +1,6 @@
 import { Group, TextInput, Title } from "@mantine/core";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const hotelCategories = ["Budget", "Standard", "Deluxe", "Luxury", "Boutique"];
 const initialRate = {
@@ -8,7 +8,6 @@ const initialRate = {
   rateInNPR: null,
   rateInUSD: null,
   rateInINR: null,
-  rateInBDT: null,
   rateInEUR: null,
 };
 
@@ -16,16 +15,31 @@ const currencyFields = [
   { label: "NPR", name: "rateInNPR" },
   { label: "USD", name: "rateInUSD" },
   { label: "INR", name: "rateInINR" },
-  { label: "BDT", name: "rateInBDT" },
   { label: "EUR", name: "rateInEUR" },
 ];
 
-const PackageRate = ({ name, onChange }) => {
+const PackageRate = ({ name, value, onChange, isEditTour }) => {
   const [packageRates, setPackageRates] = useState([]);
+  useEffect(() => {
+    if(isEditTour && Array.isArray(value)){
+      const initialized = value?.map(v => ({
+          hotelCategory: v.hotelCategory || "",
+          rateInNPR: v.rateInNPR || null,
+          rateInEUR: v.rateInEUR || null,
+          rateInUSD: v.rateInUSD || null,
+          rateInINR: v.rateInINR || null
+      }));
 
+      setPackageRates(initialized)
+    }  else {
+      console.log("didnot change package")
+    }
+  },[isEditTour, JSON.stringify(value)]);
   const handleAdd = () => {
-    setPackageRates((prev) => [...prev, { ...initialRate }]);
-    onChange({ target: { name, value: packageRates } });
+    const updated = [...packageRates, { ...initialRate }]
+    setPackageRates(updated);
+    
+    onChange({ target: { name, value: updated2 } });
   };
 
   const handleUpdate = (idx, field, value) => {

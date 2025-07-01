@@ -5,12 +5,11 @@ import Itinerary from "../../common/common_view_components/itinerary";
 import Inclusions from "../../common/common_view_components/inclusions";
 import Exclusions from "../../common/common_view_components/exclusions";
 import Hotels from "../../common/common_view_components/hotels";
-import FileDiscount from "../../common/common_view_components/image-discount";
+import FileDiscount from "../../common/common_view_components/file-discount";
 import { useEffect, useState } from "react";
 import Destinations from "../../common/common_view_components/destinations";
 import TravelThemes from "../../common/common_view_components/travelThemes";
 import PackageRate from "../../common/common_view_components/packageRate";
-// import PackageInclusions from "../../common/common_view_components/packageInclusions";
 
 // Define initial form state for type safety and consistency
 const initialFormState = {
@@ -28,7 +27,7 @@ const initialFormState = {
   discountInPercentage: 0,
   file: null,
 };
-const ToursAddEditForm = ({
+const ToursAddEditModel = ({
   opened,
   onClose,
   isEditTour,
@@ -38,18 +37,6 @@ const ToursAddEditForm = ({
   idToUpdate,
 }) => {
   const [formData, setFormData] = useState(initialFormState);
-
-  // Debug prop passing
-  useEffect(() => {
-    console.log("ToursAddEditForm props:", {
-      handleSubmit,
-      type: typeof handleSubmit,
-      isEditTour,
-      idToUpdate,
-      tour,
-    });
-  }, [handleSubmit, isEditTour, idToUpdate, tour]);
-
   // Initialize form data
   useEffect(() => {
     setFormData()
@@ -65,7 +52,7 @@ const ToursAddEditForm = ({
         inclusions: Array.isArray(tour.inclusions) ? tour.inclusions : [],
         exclusions: Array.isArray(tour.exclusions) ? tour.exclusions : [],
         hotels: Array.isArray(tour.hotels) ? tour.hotels : [],
-        packageRate: String(tour.packageRate || ""),
+        packageRate: Array.isArray(tour.packageRate)? tour.packageRate : [],
         discountInPercentage: String(tour.discountInPercentage ?? 0),
         file: tour.file || null,
       });
@@ -73,7 +60,6 @@ const ToursAddEditForm = ({
       setFormData(initialFormState);
     }
   }, [isEditTour, opened, tour]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -90,26 +76,15 @@ const ToursAddEditForm = ({
   };
 
   const onSubmit = () => {
-    if (typeof handleSubmit !== "function") {
-      console.error("handleSubmit is not a function:", handleSubmit);
-      return;
-    }
-    console.log("Submitting form with:", {
-      formData,
-      file: formData.file,
-      isEditTour,
-      idToUpdate,
-    });
     handleSubmit(formData, formData.file, isEditTour, idToUpdate);
   };
-
   return (
     <Modal
       opened={opened}
       onClose={onClose}
       title={
         <Title order={2} ta="center" c="dark">
-          Add Tour Packages
+          {isEditTour ? "Edit" : "Add"} Tour Packages
         </Title>
       }
       size="lg"
@@ -150,6 +125,7 @@ const ToursAddEditForm = ({
             name="itinerary"
             value={formData.itinerary}
             onChange={handleChange}
+            isEditTour={isEditTour}
             // onChange={(value) =>
             //   setFormData((prev) => ({ ...prev, itinerary: value }))
             // }
@@ -158,6 +134,7 @@ const ToursAddEditForm = ({
             name="packageRate"
             value={formData.packageRate}
             onChange={handleChange}
+            isEditTour={isEditTour}
           />
           <Inclusions
             name="inclusions"
@@ -166,12 +143,13 @@ const ToursAddEditForm = ({
             onChange={(value) =>
               setFormData((prev) => ({ ...prev, inclusions: value }))
             }
+            isEditTour={isEditTour}
           />
           <Exclusions
             name="exclusions"
             value={formData.exclusions}
             onChange={handleChange}
-
+            isEditTour={isEditTour}
             // onChange={(value) =>
             //   setFormData((prev) => ({ ...prev, exclusions: value }))}
             
@@ -181,7 +159,7 @@ const ToursAddEditForm = ({
             name="hotels"
             value={formData.hotels}
             onChange={handleChange}
-
+            isEditTour={isEditTour}
             // onChange={(value) =>
             //   setFormData((prev) => ({ ...prev, hotels: value }))
             // }
@@ -205,4 +183,4 @@ const ToursAddEditForm = ({
   );
 };
 
-export default ToursAddEditForm;
+export default ToursAddEditModel;

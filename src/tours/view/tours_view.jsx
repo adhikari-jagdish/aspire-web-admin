@@ -11,7 +11,10 @@ const ToursView = ({
   onEditButtonClick,
   onDeleteButtonClick,
   onViewButtonClick,
+  destinationList,
+  travelThemeList
 }) => {
+  console.log(tours)
   return (
     <>
       <button
@@ -33,6 +36,8 @@ const ToursView = ({
           onEdit={onEditButtonClick}
           onDelete={onDeleteButtonClick}
           onView={onViewButtonClick}
+          destinationList={destinationList}
+          travelThemeList={travelThemeList}
         />
       </div>
     </>

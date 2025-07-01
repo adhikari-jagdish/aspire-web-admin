@@ -5,14 +5,14 @@ import Itinerary from "../../common/common_view_components/itinerary";
 import Inclusions from "../../common/common_view_components/inclusions";
 import Exclusions from "../../common/common_view_components/exclusions";
 import Hotels from "../../common/common_view_components/hotels";
-import ImageDiscount from "../../common/common_view_components/image-discount";
+import ImageDiscount from "../../common/common_view_components/file-discount";
 import { useEffect, useState } from "react";
 import Destinations from "../../common/common_view_components/destinations";
 import TravelThemes from "../../common/common_view_components/travelThemes";
 import PackageRate from "../../common/common_view_components/packageRate";
 import PackageInclusions from "../../common/common_view_components/packageInclusions";
 
-const TrekkingsAddEditForm = ({
+const TrekkingsAddEditModel = ({
   opened,
   onClose,
   isEditTrekking,
@@ -168,4 +168,4 @@ const TrekkingsAddEditForm = ({
   );
 };
 
-export default TrekkingsAddEditForm;
+export default TrekkingsAddEditModel;

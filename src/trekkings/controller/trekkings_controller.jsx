@@ -3,10 +3,9 @@ import useAuth from "../../auth/components/use_auth";
 import useLoadingOverlay from "../../common/hooks/useLoadingOverlay";
 import { useNotification } from "../../common/hooks/useNotification";
 import CustomDialogModal from "../../common/common_view_components/custom_dialog_model";
-import TourRepository from "../repository/trekking_repository";
 import TrekkingsView from "../view/trekkings_view";
-import TrekkingsAddEditForm from "../view/trekking_add_edit_form";
 import TrekkingRepository from "../repository/trekking_repository";
+import TrekkingsAddEditModel from "../components/trekking_add_edit_model";
 const TrekkingsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [openedView, setOpenedView] = useState(false);
@@ -236,7 +235,7 @@ const TrekkingsController = () => {
         tour={tour}
         destinationList={destinationList}
       /> */}
-      <TrekkingsAddEditForm 
+      <TrekkingsAddEditModel
         opened={modalOpen}
         onClose={() => {
           setIsEditTrekking(false);

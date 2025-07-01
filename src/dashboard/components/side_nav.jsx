@@ -6,6 +6,7 @@ const navItems = [
   { name: "Destinations", icon: "🥾" },
   {name: "TravelThemes", icon: "🌍"},
   { name: "Tours", icon: "🗺️" },
+  { name: "TripHighlights", icon: "✨" },
   { name: "Trekkings", icon: "🥾" },
   { name: "Expeditions", icon: "🗺️" },
   { name: "PeakClimbings", icon: "⛰️" },

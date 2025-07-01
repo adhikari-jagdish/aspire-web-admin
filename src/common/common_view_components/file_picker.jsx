@@ -3,27 +3,39 @@ import { Group, Text } from "@mantine/core";
 import { Dropzone } from "@mantine/dropzone";
 import { IconUpload, IconFileText, IconX } from "@tabler/icons-react";
 
-const FilePicker = ({ onFileSelect }) => {
-  const [pdfFile, setPdfFile] = useState(null);
+const FilePicker = ({ onFileSelect, allowSVGOnly = false }) => {
+  const [file, setFile] = useState(null);
   const [error, setError] = useState(null);
+  const [svgContent, setSvgContent] = useState(null);
+
+  const allowedTypes = allowSVGOnly ? ["image/svg+xml"]: ["application/pdf"];
 
   const handleDrop = (files) => {
     const file = files[0];
-    if (file?.type === "application/pdf") {
-      setPdfFile(file);
+    if (file && allowedTypes.includes(file.type)) {
+      setFile(file);
       setError(null);
       onFileSelect?.(file);
+
+      if(allowSVGOnly){
+        const reader = new FileReader();
+        reader.onload= () => {
+          setSvgContent(reader.result);
+        };
+        reader.readAsText(file);
+      } else {
+        setSvgContent(null);
+      }
     } else {
-      setError("Only PDF files are allowed.");
+      setError(`Only ${allowSVGOnly ? "SVG" : "PDF"}  files are allowed.`);
     }
   };
-
   return (
     <div className="w-full max-w-md mx-auto p-4">
-      {!pdfFile ? (
+      {!file ? (
         <Dropzone
           onDrop={handleDrop}
-          accept={["application/pdf"]}
+          accept={allowedTypes}
           maxFiles={1}
           className="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-blue-500 cursor-pointer"
         >
@@ -37,16 +49,24 @@ const FilePicker = ({ onFileSelect }) => {
             <Dropzone.Idle>
               <IconFileText size={52} color="var(--mantine-color-dimmed)" />
             </Dropzone.Idle>
-            <Text size="xl">Select a PDF</Text>
+            <Text size="xl">Select a {allowSVGOnly ? "SVG(Icon)" : "PDF"} file</Text>
           </Group>
         </Dropzone>
       ) : (
         <div className="mt-4 flex items-center gap-3 border border-dashed p-4 rounded-lg">
-          <IconFileText size={40} className="text-gray-600" />
+        {allowSVGOnly && svgContent ? (
+          <div dangerouslySetInnerHTML={{__html: svgContent}}
+          className="w-16 h-16 mx-auto" />
+        ): 
+          <div className="flex items-center gap-3">
+            <IconFileText size={40} className="text-gray-600" />
           <div>
-            <p className="font-medium">{pdfFile.name}</p>
-            <p className="text-xs text-gray-500">{(pdfFile.size / 1024).toFixed(1)} KB</p>
+          
+            <p className="font-medium">{file.name}</p>
+            <p className="text-xs text-gray-500">{(file.size / 1024).toFixed(1)} KB</p>
           </div>
+          </div>
+          }
         </div>
       )}
       {error && <p className="text-red-600 mt-2 text-sm">{error}</p>}

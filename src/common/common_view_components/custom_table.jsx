@@ -16,6 +16,7 @@ const CustomTable = ({
   shouldShowDelete = false,
   destinationList,
 }) => {
+  console.log(data)
   const safeColumns = Array.isArray(columns) ? columns : [];
   return (
     <Box
@@ -67,6 +68,8 @@ const CustomTable = ({
                   >
                     <Table.Td>{index + 1}</Table.Td>
                     {safeColumns.map((col) => {
+                      console.log("Column:", col.accessor, "Value:", item[col.accessor]);
+
                       return (
                         <Table.Td key={col.accessor}>
                           {col.accessor === "image" ? (
@@ -102,7 +105,7 @@ const CustomTable = ({
                             </span>
                           ) : (
                             <span className="line-clamp-3 overflow-hidden">
-                              {item[col.accessor]}
+                              {item[col?.accessor]} 
                             </span>
                           )}
                         </Table.Td>

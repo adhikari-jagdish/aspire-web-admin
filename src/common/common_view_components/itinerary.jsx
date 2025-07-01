@@ -1,9 +1,19 @@
 import { Title } from "@mantine/core";
 import { IconPlus, IconX } from "@tabler/icons-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-const Itinerary = ({ name, value, onChange }) => {
+const Itinerary = ({ name, value, onChange, isEditTour }) => {
   const [itineraries, setItineraries] = useState([]);
+  useEffect(() => {
+    if(isEditTour && Array.isArray(value)){
+      const initialized = value.map(v => ({
+        dayAndTitle: v.dayAndTitle,
+        details: (v.details || []).join("\n"),
+        }
+      ));
+      setItineraries(initialized)
+    }
+  },[isEditTour, value])
 
   const handleAddItinerary = () => {
     const newItem = {

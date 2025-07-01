@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 import { Title } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 
-const Hotels = ({ name, onChange }) => {
+const Hotels = ({ name, onChange, value, isEditTour }) => {
+  
   const [hotelList, setHotelList] = useState([]);
   const [selectedHotels, setSelectedHotels] = useState([]);
   const { getToken } = useAuth();
@@ -28,6 +29,15 @@ const Hotels = ({ name, onChange }) => {
     fetchHotels();
   }, []);
 
+  useEffect(() => {
+    if(isEditTour && Array.isArray(value)){
+      const hotel = hotelList.filter(h => value.some(v => h._id === v._id));
+      console.log(hotel)
+      setSelectedHotels(hotel)
+    }
+  },[isEditTour, value, hotelList])
+
+  console.log(selectedHotels)
   const handleHotelChange = (e) => {
     const selected = e.target.value;
     if (selected && !selectedHotels?.some((s) => s._id === selected)) {
