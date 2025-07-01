@@ -14,7 +14,6 @@ const ToursView = ({
   destinationList,
   travelThemeList
 }) => {
-  console.log(tours)
   return (
     <>
       <button

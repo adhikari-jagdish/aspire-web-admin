@@ -31,9 +31,7 @@ const PackageRate = ({ name, value, onChange, isEditTour }) => {
       }));
 
       setPackageRates(initialized)
-    }  else {
-      console.log("didnot change package")
-    }
+    } 
   },[isEditTour, JSON.stringify(value)]);
   const handleAdd = () => {
     const updated = [...packageRates, { ...initialRate }]

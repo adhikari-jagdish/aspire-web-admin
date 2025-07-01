@@ -8,7 +8,7 @@ const TripHighLightsView = ({
   onEditButtonClick,
   onDeleteButtonClick,
   onViewButtonClick,
-  tripHighLights
+  tripHighlights
 }) => {
   return (
     <>
@@ -26,7 +26,7 @@ const TripHighLightsView = ({
         </Title>
         <CustomTable
           columns={columns}
-          data={tripHighLights}
+          data={tripHighlights}
           shouldShowDelete={true}
           shouldShowEdit={true}
           onEdit={(item) => onEditButtonClick(item)}

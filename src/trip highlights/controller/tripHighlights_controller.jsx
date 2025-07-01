@@ -12,27 +12,27 @@ import TripHighlightViewModel from "../components/tripHighLight_view_model";
 const TripHighLightsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [openedView, setOpenedView] = useState(false);
-  const [tripHighLightList, setTripHighLightList] = useState([]);
-  const [tripHighLight, setTripHighLight] = useState({});
+  const [tripHighlightList, setTripHighlightList] = useState([]);
+  const [tripHighlight, setTripHighlight] = useState({});
   const { getToken } = useAuth();
   const [file, setFile] = useState(null);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
-  const [isEditTripHighLight, setIsEditTripHighLight] = useState(false);
-  const [isDeleteTripHighLight, setIsDeleteTripHighLight] = useState(false);
+  const [isEditTripHighlight, setIsEditTripHighlight] = useState(false);
+  const [isDeleteTripHighlight, setIsDeleteTripHighlight] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
   const [idToUpdate, setIdToUpdate] = useState(null);
 
-  const tripHighLightRepository = new TripHighlightRepository(getToken);
+  const tripHighlightRepository = new TripHighlightRepository(getToken);
 
 
   useEffect(() => {
     const fetchTripHighLights = async () => {
       try {
-        const tripHighLightsResponse =
-          await tripHighLightRepository.getTripHighlights();
-        setTripHighLightList(tripHighLightsResponse.data);
+        const tripHighlightsResponse =
+          await tripHighlightRepository.getTripHighlights();
+        setTripHighlightList(tripHighlightsResponse.data);
       } catch (err) {
         notify({
           type: "error",
@@ -47,21 +47,21 @@ const TripHighLightsController = () => {
   };
   //Function to trigger when edit button is clicked
   const handleEditButtonClick = (item) => {
-    setIsEditTripHighLight(true);
-    setTripHighLight(item);
+    setIsEditTripHighlight(true);
+    setTripHighlight(item);
     setModalOpen(true);
     setIdToUpdate(item?._id);
   };
 
   const onDeleteButtonClick = (item) => {
-    setIsDeleteTripHighLight(true);
+    setIsDeleteTripHighlight(true);
     setIdToDelete(item?._id);
   };
   const handleDeleteButtonClick = async () => {
     try {
-      await tripHighLightRepository.deleteTripHighlight(idToDelete);
+      await tripHighlightRepository.deleteTripHighlight(idToDelete);
       showLoading();
-      setTripHighLightList((prev) => prev.filter((p) => p._id !== idToDelete));
+      setTripHighlightList((prev) => prev.filter((p) => p._id !== idToDelete));
     } catch (err) {
       notify({
         type: "error",
@@ -85,12 +85,12 @@ const TripHighLightsController = () => {
     try {
       let responseMessage;
       let response;
-     if(isEditTripHighLight){
-       response = await tripHighLightRepository.updateTripHighlight(fD,idToUpdate);
-       setTripHighLightList(prev => prev.map(item => item._id === idToUpdate ? {...item, title: formData.title, file: file || item.icon} : item));
+     if(isEditTripHighlight){
+       response = await tripHighlightRepository.updateTripHighlight(fD,idToUpdate);
+       setTripHighlightList(prev => prev.map(item => item._id === idToUpdate ? {...item, title: formData.title, file: file || item.icon} : item));
      } else {
-        response = await tripHighLightRepository.addTripHighlight(fD);
-        setTripHighLightList(prev => [...prev, response.data])
+        response = await tripHighlightRepository.addTripHighlight(fD);
+        setTripHighlightList(prev => [...prev, response.data])
      }
        responseMessage = response.message;
 
@@ -111,21 +111,20 @@ const TripHighLightsController = () => {
   };
   const handleViewButtonClick = (item) => {
     setOpenedView(true);
-    setTripHighLight(item);
+    setTripHighlight(item);
   };
 
   const columns = [
     { label: "Title", accessor: "title" },
     { label: "Icon", accessor: "icon" },
   ];
-
   return (
     <>
       <TripHighLightsView
         opened={modalOpen}
         onClose={() => setModalOpen(false)}
         columns={columns}
-        tripHighLights={tripHighLightList}
+        tripHighlights={tripHighlightList}
         handleClick={handleClick}
         onEditButtonClick={handleEditButtonClick}
         onDeleteButtonClick={onDeleteButtonClick}
@@ -137,23 +136,23 @@ const TripHighLightsController = () => {
         onClose={() => {
           setOpenedView(false);
         }}
-        tripHighLight={tripHighLight}
+        tripHighlight={tripHighlight}
       />
       <TripHighLightAddEditModel
         opened={modalOpen}
         onClose={() => {
-          setIsEditTripHighLight(false);
+          setIsEditTripHighlight(false);
           setModalOpen(false);
         }}
         handleSubmit={handleSubmit}
         handleFileSelect={handleFileSelect}
-        isEditTripHighLight={isEditTripHighLight}
-        tripHighLight={tripHighLight}
+        isEditTripHighlight={isEditTripHighlight}
+        tripHighlight={tripHighlight}
       />
 
       <CustomDialogModal
-        opened={isDeleteTripHighLight}
-        onClose={() => setIsDeleteTripHighLight(false)}
+        opened={isDeleteTripHighlight}
+        onClose={() => setIsDeleteTripHighlight(false)}
         title="Alert!!"
         message="Are you sure you want to delete?"
         onConfirm={handleDeleteButtonClick}

@@ -56,7 +56,7 @@ const FilePicker = ({ onFileSelect, allowSVGOnly = false }) => {
         <div className="mt-4 flex items-center gap-3 border border-dashed p-4 rounded-lg">
         {allowSVGOnly && svgContent ? (
           <div dangerouslySetInnerHTML={{__html: svgContent}}
-          className="w-16 h-16 mx-auto" />
+          className="w-16 h-16 mx-auto overflow-hidden [&>svg]:w-full [&>svg]:h-full" />
         ): 
           <div className="flex items-center gap-3">
             <IconFileText size={40} className="text-gray-600" />

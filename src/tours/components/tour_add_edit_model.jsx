@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import Destinations from "../../common/common_view_components/destinations";
 import TravelThemes from "../../common/common_view_components/travelThemes";
 import PackageRate from "../../common/common_view_components/packageRate";
+import TripHighlights from "../../common/common_view_components/tripHighlights";
 
 // Define initial form state for type safety and consistency
 const initialFormState = {
@@ -18,7 +19,7 @@ const initialFormState = {
   title: "",
   duration: 0,
   overview: "",
-  packageInclusions: ["68512dd3ca679719a771a676"],
+  tripHighlights: [],
   itinerary: [],
   inclusions: [],
   exclusions: [],
@@ -47,7 +48,7 @@ const ToursAddEditModel = ({
         title: tour.title || "",
         duration: String(tour.duration || 0),
         overview: tour.overview || "",
-        packageInclusions: tour.packageInclusions || "",
+        tripHighlights: Array.isArray(tour.tripHighlights)? tour.tripHighlights: [],
         itinerary: Array.isArray(tour.itinerary) ? tour.itinerary : [],
         inclusions: Array.isArray(tour.inclusions) ? tour.inclusions : [],
         exclusions: Array.isArray(tour.exclusions) ? tour.exclusions : [],
@@ -116,11 +117,11 @@ const ToursAddEditModel = ({
             value={formData.overview}
             onChange={handleChange}
           />
-          {/* <PackageInclusions
-            name="packageInclusions"
-            value={formData.packageInclusions}
+          <TripHighlights
+            name="tripHighlights"
+            value={formData.tripHighlights}
             onChange={handleChange}
-          /> */}
+          />
           <Itinerary
             name="itinerary"
             value={formData.itinerary}

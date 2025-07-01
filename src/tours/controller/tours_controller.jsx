@@ -126,13 +126,14 @@ const ToursController = () => {
   };
 
   const handleSubmit = async (formData) => {
+    console.log(formData)
     if (
       !formData.destinationIds ||
       !formData.travelThemeIds ||
       !formData.title ||
       !formData.duration ||
       !formData.overview ||
-      !formData.packageInclusions ||
+      !formData.tripHighlights ||
       !formData.itinerary ||
       !formData.inclusions ||
       !formData.exclusions ||
@@ -156,7 +157,7 @@ const ToursController = () => {
     fD.append("title", formData.title);
     fD.append("duration", parseInt(formData.duration));
     fD.append("overview", formData.overview);
-    fD.append("packageInclusions", JSON.stringify(formData.packageInclusions));
+    fD.append("tripHighlights", JSON.stringify(formData.tripHighlights));
     fD.append("itinerary", JSON.stringify(formData.itinerary));
     fD.append("inclusions", JSON.stringify([formData.inclusions]));
     fD.append("exclusions", JSON.stringify([formData.exclusions]));
@@ -179,7 +180,7 @@ const ToursController = () => {
                   title: formData.title,
                   duration: formData.duration,
                   overview: formData.overview,
-                  packageInclusions: formData.packageInclusions,
+                  tripHighlights: formData.tripHighlights,
                   itinerary: formData.itinerary,
                   inclusions: formData.inclusions,
                   exclusions: formData.exclusions,
@@ -226,7 +227,7 @@ const ToursController = () => {
     { label: "Title", accessor: "title" },
     { label: "Duration", accessor: "duration" },
     // { label: "Overview", accessor: "overview" },
-    // { label: "Package Inclusions", accessor: "packageInclusions" },
+    // { label: "Package Inclusions", accessor: "tripHighlights" },
     // { label: "Itinerary", accessor: "itinerary" },
     // { label: "Inclusions", accessor: "inclusions" },
     // { label: "exclusions", accessor: "exclusions" },

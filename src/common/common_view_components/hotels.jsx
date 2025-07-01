@@ -32,12 +32,10 @@ const Hotels = ({ name, onChange, value, isEditTour }) => {
   useEffect(() => {
     if(isEditTour && Array.isArray(value)){
       const hotel = hotelList.filter(h => value.some(v => h._id === v._id));
-      console.log(hotel)
       setSelectedHotels(hotel)
     }
   },[isEditTour, value, hotelList])
 
-  console.log(selectedHotels)
   const handleHotelChange = (e) => {
     const selected = e.target.value;
     if (selected && !selectedHotels?.some((s) => s._id === selected)) {
