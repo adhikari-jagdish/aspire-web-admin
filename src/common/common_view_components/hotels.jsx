@@ -6,7 +6,6 @@ import { Title } from "@mantine/core";
 import { IconTrash } from "@tabler/icons-react";
 
 const Hotels = ({ name, onChange, value, isEditTour }) => {
-  
   const [hotelList, setHotelList] = useState([]);
   const [selectedHotels, setSelectedHotels] = useState([]);
   const { getToken } = useAuth();
@@ -30,22 +29,26 @@ const Hotels = ({ name, onChange, value, isEditTour }) => {
   }, []);
 
   useEffect(() => {
-    if(isEditTour && Array.isArray(value)){
-      const hotel = hotelList.filter(h => value.some(v => h._id === v._id));
-      
-      setSelectedHotels(hotel)
+    if (isEditTour && Array.isArray(value)) {
+      const hotel = hotelList.filter((h) => value.some((v) => h._id === v._id));
+
+      setSelectedHotels(hotel);
     }
-  },[isEditTour, value, hotelList])
+  }, [isEditTour, value, hotelList]);
 
   const handleHotelChange = (e) => {
     const selected = e.target.value;
+    console.log(`Selected hotel ${selected}`);
+
     if (selected && !selectedHotels?.some((s) => s._id === selected)) {
       const hotel = hotelList.find((h) => h._id === selected);
       if (hotel) {
         const updated = [...selectedHotels, hotel];
         setSelectedHotels(updated);
+
         const ids = updated.map((u) => u._id);
-        onChange({ target: { name, value: [...existing, ids] } });
+        // Send the updated IDs directly
+        onChange({ target: { name, value: ids } });
       }
     }
   };
@@ -53,16 +56,16 @@ const Hotels = ({ name, onChange, value, isEditTour }) => {
   const removeHotelRow = (idx, hotelId) => {
     let updated = [];
 
-    if(isEditTour){
-      updated = selectedHotels.filter(sh => sh._id !== hotelId);
+    if (isEditTour) {
+      updated = selectedHotels.filter((sh) => sh._id !== hotelId);
     } else {
       updated = selectedHotels.filter((_, i) => i !== idx);
     }
-      setSelectedHotels(updated);
+    setSelectedHotels(updated);
 
-      const ids = updated.map((u) => u._id);
-      
-      onChange({ target: { name, value: ids } });
+    const ids = updated.map((u) => u._id);
+
+    onChange({ target: { name, value: ids } });
   };
 
   return (

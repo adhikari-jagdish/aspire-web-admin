@@ -8,7 +8,7 @@ import ToursView from "../view/tours_view";
 import DestinationRepository from "../../destinations/repository/destination_repository";
 import ToursViewModel from "../components/tours_view_model";
 import ToursAddEditModel from "../components/tour_add_edit_model";
-import TravelThemeRepository from "../../Travel Themes/repository/travelTheme_repository";
+import TravelThemeRepository from "../../travel_themes/repository/travelTheme_repository";
 import TripHighlightRepository from "../../trip highlights/repository/tripHighlight_repository";
 
 const ToursController = () => {
@@ -91,17 +91,18 @@ const ToursController = () => {
   useEffect(() => {
     const fetchTripHighlights = async () => {
       try {
-        const tripHighlightResponse = await tripHighlightRepository.getTripHighlights();
-          setTripHighlightList(tripHighlightResponse.data);
-    } catch (error) {
-      notify({
-        type: "error",
-        message: error.message ?? "Something went wrong. Please try again"
-      })
-    }
-    }
+        const tripHighlightResponse =
+          await tripHighlightRepository.getTripHighlights();
+        setTripHighlightList(tripHighlightResponse.data);
+      } catch (error) {
+        notify({
+          type: "error",
+          message: error.message ?? "Something went wrong. Please try again",
+        });
+      }
+    };
     fetchTripHighlights();
-  },[])
+  }, []);
   const handleClick = () => {
     setModalOpen(true);
     setTour({});
@@ -171,6 +172,7 @@ const ToursController = () => {
     if (image) {
       fD.append("file", image);
     }
+    console.log(formData.inclusions);
     fD.append("destinationIds", JSON.stringify(formData.destinationIds));
     fD.append("travelThemeIds", JSON.stringify(formData.travelThemeIds));
     fD.append("title", formData.title);
@@ -178,12 +180,12 @@ const ToursController = () => {
     fD.append("overview", formData.overview);
     fD.append("tripHighlights", JSON.stringify(formData.tripHighlights));
     fD.append("itinerary", JSON.stringify(formData.itinerary));
-    fD.append("inclusions", JSON.stringify([formData.inclusions]));
-    fD.append("exclusions", JSON.stringify([formData.exclusions]));
+    fD.append("inclusions", formData.inclusions);
+    fD.append("exclusions", formData.exclusions);
     fD.append("hotels", JSON.stringify(formData.hotels));
     fD.append("packageRate", JSON.stringify(formData.packageRate));
     fD.append("discountInPercentage", parseInt(formData.discountInPercentage));
-    
+
     try {
       let responseMessage;
       let response;
@@ -272,7 +274,7 @@ const ToursController = () => {
         onDeleteButtonClick={onDeleteButtonClick}
         onViewButtonClick={handleViewButtonClick}
         destinationList={destinationList}
-        travelThemeList = {travelThemeList}
+        travelThemeList={travelThemeList}
       />
       <ToursViewModel
         openedView={openedView}

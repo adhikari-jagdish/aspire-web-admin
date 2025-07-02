@@ -58,10 +58,12 @@ class TourRepository {
     }
   }
 
-   //Function to get  tour package by id
+  //Function to get  tour package by id
   async getTourPackageById(tourPackageId) {
     try {
-      const response = await this.AxiosService.get("/api/getTourPackageById/"+tourPackageId);
+      const response = await this.AxiosService.get(
+        "/api/getTourPackageById/" + tourPackageId
+      );
 
       if (response.status >= 200 || response.status < 300) {
         return {
@@ -83,10 +85,12 @@ class TourRepository {
     }
   }
 
-   //Function to get  tour package by destination id
+  //Function to get  tour package by destination id
   async getTourPackagesByDestinationId(destinationId) {
     try {
-      const response = await this.AxiosService.get("/api/getTourPackagesByDestinationId/"+destinationId);
+      const response = await this.AxiosService.get(
+        "/api/getTourPackagesByDestinationId/" + destinationId
+      );
 
       if (response.status >= 200 || response.status < 300) {
         return {
@@ -108,10 +112,12 @@ class TourRepository {
     }
   }
 
-   //Function to get  tour package by travelTheme id
+  //Function to get  tour package by travelTheme id
   async getTourPackagesByTravelThemeId(travelThemeId) {
     try {
-      const response = await this.AxiosService.get("/api/getTourPackagesByTravelThemeId/"+travelThemeId);
+      const response = await this.AxiosService.get(
+        "/api/getTourPackagesByTravelThemeId/" + travelThemeId
+      );
 
       if (response.status >= 200 || response.status < 300) {
         return {
@@ -133,10 +139,13 @@ class TourRepository {
     }
   }
 
-     //Function to get  tour package by destination id
+  //Function to get  tour package by destination id
   async updateTourPackage(formData, tourPackageId) {
     try {
-      const response = await this.AxiosService.put("/api/updateTourPackage/"+tourPackageId, formData);
+      const response = await this.AxiosService.put(
+        "/api/updateTourPackage/" + tourPackageId,
+        formData
+      );
 
       if (response.status >= 200 || response.status < 300) {
         return {
@@ -158,10 +167,12 @@ class TourRepository {
     }
   }
 
-     //Function to delete  tour package by  id
+  //Function to delete  tour package by  id
   async deleteTourPackage(tourPackageId) {
     try {
-      const response = await this.AxiosService.delete("/api/deleteTourPackage/"+tourPackageId);
+      const response = await this.AxiosService.delete(
+        "/api/deleteTourPackage/" + tourPackageId
+      );
 
       if (response.status >= 200 || response.status < 300) {
         return {
@@ -182,7 +193,6 @@ class TourRepository {
       throw new Error("Oops! Something went wrong!");
     }
   }
-  
 }
 
 export default TourRepository;

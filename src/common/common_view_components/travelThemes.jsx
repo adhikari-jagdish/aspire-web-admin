@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import TravelThemeRepository from "../../travel themes/repository/travelTheme_repository";
+import TravelThemeRepository from "../../travel_themes/repository/travelTheme_repository";
 import { Title } from "@mantine/core";
 import useAuth from "../../auth/components/use_auth";
 import { useNotification } from "../hooks/useNotification";
 
-const TravelThemes = ({name, value, onChange}) => {
+const TravelThemes = ({ name, value, onChange }) => {
   const [travelThemeList, setTravelThemeList] = useState([]);
   const { getToken } = useAuth();
-const notify = useNotification();
-  
+  const notify = useNotification();
 
   const travelThemeRepository = new TravelThemeRepository(getToken);
 
@@ -30,10 +29,12 @@ const notify = useNotification();
   }, []);
 
   const handleChange = (id) => {
-    const updated = value.includes(id)? value.filter(v => v !== id) : [...value, id];
+    const updated = value.includes(id)
+      ? value.filter((v) => v !== id)
+      : [...value, id];
 
-    onChange({target : { name, value: updated}})
-  }
+    onChange({ target: { name, value: updated } });
+  };
   return (
     <div>
       <Title
