@@ -7,13 +7,12 @@ const titles = [
   {name: "Title", label: "title"},
   {name: "Duration", label: "duration"},
   {name: "Overview", label: "overview"},
-  {name: "Package Inclusions", label: "packageInclusions"},
+  {name: "Trip Highlights", label: "tripHighlights"},
   {name: "Itinerary", label: "itinerary"},
   {name: "Inclusions", label: "inclusions"},
   {name: "Exclusions", label: "exclusions"},
   {name: "Hotels", label: "hotels"},
   {name: "Discount In Percentage", label: "discountInPercentage"},
-  {name : "File", label: "file"},
 ];
 const ToursViewModel = ({
   openedView,
@@ -21,17 +20,20 @@ const ToursViewModel = ({
   tour,
   destinationList,
   travelThemeList,
+  tripHighlightList
 }) => {
   const destinationIds = tour.destinationIds;
   const destinations = destinationList?.filter((dl) =>
     destinationIds?.some((d) => dl._id === d)
   );
-
   const travelThemeIds = tour.travelThemeIds;
   const travelThemes = travelThemeList?.filter((tl) =>
     travelThemeIds?.some((t) => tl._id === t)
   );
-  return (
+ const tripHighlightIds = tour?.tripHighlights?.map(t => t.tripHighlightsId);
+ const tripHighlights = tripHighlightList.filter(trip => tripHighlightIds?.some(t => trip._id === t));
+ 
+ return (
     <Modal
       opened={openedView}
       onClose={onClose}
@@ -57,9 +59,9 @@ const ToursViewModel = ({
               content = value.map((v, idx) => <SafeHtml key={idx} html={v} />);
             } else if( key === "itinerary" && Array.isArray(value)) {
               content = (
-                <ul>
+                <ul className="space-y-3">
                   {value.map((day, idx) => (
-                    <li className="font-[500]">
+                    <li>
                       <span>{day.dayAndTitle}</span> <br /><span>Details: </span>  {day.details?.[0]}
                     </li>
                   ))}
@@ -67,31 +69,39 @@ const ToursViewModel = ({
               )
             } else if(key === "hotels" && Array.isArray(value)){
               content = (
-                <ul>
+                <ul className="space-y-3">
                   {value.map((hotel, idx) => (
-                    <li key={idx}>{hotel.hotelCategory}</li>
+                    <li key={idx}>{hotel?.title}</li>
                   ))}
                 </ul>
               )
-            } else if (key === "file" && value){
+            } else if( key === "tripHighlights" && Array.isArray(value)){
               content = (
-                <a href={value} target="_blank" rel="noopener noreferrer">View File</a>
+                <ul className="space-y-3">
+                  {value.map((trip, idx )=> (
+                    <div key={idx}>
+                      <li>Title: {tripHighlights[idx]?.title}  </li>
+                    <li>Description: {trip.description}</li>
+                    </div>
+                  ))}
+                </ul>
               )
-            } else {
+            }
+             else {
               content = <Text inherit>{value || "N/A"}</Text>
             }
          return (
             <>
               <Title style={{ fontWeight: "500", fontSize: "15px" }} order={4}>
-            {t.name}
+            {t.name }
           </Title>
-          <Text inherit>{content}</Text>
+          <Text inherit>{content || "N/A"}</Text>
             </>
           )})}
 
           
 
-          {/* {tour?.image && (
+          {tour?.image && (
             <>
               <Title style={{ fontWeight: "500", fontSize: "15px" }} order={4}>
                 Image
@@ -103,7 +113,7 @@ const ToursViewModel = ({
                 withPlaceHolder
               />
             </>
-          )} */}
+          )}
         </Stack>
       ) : (
         <Text color="dimmed">No tour data available.</Text>

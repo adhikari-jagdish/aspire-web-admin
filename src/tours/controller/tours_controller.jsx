@@ -9,6 +9,7 @@ import DestinationRepository from "../../destinations/repository/destination_rep
 import ToursViewModel from "../components/tours_view_model";
 import ToursAddEditModel from "../components/tour_add_edit_model";
 import TravelThemeRepository from "../../Travel Themes/repository/travelTheme_repository";
+import TripHighlightRepository from "../../trip highlights/repository/tripHighlight_repository";
 
 const ToursController = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -16,7 +17,7 @@ const ToursController = () => {
   const [tourList, setTourList] = useState([]);
   const [tour, setTour] = useState({});
   const { getToken } = useAuth();
-  const [file, setFile] = useState(null);
+  const [image, setImage] = useState(null);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
@@ -82,10 +83,29 @@ const ToursController = () => {
     };
     fetchTravelThemes();
   }, []);
+
+  //get all trip highlights
+  const [tripHighlightList, setTripHighlightList] = useState([]);
+  const tripHighlightRepository = new TripHighlightRepository(getToken);
+
+  useEffect(() => {
+    const fetchTripHighlights = async () => {
+      try {
+        const tripHighlightResponse = await tripHighlightRepository.getTripHighlights();
+          setTripHighlightList(tripHighlightResponse.data);
+    } catch (error) {
+      notify({
+        type: "error",
+        message: error.message ?? "Something went wrong. Please try again"
+      })
+    }
+    }
+    fetchTripHighlights();
+  },[])
   const handleClick = () => {
     setModalOpen(true);
     setTour({});
-    setFile(null);
+    setImage(null);
   };
 
   const handleEditButtonClick = (item) => {
@@ -93,7 +113,7 @@ const ToursController = () => {
     setTour(item);
     setModalOpen(true);
     setIdToUpdate(item?._id);
-    setFile(null);
+    setImage(null);
   };
 
   const onDeleteButtonClick = (item) => {
@@ -121,12 +141,11 @@ const ToursController = () => {
     }
   };
 
-  const handleFileSelect = (file) => {
-    setFile(file);
+  const handleImageSelect = (image) => {
+    setImage(image);
   };
 
   const handleSubmit = async (formData) => {
-    console.log(formData)
     if (
       !formData.destinationIds ||
       !formData.travelThemeIds ||
@@ -149,8 +168,8 @@ const ToursController = () => {
     }
     showLoading();
     const fD = new FormData();
-    if (file) {
-      fD.append("file", file);
+    if (image) {
+      fD.append("file", image);
     }
     fD.append("destinationIds", JSON.stringify(formData.destinationIds));
     fD.append("travelThemeIds", JSON.stringify(formData.travelThemeIds));
@@ -169,7 +188,7 @@ const ToursController = () => {
       let responseMessage;
       let response;
       if (isEditTour) {
-        response = await tourRepository.updateHotel(fD, idToUpdate);
+        response = await tourRepository.updateTourPackage(fD, idToUpdate);
         setTourList((prev) =>
           prev.map((item) =>
             item._id === idToUpdate
@@ -187,7 +206,7 @@ const ToursController = () => {
                   hotels: formData.hotels,
                   packageRate: formData.packageRate,
                   discountInPercentage: formData.discountInPercentage,
-                  file: file || item.file,
+                  file: image || item.file,
                 }
               : item
           )
@@ -199,7 +218,7 @@ const ToursController = () => {
 
       responseMessage = response.message;
       setModalOpen(false);
-      setFile(null);
+      setImage(null);
       setIsEditTour(false);
       setTour({});
       notify({
@@ -234,7 +253,7 @@ const ToursController = () => {
     // { label: "Hotels", accessor: "hotels" },
     // { label: "Package Rate", accessor: "packageRate" },
     { label: "Discount", accessor: "discountInPercentage" },
-    { label: "File", accessor: "file" },
+    { label: "Image", accessor: "file" },
   ];
   return (
     <>
@@ -244,7 +263,7 @@ const ToursController = () => {
           setModalOpen(false);
           setIsEditTour(false);
           setTour({});
-          setFile(null);
+          setImage(null);
         }}
         columns={columns}
         tours={tourList}
@@ -261,6 +280,7 @@ const ToursController = () => {
         tour={tour}
         destinationList={destinationList}
         travelThemeList={travelThemeList}
+        tripHighlightList={tripHighlightList}
       />
       <ToursAddEditModel
         opened={modalOpen}
@@ -268,10 +288,10 @@ const ToursController = () => {
           setIsEditTour(false);
           setModalOpen(false);
           setTour({});
-          setFile(null);
+          setImage(null);
         }}
         handleSubmit={handleSubmit}
-        handleFileSelect={handleFileSelect}
+        handleImageSelect={handleImageSelect}
         isEditTour={isEditTour}
         tour={tour}
         destinationList={destinationList}

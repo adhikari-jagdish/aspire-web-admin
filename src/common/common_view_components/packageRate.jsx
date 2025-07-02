@@ -117,20 +117,30 @@ const PackageRate = ({ name, value, onChange, isEditTour }) => {
               </div>
 
               <div>
-                <h2 className="font-semibold text-[17px]">Rates:</h2>
+                <h2 className="font-semibold text-[16px]">Rates:</h2>
                 <Group grow justify="center">
                   {currencyFields.map(({ label, name }) => (
                     <TextInput
+                      min={0}
                       key={name}
                       label={label}
                       type="number"
-                      value={p[name]}
-                      onChange={(e) => handleUpdate(idx, name, e.target.value)}
-                      placeholder={`Enter Rate in ${label}`}
+                      value={p[name] === 0 ? "" : p[name] || ""}
+                      onChange={(e) =>{ 
+                        const value = e.target.value; 
+                      handleUpdate(idx, name, value === "" ? "" : Number(value))}}
+                      placeholder={`Rate in ${label}`}
                       name={name}
                       required
                       labelProps={{
-                        style: { fontSize: "13px", fontWeight: 500 },
+                        style: { fontSize: "13px", fontWeight: 500,  },
+                      }}
+                      className="placeholder:text-sm"
+                      onWheel={e => e.target.blur()}
+                      onKeyDown={e => {
+                        if(["e", "E", "+", "-"].includes(e.key)){
+                          e.preventDefault();;
+                        }
                       }}
                     />
                   ))}

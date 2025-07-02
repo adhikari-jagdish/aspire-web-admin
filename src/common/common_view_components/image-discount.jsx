@@ -1,13 +1,13 @@
 import { useState } from "react";
-import FilePicker from "./file_picker";
+import ImagePicker from "./image_picker";
 
-const FileDiscount = ({fileName, discountName, discountValue, onChange, onFileChange}) => {
-     const [file, setFile] = useState(null);
+const ImageDiscount = ({imageName, discountName, discountValue, onChange, onImageChange}) => {
+     const [image, setImage] = useState(null);
 
-  const handleFileSelect = (file) => {
-    setFile(file);
-    onChange({target: {name: fileName, value: file}});
-    onFileChange?.(file);
+  const handleImageSelect = (image) => {
+    setImage(image);
+    onChange({target: {name: imageName, value: image}});
+    onImageChange?.(image);
   };
 
   const handleDiscountChange = (value) => {
@@ -17,13 +17,13 @@ const FileDiscount = ({fileName, discountName, discountValue, onChange, onFileCh
   return (
     <div className="flex gap-20 w-[100%]">
             <div className="flex flex-col items-start ">
-              <label htmlFor={fileName} className="text-xl font-bold">
-                File
+              <label htmlFor={imageName} className="text-xl font-bold">
+                Image
               </label>
               <div>
-                <FilePicker
-                  onFileSelect={handleFileSelect}
-                  defaultFile={null}
+                <ImagePicker
+                  onImageSelect={handleImageSelect}
+                  defaultimage={null}
                 />
               </div>
             </div>
@@ -46,4 +46,4 @@ const FileDiscount = ({fileName, discountName, discountValue, onChange, onFileCh
   )
 }
 
-export default FileDiscount;
+export default ImageDiscount;

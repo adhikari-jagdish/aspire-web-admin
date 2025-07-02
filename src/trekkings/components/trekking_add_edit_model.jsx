@@ -5,7 +5,7 @@ import Itinerary from "../../common/common_view_components/itinerary";
 import Inclusions from "../../common/common_view_components/inclusions";
 import Exclusions from "../../common/common_view_components/exclusions";
 import Hotels from "../../common/common_view_components/hotels";
-import ImageDiscount from "../../common/common_view_components/file-discount";
+// import ImageDiscount from "../../common/common_view_components/file-discount";
 import { useEffect, useState } from "react";
 import Destinations from "../../common/common_view_components/destinations";
 import TravelThemes from "../../common/common_view_components/travelThemes";
@@ -148,12 +148,12 @@ const TrekkingsAddEditModel = ({
         onChange={handleChange} />
 
         {/*  Image & Discount  */}
-        <ImageDiscount
+        {/* <ImageDiscount
             imageName="image"
             discountName="discount"
             discountValue={formData.discount}
             onChange={handleChange}
-          />
+          /> */}
       </div>
       <div className="flex items-center justify-end pr-10 pb-4 gap-4">
         <Button variant="default"  onClick={() => window.history.back()}>

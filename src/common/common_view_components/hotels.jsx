@@ -32,6 +32,7 @@ const Hotels = ({ name, onChange, value, isEditTour }) => {
   useEffect(() => {
     if(isEditTour && Array.isArray(value)){
       const hotel = hotelList.filter(h => value.some(v => h._id === v._id));
+      
       setSelectedHotels(hotel)
     }
   },[isEditTour, value, hotelList])
@@ -44,20 +45,24 @@ const Hotels = ({ name, onChange, value, isEditTour }) => {
         const updated = [...selectedHotels, hotel];
         setSelectedHotels(updated);
         const ids = updated.map((u) => u._id);
-        onChange({ target: { name, value: ids } });
+        onChange({ target: { name, value: [...existing, ids] } });
       }
     }
   };
 
   const removeHotelRow = (idx, hotelId) => {
-    const hotel = selectedHotels.find((s) => s._id === hotelId);
+    let updated = [];
 
-    if (hotel) {
-      const updated = selectedHotels.filter((_, i) => i !== idx);
-      setSelectedHotels(updated);
-      const ids = updated.map((u) => u._id);
-      onChange({ target: { name, value: ids } });
+    if(isEditTour){
+      updated = selectedHotels.filter(sh => sh._id !== hotelId);
+    } else {
+      updated = selectedHotels.filter((_, i) => i !== idx);
     }
+      setSelectedHotels(updated);
+
+      const ids = updated.map((u) => u._id);
+      
+      onChange({ target: { name, value: ids } });
   };
 
   return (

@@ -5,12 +5,13 @@ import Itinerary from "../../common/common_view_components/itinerary";
 import Inclusions from "../../common/common_view_components/inclusions";
 import Exclusions from "../../common/common_view_components/exclusions";
 import Hotels from "../../common/common_view_components/hotels";
-import FileDiscount from "../../common/common_view_components/file-discount";
+import FileDiscount from "../../common/common_view_components/image-discount";
 import { useEffect, useState } from "react";
 import Destinations from "../../common/common_view_components/destinations";
 import TravelThemes from "../../common/common_view_components/travelThemes";
 import PackageRate from "../../common/common_view_components/packageRate";
 import TripHighlights from "../../common/common_view_components/tripHighlights";
+import ImageDiscount from "../../common/common_view_components/image-discount";
 
 // Define initial form state for type safety and consistency
 const initialFormState = {
@@ -33,7 +34,7 @@ const ToursAddEditModel = ({
   onClose,
   isEditTour,
   handleSubmit,
-  handleFileSelect,
+  handleImageSelect,
   tour = {},
   idToUpdate,
 }) => {
@@ -68,17 +69,17 @@ const ToursAddEditModel = ({
       [name]: value,
     }));
   };
-
-  const onFileChange = (file) => {
-    setFormData((prev) => ({ ...prev, file }));
-    if (handleFileSelect) {
-      handleFileSelect(file);
+  const onImageChange = (image) => {
+    setFormData((prev) => ({ ...prev, image }));
+    if (handleImageSelect) {
+      handleImageSelect(image);
     }
   };
 
   const onSubmit = () => {
     handleSubmit(formData, formData.file, isEditTour, idToUpdate);
   };
+  console.log(formData)
   return (
     <Modal
       opened={opened}
@@ -121,6 +122,7 @@ const ToursAddEditModel = ({
             name="tripHighlights"
             value={formData.tripHighlights}
             onChange={handleChange}
+            isEditTour={isEditTour}
           />
           <Itinerary
             name="itinerary"
@@ -165,12 +167,12 @@ const ToursAddEditModel = ({
             //   setFormData((prev) => ({ ...prev, hotels: value }))
             // }
           />
-          <FileDiscount
-            fileName="file"
+          <ImageDiscount
+            imageName="file"
             discountName="discountInPercentage"
             discountValue={formData.discountInPercentage}
             onChange={handleChange}
-            onFileChange={onFileChange}
+            onImageChange={onImageChange}
           />
         </div>
         <Group position="right" mt="md" pr={10} pb={4} spacing="sm">

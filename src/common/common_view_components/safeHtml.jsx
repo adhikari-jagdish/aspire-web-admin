@@ -1,10 +1,14 @@
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
 
-const SafeHtml = ({html}) => {
-    return (
-      <div  dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(html),}}
-      />
-    )
-  }
+const SafeHtml = ({ html }) => {
+  console.log({ html });
+  return (
+    <div
+      dangerouslySetInnerHTML={{
+        __html: DOMPurify.sanitize(html)
+      }}
+    />
+  );
+};
 
-  export default SafeHtml;
+export default SafeHtml;

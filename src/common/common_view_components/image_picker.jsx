@@ -14,6 +14,15 @@ const ImagePicker = ({ onImageSelect, defaultImage }) => {
         setError("Please select an image file");
         return;
       }
+
+      const maxSizeInMb = 2;
+      const maxSizeInBytes = maxSizeInMb * 1024 * 1024;
+      
+      if(file.size > maxSizeInBytes){
+        setError(`Image must be smaller than ${maxSizeInMb} MB.`);
+        return;
+      }
+      
       setError(null);
       const reader = new FileReader();
       reader.onload = (e) => {
