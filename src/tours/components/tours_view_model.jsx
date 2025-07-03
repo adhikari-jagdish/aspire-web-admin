@@ -12,7 +12,7 @@ const titles = [
   {name: "Inclusions", label: "inclusions"},
   {name: "Exclusions", label: "exclusions"},
   {name: "Hotels", label: "hotels"},
-  {name: "Discount In Percentage", label: "discountInPercentage"},
+  {name: "Discount", label: "discountInPercentage"},
 ];
 const ToursViewModel = ({
   openedView,
@@ -39,8 +39,24 @@ const ToursViewModel = ({
       onClose={onClose}
       title="View Tour Package"
       centered
+      size='xxl'
       style={{ fontSize: "15px" }}
     >
+    {tour?.image && (
+            <>
+              <Title style={{ fontWeight: "500", fontSize: "20px" }} order={4}>
+                Image
+              </Title>
+              <Image
+                src={tour.image}
+                alt="Travel Theme"
+                radius="md"
+                 h={1000}
+                withPlaceHolder
+                fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+              />
+            </>
+          )}
       {tour ? (
         <Stack spacing="sm" className="text-[14px]">
           {titles.map((t, idx) => {
@@ -53,10 +69,8 @@ const ToursViewModel = ({
               content = destinations?.map(d => d.title).join(", ") || "N/A";
             } else if (key === "travelThemeIds") {
               content = travelThemes?.map(t => t.title).join(", ") || "N/A";
-            } else if (key === "overview"){
+            } else if (key === "overview" || key === "inclusions" || key ==="exclusions"){
               content = <SafeHtml html={value} />
-            }   else if ((key === "inclusions" || key === "exclusions") && Array.isArray(value)){
-              content = value.map((v, idx) => <SafeHtml key={idx} html={v} />);
             } else if( key === "itinerary" && Array.isArray(value)) {
               content = (
                 <ul className="space-y-3">
@@ -86,34 +100,27 @@ const ToursViewModel = ({
                   ))}
                 </ul>
               )
+            } else if(key === "duration"){
+              content = ( value + " day(s)")
+            } else if(key === "discountInPercentage"){
+              content = ( value + "%")
             }
              else {
               content = <Text inherit>{value || "N/A"}</Text>
             }
          return (
             <>
-              <Title style={{ fontWeight: "500", fontSize: "15px" }} order={4}>
+            
+              <Title style={{ fontWeight: "500", fontSize: "20px" }} order={4}>
             {t.name }
           </Title>
-          <Text inherit>{content || "N/A"}</Text>
+          <Text  tyle={{ fontSize: "18px" }}>{content || "N/A"}</Text>
             </>
           )})}
 
           
 
-          {tour?.image && (
-            <>
-              <Title style={{ fontWeight: "500", fontSize: "15px" }} order={4}>
-                Image
-              </Title>
-              <Image
-                src={tour.image}
-                alt="Travel Theme"
-                readius="md"
-                withPlaceHolder
-              />
-            </>
-          )}
+          
         </Stack>
       ) : (
         <Text color="dimmed">No tour data available.</Text>

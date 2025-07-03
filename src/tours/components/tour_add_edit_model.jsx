@@ -22,8 +22,8 @@ const initialFormState = {
   overview: "",
   tripHighlights: [],
   itinerary: [],
-  inclusions: [],
-  exclusions: [],
+  inclusions: "",
+  exclusions: "",
   hotels: [],
   packageRate: "",
   discountInPercentage: 0,
@@ -51,17 +51,18 @@ const ToursAddEditModel = ({
         overview: tour.overview || "",
         tripHighlights: Array.isArray(tour.tripHighlights)? tour.tripHighlights: [],
         itinerary: Array.isArray(tour.itinerary) ? tour.itinerary : [],
-        inclusions: Array.isArray(tour.inclusions) ? tour.inclusions : [],
-        exclusions: Array.isArray(tour.exclusions) ? tour.exclusions : [],
+        inclusions: tour.inclusions || "",
+        exclusions: tour.exclusions || "",
         hotels: Array.isArray(tour.hotels) ? tour.hotels : [],
         packageRate: Array.isArray(tour.packageRate)? tour.packageRate : [],
-        discountInPercentage: String(tour.discountInPercentage ?? 0),
+        discountInPercentage: tour.discountInPercentage ?? 0,
         file: tour.file || null,
       });
     } else {
       setFormData(initialFormState);
     }
   }, [isEditTour, opened, tour]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -79,7 +80,6 @@ const ToursAddEditModel = ({
   const onSubmit = () => {
     handleSubmit(formData, formData.file, isEditTour, idToUpdate);
   };
-  console.log(formData)
   return (
     <Modal
       opened={opened}
@@ -89,7 +89,7 @@ const ToursAddEditModel = ({
           {isEditTour ? "Edit" : "Add"} Tour Packages
         </Title>
       }
-      size="lg"
+      size="xxl"
       centered
       padding="lg"
       radius="md"
@@ -173,6 +173,7 @@ const ToursAddEditModel = ({
             discountValue={formData.discountInPercentage}
             onChange={handleChange}
             onImageChange={onImageChange}
+            isEditTour={isEditTour}
           />
         </div>
         <Group position="right" mt="md" pr={10} pb={4} spacing="sm">

@@ -117,7 +117,7 @@ const TripHighlights = ({ name, onChange, value, isEditTour }) => {
         <select
           name={name}
           id={name}
-          className="border border-gray-500 outline-0 rounded  h-[30px] w-[500px] mt-2 cursor-pointer text-center "
+          className="border border-gray-500 outline-0 rounded  h-[30px] w-[85%] mt-2 cursor-pointer text-center "
           onChange={handleTripHighlightChange}
         >
           <option value="">List of Trip Highlights</option>
@@ -135,7 +135,7 @@ const TripHighlights = ({ name, onChange, value, isEditTour }) => {
 
       {/* selected TripHighlights */}
       {selectedTripHighlights.length > 0 && (
-        <ul className="border border-gray-400 rounded p-2 w-[500px] flex flex-col gap-6">
+        <ul className="border border-gray-400 rounded p-2 w-full flex flex-col gap-6">
           {selectedTripHighlights.map((trip, idx) => {
             return <>
               <li

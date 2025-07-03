@@ -10,7 +10,6 @@ const Hotels = ({ name, onChange, value, isEditTour }) => {
   const [selectedHotels, setSelectedHotels] = useState([]);
   const { getToken } = useAuth();
   const notify = useNotification();
-
   const hotelRepository = new HotelRepository(getToken);
   useEffect(() => {
     //get all hotels
@@ -27,18 +26,21 @@ const Hotels = ({ name, onChange, value, isEditTour }) => {
     };
     fetchHotels();
   }, []);
-
   useEffect(() => {
-    if (isEditTour && Array.isArray(value)) {
-      const hotel = hotelList.filter((h) => value.some((v) => h._id === v._id));
-
+    if (isEditTour && Array.isArray(value) && hotelList.length > 0) {
+      const hotel = hotelList.filter((h) =>
+        value.some((v) =>
+          typeof v === "object" ? h._id === v._id : h._id === v
+        )
+      );
       setSelectedHotels(hotel);
+      // setSelectedHotels(updated);
+      
     }
   }, [isEditTour, value, hotelList]);
 
   const handleHotelChange = (e) => {
     const selected = e.target.value;
-    console.log(`Selected hotel ${selected}`);
 
     if (selected && !selectedHotels?.some((s) => s._id === selected)) {
       const hotel = hotelList.find((h) => h._id === selected);
@@ -52,7 +54,6 @@ const Hotels = ({ name, onChange, value, isEditTour }) => {
       }
     }
   };
-
   const removeHotelRow = (idx, hotelId) => {
     let updated = [];
 
@@ -64,10 +65,8 @@ const Hotels = ({ name, onChange, value, isEditTour }) => {
     setSelectedHotels(updated);
 
     const ids = updated.map((u) => u._id);
-
     onChange({ target: { name, value: ids } });
   };
-
   return (
     <div className="w-full space-y-4">
       <div className="flex items-center w-[100%] gap-5">

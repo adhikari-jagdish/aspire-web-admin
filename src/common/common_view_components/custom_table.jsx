@@ -16,6 +16,7 @@ const CustomTable = ({
   shouldShowDelete = false,
   destinationList,
 }) => {
+  console.log({ data });
   const safeColumns = Array.isArray(columns) ? columns : [];
   return (
     <Box
@@ -69,7 +70,7 @@ const CustomTable = ({
                     {safeColumns.map((col) => {
                       return (
                         <Table.Td key={col.accessor}>
-                          {col.accessor === "image"? (
+                          {col.accessor === "image" ? (
                             <img
                               src={item[col.accessor]}
                               alt={index + 1}
@@ -102,15 +103,20 @@ const CustomTable = ({
                             </span>
                           ) : col.accessor === "destinationIds" ? (
                             <span className="w-[250px]">
-                              {item[col.accessor].map(
-                                (d) =>
-                                  destinationList.find((dl) => dl._id === d)
-                                    ?.title || "N/A").join(", ")
-                              }
+                              {item[col.accessor]
+                                .map(
+                                  (d) =>
+                                    destinationList.find((dl) => dl._id === d)
+                                      ?.title || "N/A"
+                                )
+                                .join(", ")}
                             </span>
                           ) : (
                             <span className="line-clamp-3 overflow-hidden">
-                              {item[col?.accessor]}
+                              {typeof item[col?.accessor] === "object" &&
+                              item[col?.accessor] instanceof File
+                                ? item[col.accessor].name
+                                : String(item[col?.accessor] ?? "")}
                             </span>
                           )}
                         </Table.Td>

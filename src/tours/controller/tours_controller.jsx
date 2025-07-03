@@ -147,6 +147,8 @@ const ToursController = () => {
   };
 
   const handleSubmit = async (formData) => {
+    console.log(formData);
+
     if (
       !formData.destinationIds ||
       !formData.travelThemeIds ||
@@ -172,7 +174,11 @@ const ToursController = () => {
     if (image) {
       fD.append("file", image);
     }
-    console.log(formData.inclusions);
+
+    // Normalize hotel data to array of _id strings
+    const hotelIds = formData.hotels.map((hotel) =>
+      typeof hotel === "object" && hotel !== null ? hotel._id : hotel
+    );
     fD.append("destinationIds", JSON.stringify(formData.destinationIds));
     fD.append("travelThemeIds", JSON.stringify(formData.travelThemeIds));
     fD.append("title", formData.title);
@@ -180,9 +186,9 @@ const ToursController = () => {
     fD.append("overview", formData.overview);
     fD.append("tripHighlights", JSON.stringify(formData.tripHighlights));
     fD.append("itinerary", JSON.stringify(formData.itinerary));
-    fD.append("inclusions", formData.inclusions);
-    fD.append("exclusions", formData.exclusions);
-    fD.append("hotels", JSON.stringify(formData.hotels));
+    fD.append("inclusions", JSON.stringify(formData.inclusions));
+    fD.append("exclusions", JSON.stringify(formData.exclusions));
+    fD.append("hotels", JSON.stringify(hotelIds));
     fD.append("packageRate", JSON.stringify(formData.packageRate));
     fD.append("discountInPercentage", parseInt(formData.discountInPercentage));
 

@@ -69,7 +69,7 @@ const Itinerary = ({ name, value, onChange, isEditTour }) => {
 
   return (
     <div>
-      <div className="max-w-[100%] flex justify-between items-center">
+      <div className=" flex justify-between items-center">
         <Title order={4} mt={20} mb={10} ta="left" c="dark" className="flex flex-col">
           Itinerary
           <span className="border border-b-1 w-[80px]"></span>
@@ -83,12 +83,12 @@ const Itinerary = ({ name, value, onChange, isEditTour }) => {
         </button>
       </div>
 
-      <div className="border border-gray-400 rounded p-2 w-full">
+      <div className="border border-gray-400 rounded p-2 ">
         {itineraries.length > 0 ? (
           itineraries.map((item, idx) => (
-            <div key={idx}>
-              <div className="flex justify-between p-1">
-                <div className="space-y-5">
+            <div key={idx} >
+              <div className="flex justify-between p-1 ">
+                <div className="space-y-5 w-full">
                   <div className="flex gap-5">
                     <div className="border flex items-center space-x-3 border-gray-400 rounded p-1">
                       <span>Day</span>
@@ -106,7 +106,7 @@ const Itinerary = ({ name, value, onChange, isEditTour }) => {
                       onChange={(e) =>
                         updateItineraryField(idx, "title", e.target.value)
                       }
-                      className="outline-0 border border-gray-400 p-2 rounded w-[300px]"
+                      className="outline-0 border border-gray-400 p-2 rounded w-[95%]"
                     />
                   </div>
 
@@ -118,7 +118,7 @@ const Itinerary = ({ name, value, onChange, isEditTour }) => {
                     onChange={(e) =>
                       updateItineraryField(idx, "details", e.target.value)
                     }
-                    className="border border-gray-400 text-black w-[420px] rounded p-2 resize-none outline-0"
+                    className="border border-gray-400 text-black w-full rounded p-2 resize-none outline-0"
                   />
                 </div>
 

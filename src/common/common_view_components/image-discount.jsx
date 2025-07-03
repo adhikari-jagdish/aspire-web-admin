@@ -1,9 +1,17 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ImagePicker from "./image_picker";
 
-const ImageDiscount = ({imageName, discountName, discountValue, onChange, onImageChange}) => {
+const ImageDiscount = ({imageName, discountName, discountValue, onChange, onImageChange, isEditTour}) => {
      const [image, setImage] = useState(null);
+     const [discount, setDiscount] = useState('');
 
+     useEffect(() => {
+
+      if(isEditTour) {
+        setDiscount(discountValue)
+      }
+
+     },[isEditTour, discountValue])
   const handleImageSelect = (image) => {
     setImage(image);
     onChange({target: {name: imageName, value: image}});
@@ -11,6 +19,8 @@ const ImageDiscount = ({imageName, discountName, discountValue, onChange, onImag
   };
 
   const handleDiscountChange = (value) => {
+    setDiscount(value);
+    console.log(value)
     onChange({target: {name: discountName, value  }})
       
   }
@@ -36,7 +46,7 @@ const ImageDiscount = ({imageName, discountName, discountValue, onChange, onImag
                 type="number"
                 name={discountName}
                 placeholder="In Percentage"
-                value={discountValue || ''}
+                value={discount || ''}
                 onChange={e => handleDiscountChange(e.target.value)}
                 className=" border border-gray-400 rounded p-2 h-[50px] outline-0 w-[120px]"
                 min={1}

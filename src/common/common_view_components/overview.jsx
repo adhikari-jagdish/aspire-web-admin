@@ -31,7 +31,7 @@ const Overview = ({parent, name, value, onChange }) => {
   },[value, overviewEditor])
 
   return (
-    <div className="max-w-[1030px]">
+    <div >
       {(parent !== 'about' || parent !== 'contact') && <Title
         order={4}
         mt={20}
