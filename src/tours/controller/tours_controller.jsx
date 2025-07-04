@@ -186,8 +186,8 @@ const ToursController = () => {
     fD.append("overview", formData.overview);
     fD.append("tripHighlights", JSON.stringify(formData.tripHighlights));
     fD.append("itinerary", JSON.stringify(formData.itinerary));
-    fD.append("inclusions", JSON.stringify(formData.inclusions));
-    fD.append("exclusions", JSON.stringify(formData.exclusions));
+    fD.append("inclusions", formData.inclusions);
+    fD.append("exclusions", formData.exclusions);
     fD.append("hotels", JSON.stringify(hotelIds));
     fD.append("packageRate", JSON.stringify(formData.packageRate));
     fD.append("discountInPercentage", parseInt(formData.discountInPercentage));

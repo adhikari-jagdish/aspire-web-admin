@@ -8,7 +8,7 @@ const CarouselViewModel = ({ openedView, onClose, carousel }) => {
       title="View Carousel"
       centered
       style={{ fontSize: "15px" }}
-      
+
     >
       {carousel ? (
         <Stack spacing="sm" className="text-[14px]">
@@ -43,7 +43,7 @@ const CarouselViewModel = ({ openedView, onClose, carousel }) => {
           )}
         </Stack>
       ) : (
-        <Text color="dimmed">No carousel data available.</Text>
+        <Text c="dimmed">No carousel data available.</Text>
       )}
     </Modal>
   );

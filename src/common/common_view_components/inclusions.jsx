@@ -7,11 +7,11 @@ import { Title } from "@mantine/core";
 import { useEffect } from "react";
 
 const Inclusions = ({ name, value, onChange, isEditTour }) => {
-  const processedValue = Array.isArray(value) ? value.join("") : value || "";
+  //const processedValue = Array.isArray(value) ? value.join("") : value || "";
   //Inclusion editor
   const inclusionEditor = useEditor({
     extensions: [StarterKit, Underline, Strike],
-    content: processedValue,
+    content: value || "",
     onUpdate({ editor }) {
       const html = editor.getHTML();
 
@@ -20,10 +20,10 @@ const Inclusions = ({ name, value, onChange, isEditTour }) => {
   });
 
   useEffect(() => {
-    if (inclusionEditor && inclusionEditor.getHTML() !== processedValue) {
-      inclusionEditor.commands.setContent(processedValue, false);
+    if (inclusionEditor && inclusionEditor.getHTML() !== value) {
+      inclusionEditor.commands.setContent(value, false);
     }
-  }, [inclusionEditor, processedValue]);
+  }, [inclusionEditor, value]);
 
   return (
     <div className="w-[1030px]">

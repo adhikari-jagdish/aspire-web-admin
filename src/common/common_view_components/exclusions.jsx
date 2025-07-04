@@ -7,12 +7,12 @@ import { Title } from "@mantine/core";
 import { useEffect } from "react";
 
 const Exclusions = ({ name, value, onChange, isEditTour }) => {
-  const processedValue = Array.isArray(value) ? value.join("") : value || "";
+  //const processedValue = Array.isArray(value) ? value.join("") : value || "";
 
   //Inclusion editor
   const exclusionEditor = useEditor({
     extensions: [StarterKit, Underline, Strike],
-    content: processedValue,
+    content: value || "",
     onUpdate({ editor }) {
       const html = editor.getHTML();
       onChange?.({
@@ -22,10 +22,10 @@ const Exclusions = ({ name, value, onChange, isEditTour }) => {
   });
 
   useEffect(() => {
-    if (exclusionEditor &&  processedValue !== exclusionEditor.getHTML()) {
-      exclusionEditor.commands.setContent(processedValue, false);
+    if (exclusionEditor &&  value !== exclusionEditor.getHTML()) {
+      exclusionEditor.commands.setContent(value, false);
     }
-  }, [exclusionEditor, processedValue]);
+  }, [exclusionEditor, value]);
 
   return (
     <div className="max-w-[1030px]">
