@@ -1,20 +1,27 @@
-const TitleDuration = ({titleName, durationName, titleValue, durationValue, onChange}) => {
-  //duration days
-  let durationDays = [];
+import { Select, Title } from "@mantine/core";
 
-  for (let i = 1; i <= 100; i++) {
-    durationDays.push(i);
-  }
+const TitleDuration = ({
+  titleName,
+  durationName,
+  titleValue,
+  durationValue,
+  onChange,
+}) => {
+  //duration days
+  let durationDays = Array.from({ length: 100 }, (_, i) => ({
+    value: String(i + 1),
+    label: `${i + 1} ${i + 1 === 1 ? "Day" : "Days"}`,
+  }));
 
   return (
-    <div className="flex gap-30">
+    <div className="flex items-center justify-center gap-30">
       <div className="flex flex-col w-[750px] gap-2">
-        <label htmlFor="title" className="text-xl font-bold">
+        <Title order={4} ta="left" c="dark" className="flex flex-col">
           Title
-        </label>
+        </Title>
         <input
           type="text"
-          name="title"
+          name={titleName}
           value={titleValue}
           onChange={onChange}
           id="title"
@@ -24,24 +31,30 @@ const TitleDuration = ({titleName, durationName, titleValue, durationValue, onCh
       </div>
 
       <div className="flex flex-col w-[500px] gap-2">
-        <label htmlFor="duration" className="text-xl font-bold">
+        <Title order={4} ta="left" c="dark" className="flex flex-col">
           Duration
-        </label>
-        <select
-          name="duration"
-          id="duration"
+        </Title>
+        <Select
+          placeholder="Max 100 Days"
+          name={durationName}
           value={durationValue}
-          onChange={onChange}
-          className="border border-gray-500 outline-0 rounded ml-1 h-[40px] cursor-pointer "
-        >
-          <option value="">Max 100 Days</option>
-          {durationDays.map((day) => (
-            <option value={day} key={day}>
-              {" "}
-              {day} {day > 1 ? " Days" : "Day"}{" "}
-            </option>
-          ))}
-        </select>
+          onChange={(val) =>
+            onChange({ target: { name: durationName, value: val } })
+          }
+          data={durationDays}
+          searchable
+          nothingFound="No match"
+          className="ml-1"
+          styles={{
+            input: {
+              height: "42px",
+              borderColor: "#4B5563",
+            },
+            dropdown: {
+              borderColor: "#4B5563",
+            },
+          }}
+        />
       </div>
     </div>
   );

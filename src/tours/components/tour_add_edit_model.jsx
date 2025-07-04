@@ -95,7 +95,7 @@ const ToursAddEditModel = ({
       radius="md"
     >
       <div className="text-[15px]">
-        <div className="space-y-6">
+        <div className="space-y-8">
           <Destinations
             name="destinationIds"
             value={formData.destinationIds}
@@ -129,6 +129,7 @@ const ToursAddEditModel = ({
             value={formData.itinerary}
             onChange={handleChange}
             isEditTour={isEditTour}
+            durationLimit = {formData.duration || "0"}
             // onChange={(value) =>
             //   setFormData((prev) => ({ ...prev, itinerary: value }))
             // }

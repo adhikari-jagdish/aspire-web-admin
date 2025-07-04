@@ -41,7 +41,6 @@ const Overview = ({parent, name, value, onChange }) => {
         className="flex flex-col"
       >
         Overview
-        <span className=" border border-b-1 w-[80px]"></span>
       </Title>}
 
       <RichTextEditor
@@ -53,13 +52,15 @@ const Overview = ({parent, name, value, onChange }) => {
             <RichTextEditor.Bold />
             <RichTextEditor.Italic />
             <RichTextEditor.Underline />
-            <RichTextEditor.Strikethrough />
           </RichTextEditor.ControlsGroup>
 
           <RichTextEditor.ControlsGroup>
             <RichTextEditor.H1 />
             <RichTextEditor.H2 />
             <RichTextEditor.H3 />
+          </RichTextEditor.ControlsGroup>
+
+          <RichTextEditor.ControlsGroup>
             <RichTextEditor.BulletList />
             <RichTextEditor.OrderedList />
           </RichTextEditor.ControlsGroup>

@@ -46,14 +46,13 @@ const TravelThemes = ({ name, value, onChange }) => {
         className="flex flex-col"
       >
         Travel Themes
-        <span className=" border border-b-1 w-[125px]"></span>
       </Title>
 
       <ul className="flex gap-5 font-normal  pl-2 flex-wrap">
         {travelThemeList?.map((t, idx) => {
           const inputId = `destination-${t?._id || idx}`;
           return (
-            <li className="space-x-2 " key={t?._id || idx}>
+            <li className="space-x-2 flex items-center justify-center " key={t?._id || idx}>
               <input
                 type="checkbox"
                 id={inputId}

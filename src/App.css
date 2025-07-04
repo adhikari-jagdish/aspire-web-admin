@@ -3,7 +3,18 @@
   src: url("../src/assets/fonts/Poppins-Regular.ttf");
 }
 
-
-
 @import "tailwindcss";
 
+/* custom tailwind utility class for hiding spinners */
+
+@layer utilities {
+  .no-spinner::-webkit-inner-spin-button,
+  .no-spinner::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  /* for firefox browser */
+  .no-spinner {
+    -moz-appearance: textfield;
+  }
+}

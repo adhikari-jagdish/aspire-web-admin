@@ -26,7 +26,7 @@ const Inclusions = ({ name, value, onChange, isEditTour }) => {
   }, [inclusionEditor, value]);
 
   return (
-    <div >
+    <div>
       <Title
         order={4}
         mt={20}
@@ -36,22 +36,22 @@ const Inclusions = ({ name, value, onChange, isEditTour }) => {
         className="flex flex-col"
       >
         Inclusions
-        <span className=" border border-b-1 w-[80px]"></span>
       </Title>
 
-      <RichTextEditor editor={inclusionEditor} >
+      <RichTextEditor editor={inclusionEditor}>
         <RichTextEditor.Toolbar sticky stickyOffset={60}>
           <RichTextEditor.ControlsGroup>
             <RichTextEditor.Bold />
             <RichTextEditor.Italic />
             <RichTextEditor.Underline />
-            <RichTextEditor.Strikethrough />
           </RichTextEditor.ControlsGroup>
 
           <RichTextEditor.ControlsGroup>
             <RichTextEditor.H1 />
             <RichTextEditor.H2 />
             <RichTextEditor.H3 />
+          </RichTextEditor.ControlsGroup>
+          <RichTextEditor.ControlsGroup>
             <RichTextEditor.BulletList />
             <RichTextEditor.OrderedList />
           </RichTextEditor.ControlsGroup>

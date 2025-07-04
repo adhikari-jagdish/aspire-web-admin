@@ -1,7 +1,6 @@
 import { Image, Modal, Stack, Text, Title } from "@mantine/core";
 
 const TripHighlightViewModel = ({ openedView, onClose, tripHighlight }) => {
-  console.log({tripHighlight})
   return (
     <Modal
       opened={openedView}
@@ -18,19 +17,22 @@ const TripHighlightViewModel = ({ openedView, onClose, tripHighlight }) => {
           </Title>
           <Text inherit>{tripHighlight?.title}</Text>
 
-          {/* {tripHighlight?.image && (
+          {tripHighlight?.icon && (
             <>
               <Title style={{ fontWeight: "500", fontSize: "15px" }} order={4}>
-                Image
+                Icon
               </Title>
               <Image
-                src={tripHighlight.image}
+                src={tripHighlight.icon}
                 alt="tripHighlight"
-                readius="md"
+                radius="md"
                 withPlaceHolder
+                h={100}
+                w="auto"
+                fit="contain"
               />
             </>
-          )} */}
+          )}
         </Stack>
       ) : (
         <Text color="dimmed">No Trip Highlight data available.</Text>

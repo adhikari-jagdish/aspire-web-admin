@@ -71,7 +71,6 @@ const PackageRate = ({ name, value, onChange, isEditTour }) => {
           className="flex flex-col"
         >
           Package Rates
-          <span className="border border-b-1 w-[120px]"></span>
         </Title>
 
         <button

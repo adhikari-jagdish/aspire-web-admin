@@ -145,7 +145,7 @@ const TripHighlights = ({ name, onChange, value, isEditTour }) => {
                 {trip?.title}
                 <button
                   onClick={() => removeTripHighlightRow(idx, trip._id)}
-                  className=" bg-red-200 text-red-600  w-fit px-2 py-1 cursor-pointer hover:bg-red-300 rounded flex items-center justify-center gap-1 text-xl"
+                  className=" bg-red-200 text-red-600 w-fit px-2 py-1 cursor-pointer hover:bg-red-300 rounded flex items-center justify-center gap-1 text-xl"
                 >
                   <IconTrash size={14} />
                 </button>
@@ -154,7 +154,7 @@ const TripHighlights = ({ name, onChange, value, isEditTour }) => {
                 key={idx}
                 value={description[idx] || ""}
                 onChange={(e) => handleDescriptionChange(e.target.value, idx)}
-                rows={5}
+                rows={6}
                 cols={5}
                 className="border border-gray-400 rounded p-2 outline-0 resize-none"
                 placeholder="Description..."

@@ -44,14 +44,13 @@ const Destinations = ({ name, value, onChange}) => {
         className="flex flex-col"
       >
         Destinations
-        <span className=" border border-b-1 w-[110px]"></span>
       </Title>
 
       <ul className="flex gap-5 font-normal  pl-2 flex-wrap">
         {destinationList?.map((d, idx) => {
           const inputId = `destination-${d?._id || idx}`;
           return (
-            <li className="space-x-2 " key={d?._id || idx}>
+            <li className="space-x-2 flex items-center justify-center " key={d?._id || idx}>
               <input
                 type="checkbox"
                 id={inputId}

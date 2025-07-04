@@ -38,7 +38,6 @@ const Exclusions = ({ name, value, onChange, isEditTour }) => {
         className="flex flex-col"
       >
         Exclusions
-        <span className=" border border-b-1 w-[80px]"></span>
       </Title>
 
       <RichTextEditor
@@ -50,19 +49,21 @@ const Exclusions = ({ name, value, onChange, isEditTour }) => {
             <RichTextEditor.Bold />
             <RichTextEditor.Italic />
             <RichTextEditor.Underline />
-            <RichTextEditor.Strikethrough />
           </RichTextEditor.ControlsGroup>
 
           <RichTextEditor.ControlsGroup>
             <RichTextEditor.H1 />
             <RichTextEditor.H2 />
             <RichTextEditor.H3 />
+          </RichTextEditor.ControlsGroup>
+
+          <RichTextEditor.ControlsGroup>
             <RichTextEditor.BulletList />
             <RichTextEditor.OrderedList />
           </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
 
-        <RichTextEditor.Content className="h-[200px] [&_ul]:list-disc [&_ol]:list-decimal overflow-y-scroll" />
+        <RichTextEditor.Content  className="h-[200px] [&_ul]:list-disc [&_ol]:list-decimal overflow-y-scroll" />
       </RichTextEditor>
     </div>
   );

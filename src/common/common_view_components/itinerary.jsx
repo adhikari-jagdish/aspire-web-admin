@@ -1,9 +1,12 @@
 import { Title } from "@mantine/core";
 import { IconPlus, IconX } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
+import { useNotification } from "../hooks/useNotification";
 
-const Itinerary = ({ name, value, onChange, isEditTour }) => {
+const Itinerary = ({ name, value, onChange, isEditTour, durationLimit }) => {
   const [itineraries, setItineraries] = useState([]);
+  const notify = useNotification();
+
   useEffect(() => {
     if(isEditTour && Array.isArray(value)){
       const initialized = value.map(v => ({
@@ -13,9 +16,18 @@ const Itinerary = ({ name, value, onChange, isEditTour }) => {
       ));
       setItineraries(initialized)
     }
-  },[isEditTour, value])
+  },[isEditTour, value]);
 
   const handleAddItinerary = () => {
+
+    if(durationLimit && itineraries.length >=durationLimit){
+      console.log('triggered')
+       notify({
+          type: "error",
+          message:  `Only ${durationLimit} itinerary items are allowed.`,
+        });
+        return;
+    }
     const newItem = {
       dayAndTitle: `Day ${itineraries.length + 1}: `,
       details: "",
@@ -67,23 +79,25 @@ const Itinerary = ({ name, value, onChange, isEditTour }) => {
     return match ? match[1] : "";
   };
 
+
+
   return (
-    <div>
-      <div className=" flex justify-between items-center">
+    <div className="">
+      <div className=" flex justify-between items-center ">
         <Title order={4} mt={20} mb={10} ta="left" c="dark" className="flex flex-col">
           Itinerary
-          <span className="border border-b-1 w-[80px]"></span>
         </Title>
 
         <button
           onClick={handleAddItinerary}
-          className="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 flex items-center gap-1"
+          className={`${durationLimit && itineraries.length >=durationLimit   ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600'} text-white px-2 py-1 rounded hover:bg-blue-700 flex items-center gap-1`}
+          // disabled={durationLimit && itineraries.length >= durationLimit}
         >
           <IconPlus size={20} />
         </button>
       </div>
 
-      <div className="border border-gray-400 rounded p-2 ">
+      <div className="border border-gray-400 rounded p-2 max-h-[550px] overflow-y-scroll">
         {itineraries.length > 0 ? (
           itineraries.map((item, idx) => (
             <div key={idx} >
@@ -111,7 +125,7 @@ const Itinerary = ({ name, value, onChange, isEditTour }) => {
                   </div>
 
                   <textarea
-                    rows={3}
+                    rows={7}
                     cols={80}
                     placeholder="Details (one per line)..."
                     value={item.details}
@@ -122,7 +136,7 @@ const Itinerary = ({ name, value, onChange, isEditTour }) => {
                   />
                 </div>
 
-                <div>
+                <div className="pl-3">
                   <button
                     onClick={() => handleRemoveItinerary(idx)}
                     className="bg-red-200 text-red-600 px-2 py-1 rounded hover:bg-red-300 flex items-center gap-1 text-xl"

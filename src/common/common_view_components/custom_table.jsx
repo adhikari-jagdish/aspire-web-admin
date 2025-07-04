@@ -16,7 +16,6 @@ const CustomTable = ({
   shouldShowDelete = false,
   destinationList,
 }) => {
-
   const safeColumns = Array.isArray(columns) ? columns : [];
   return (
     <Box
@@ -70,14 +69,14 @@ const CustomTable = ({
                     {safeColumns.map((col) => {
                       return (
                         <Table.Td key={col.accessor}>
-                          {(col.accessor === "image" || col.accessor === "file") ? (
+                          {(col.accessor === "image" || col.accessor === "file" || col.accessor === "icon") ? (
                             <img
                               src={item[col.accessor]}
                               alt={index + 1}
                               style={{
                                 width: "80px",
                                 height: "60px",
-                                objectFit: "cover",
+                                objectFit: "contain",
                               }}
                             />
                           ) : col.accessor === "rate" ? (
@@ -113,10 +112,7 @@ const CustomTable = ({
                             </span>
                           ) : (
                             <span className="line-clamp-3 overflow-hidden">
-                              {typeof item[col?.accessor] === "object" &&
-                              item[col?.accessor] instanceof File
-                                ? item[col.accessor].name
-                                : String(item[col?.accessor] ?? "")}
+                            {item[col.accessor]}
                             </span>
                           )}
                         </Table.Td>

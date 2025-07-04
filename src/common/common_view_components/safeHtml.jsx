@@ -1,7 +1,6 @@
 import DOMPurify from "dompurify";
 
 const SafeHtml = ({ html }) => {
-  console.log({html})
   return (
     <div
     className="

@@ -1,5 +1,4 @@
-import TripHighLightAddEditModel from "../components/tripHighLight_add_edit_model";
-import TripHighLightViewModel from "../components/tripHighLight_view_model";
+import TripHighLightAddEditModel from "../components/tripHighlight_add_edit_model";
 import { useEffect, useState } from "react";
 import useAuth from "../../auth/components/use_auth";
 import { useNotification } from "../../common/hooks/useNotification";
@@ -80,7 +79,7 @@ const TripHighLightsController = () => {
   const handleSubmit = async (formData) => {
     showLoading();
     const fD = new FormData();
-    fD.append("file", formData.file);
+    fD.append("file", formData.icon);
     fD.append("title", formData.title);
     try {
       let responseMessage;

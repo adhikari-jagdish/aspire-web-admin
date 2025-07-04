@@ -13,7 +13,7 @@ const TripHighlightAddEditModel = ({
   handleSubmit,
   tripHighlight,
 }) => {
-  const [formData, setFormData] = useState([]);
+  const [formData, setFormData] = useState(initialFormState);
   useEffect(() => {
     if (isEditTripHighlight && opened) {
       setFormData({
@@ -36,6 +36,7 @@ const TripHighlightAddEditModel = ({
     icon: selectedFile
    }))
   }
+
 
   return (
     <Modal

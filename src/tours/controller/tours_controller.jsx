@@ -81,7 +81,7 @@ const ToursController = () => {
         });
       }
     };
-    fetchTravelThemes();
+    fetchTravelThemes();  
   }, []);
 
   //get all trip highlights
