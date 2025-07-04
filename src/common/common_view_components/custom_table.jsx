@@ -16,7 +16,7 @@ const CustomTable = ({
   shouldShowDelete = false,
   destinationList,
 }) => {
-  console.log({ data });
+
   const safeColumns = Array.isArray(columns) ? columns : [];
   return (
     <Box
@@ -70,7 +70,7 @@ const CustomTable = ({
                     {safeColumns.map((col) => {
                       return (
                         <Table.Td key={col.accessor}>
-                          {col.accessor === "image" ? (
+                          {(col.accessor === "image" || col.accessor === "file") ? (
                             <img
                               src={item[col.accessor]}
                               alt={index + 1}
@@ -171,4 +171,3 @@ const CustomTable = ({
 };
 
 export default CustomTable;
-// i have pushed the completed tour code - please do test and review the code and let me if any improvement needed!

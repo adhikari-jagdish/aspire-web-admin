@@ -23,7 +23,7 @@ const TitleDuration = ({titleName, durationName, titleValue, durationValue, onCh
         />
       </div>
 
-      <div className="flex flex-col w-[300px] gap-2">
+      <div className="flex flex-col w-[500px] gap-2">
         <label htmlFor="duration" className="text-xl font-bold">
           Duration
         </label>

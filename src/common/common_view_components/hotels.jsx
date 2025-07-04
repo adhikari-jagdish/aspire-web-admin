@@ -83,7 +83,7 @@ const Hotels = ({ name, onChange, value, isEditTour }) => {
         <select
           name={name}
           id={name}
-          className="border border-gray-500 outline-0 rounded  h-[30px] w-[500px] mt-2 cursor-pointer text-center "
+          className="border border-gray-500 outline-0 rounded  h-[30px] w-full mt-2 cursor-pointer text-center "
           onChange={handleHotelChange}
         >
           <option value="">List of Hotels</option>
@@ -101,7 +101,7 @@ const Hotels = ({ name, onChange, value, isEditTour }) => {
 
       {/* selected hotels */}
       {selectedHotels.length > 0 && (
-        <ul className="border border-gray-400 rounded p-2 w-[500px] flex flex-col ">
+        <ul className="border border-gray-400 rounded p-2 w- flex flex-col ">
           {selectedHotels.map((hotel, idx) => (
             <li
               key={hotel?._id || idx}

@@ -26,7 +26,7 @@ const Inclusions = ({ name, value, onChange, isEditTour }) => {
   }, [inclusionEditor, value]);
 
   return (
-    <div className="w-[1030px]">
+    <div >
       <Title
         order={4}
         mt={20}
@@ -39,7 +39,7 @@ const Inclusions = ({ name, value, onChange, isEditTour }) => {
         <span className=" border border-b-1 w-[80px]"></span>
       </Title>
 
-      <RichTextEditor editor={inclusionEditor}>
+      <RichTextEditor editor={inclusionEditor} >
         <RichTextEditor.Toolbar sticky stickyOffset={60}>
           <RichTextEditor.ControlsGroup>
             <RichTextEditor.Bold />
@@ -57,7 +57,7 @@ const Inclusions = ({ name, value, onChange, isEditTour }) => {
           </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
 
-        <RichTextEditor.Content className="h-[200px] [&_ul]:list-disc [&_ol]:list-decimal" />
+        <RichTextEditor.Content className="h-[200px] [&_ul]:list-disc [&_ol]:list-decimal overflow-y-scroll" />
       </RichTextEditor>
     </div>
   );

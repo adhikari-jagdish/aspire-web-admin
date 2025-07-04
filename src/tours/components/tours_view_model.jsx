@@ -9,6 +9,7 @@ const titles = [
   {name: "Overview", label: "overview"},
   {name: "Trip Highlights", label: "tripHighlights"},
   {name: "Itinerary", label: "itinerary"},
+  {name: "Package Rate", label: "packageRate"},
   {name: "Inclusions", label: "inclusions"},
   {name: "Exclusions", label: "exclusions"},
   {name: "Hotels", label: "hotels"},
@@ -32,7 +33,6 @@ const ToursViewModel = ({
   );
  const tripHighlightIds = tour?.tripHighlights?.map(t => t.tripHighlightsId);
  const tripHighlights = tripHighlightList.filter(trip => tripHighlightIds?.some(t => trip._id === t));
- 
  return (
     <Modal
       opened={openedView}
@@ -100,7 +100,22 @@ const ToursViewModel = ({
                   ))}
                 </ul>
               )
-            } else if(key === "duration"){
+            }else if(key === "packageRate" && Array.isArray(value)){
+              content = (
+                <ul className="space-y-3">
+                  {value.map((p, idx )=> (
+                    <div key={p._id || idx} className="space-y-2">
+                      <li>Hotel Category: {p.hotelCategory}  </li>
+                      <li>Rate in NPR: {p.rateInNPR}</li>
+                      <li>Rate in USD: {p.rateInUSD}</li>
+                      <li>Rate in INR: {p.rateInINR}</li>
+                      <li>Rate in EUR: {p.rateInEUR}</li>
+                    </div>
+                  ))}
+                </ul>
+              )
+            }
+             else if(key === "duration"){
               content = ( value + " day(s)")
             } else if(key === "discountInPercentage"){
               content = ( value + "%")

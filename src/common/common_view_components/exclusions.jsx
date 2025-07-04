@@ -28,7 +28,7 @@ const Exclusions = ({ name, value, onChange, isEditTour }) => {
   }, [exclusionEditor, value]);
 
   return (
-    <div className="max-w-[1030px]">
+    <div>
       <Title
         order={4}
         mt={20}
@@ -62,7 +62,7 @@ const Exclusions = ({ name, value, onChange, isEditTour }) => {
           </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
 
-        <RichTextEditor.Content className="h-[200px] [&_ul]:list-disc [&_ol]:list-decimal" />
+        <RichTextEditor.Content className="h-[200px] [&_ul]:list-disc [&_ol]:list-decimal overflow-y-scroll" />
       </RichTextEditor>
     </div>
   );

@@ -25,8 +25,8 @@ const ImageDiscount = ({imageName, discountName, discountValue, onChange, onImag
       
   }
   return (
-    <div className="flex gap-20 w-[100%]">
-            <div className="flex flex-col items-start ">
+    <div className="flex  gap-30 ">
+            <div className="flex flex-col items-start  ">
               <label htmlFor={imageName} className="text-xl font-bold">
                 Image
               </label>

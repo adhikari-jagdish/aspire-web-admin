@@ -37,7 +37,7 @@ const PackageRate = ({ name, value, onChange, isEditTour }) => {
     const updated = [...packageRates, { ...initialRate }]
     setPackageRates(updated);
     
-    onChange({ target: { name, value: updated2 } });
+    onChange({ target: { name, value: updated } });
   };
 
   const handleUpdate = (idx, field, value) => {
@@ -94,7 +94,7 @@ const PackageRate = ({ name, value, onChange, isEditTour }) => {
                   Hotel Category:
                 </label>
                 <select
-                  className="border border-gray-400 p-1 rounded text-xl text-center w-[290px] outline-0"
+                  className="border border-gray-400 p-1 rounded text-xl text-center w-[85%] outline-0"
                   value={p.hotelCategory}
                   onChange={(e) =>
                     handleUpdate(idx, "hotelCategory", e.target.value)
