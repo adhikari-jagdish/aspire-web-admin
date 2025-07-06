@@ -5,12 +5,13 @@ import Underline from "@tiptap/extension-underline";
 import Strike from "@tiptap/extension-strike";
 import { Title } from "@mantine/core";
 import { useEffect } from "react";
+import { EnterToOrderList } from "./EnterToOrderList";
 
 const Inclusions = ({ name, value, onChange, isEditTour }) => {
   //const processedValue = Array.isArray(value) ? value.join("") : value || "";
   //Inclusion editor
   const inclusionEditor = useEditor({
-    extensions: [StarterKit, Underline, Strike],
+    extensions: [StarterKit, Underline, Strike, EnterToOrderList],
     content: value || "",
     onUpdate({ editor }) {
       const html = editor.getHTML();

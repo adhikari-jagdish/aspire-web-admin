@@ -18,3 +18,16 @@
     -moz-appearance: textfield;
   }
 }
+
+/* hide scroll bar of modals */
+/* firefox */
+.scroll-container {
+  overflow-y: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* chrome, safari, opera */
+.scroll-container::-webkit-scrollbar{
+  display: none;
+}

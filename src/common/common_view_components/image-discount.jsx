@@ -30,7 +30,7 @@ const ImageDiscount = ({
     onChange({ target: { name: discountName, value } });
   };
   return (
-    <div className="flex  gap-30 ">
+    <div className="flex gap-30 ">
       <div className="flex flex-col items-start  ">
         <Title order={4} ta="left" c="dark" className="flex flex-col">
           Image
