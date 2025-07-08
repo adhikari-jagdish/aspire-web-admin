@@ -5,6 +5,7 @@ import {
   IconPencil,
   IconTrash,
 } from "@tabler/icons-react";
+import SafeHtml from "./safeHtml";
 
 const CustomTable = ({
   columns = [],
@@ -69,6 +70,7 @@ const CustomTable = ({
                     {safeColumns.map((col) => {
                       return (
                         <Table.Td key={col.accessor}>
+                        
                           {(col.accessor === "image" || col.accessor === "file" || col.accessor === "icon") ? (
                             <img
                               src={item[col.accessor]}
@@ -110,7 +112,10 @@ const CustomTable = ({
                                 )
                                 .join(", ")}
                             </span>
-                          ) : (
+                          ) : col.accessor === "description" ? 
+                            <SafeHtml html={item[col.accessor]}/>
+                          
+                          : (
                             <span className="line-clamp-3 overflow-hidden">
                             {item[col.accessor]}
                             </span>

@@ -128,7 +128,7 @@ const PackageRate = ({ name, value, onChange, isEditTour }) => {
                       onChange={(e) =>{ 
                         const value = e.target.value; 
                       handleUpdate(idx, name, value === "" ? "" : Number(value))}}
-                      placeholder={`Rate in ${label}`}
+                      placeholder={`Enter Rate in ${label}`}
                       name={name}
                       required
                       labelProps={{

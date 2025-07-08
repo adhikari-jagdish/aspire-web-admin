@@ -1,4 +1,5 @@
 import { Image, Modal, Stack, Text, Title } from "@mantine/core";
+import SafeHtml from "../../common/common_view_components/safeHtml";
 
 const DestinationViewModel = ({ openedView, onClose, destination }) => {
   return (
@@ -8,6 +9,11 @@ const DestinationViewModel = ({ openedView, onClose, destination }) => {
       title="View Destination"
       centered
       style={{ fontSize: "15px" }}
+      styles={{
+        content:{
+          scrollbarWidth: "none"
+        }
+      }}
       
     >
       {destination ? (
@@ -25,7 +31,7 @@ const DestinationViewModel = ({ openedView, onClose, destination }) => {
             Description
           </Title>
           <Text className="h-25 overflow-y-scroll" inherit>
-            {destination?.description}
+            <SafeHtml html={destination?.description} />
           </Text>
 
           {destination?.image && (

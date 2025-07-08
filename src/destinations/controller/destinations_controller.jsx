@@ -15,6 +15,7 @@ const DestinationsController = () => {
   const [destination, setDestination] = useState({});
   const { getToken } = useAuth();
   const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
@@ -75,10 +76,45 @@ const DestinationsController = () => {
 
   ///This is called when user selects an image
   const handleImageSelect = (file) => {
-    setImage(file);
+    if(file) {
+      const objectUrl = URL.createObjectURL(file);
+      setImagePreview(objectUrl);
+      setImage(file); 
+    } else {
+      setImage(null);
+      setImagePreview(null);
+    }
   };
 
+  
+
+  //avoids memory leaks when switching or removing pages
+  useEffect(() => {
+  return () => {
+    if (imagePreview) {
+      URL.revokeObjectURL(imagePreview);
+    }
+  };
+}, [imagePreview]);
+
+
   const handleSubmit = async (formData) => {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = formData.description;
+    if(formData.title.trim().length === 0  || tempDiv.textContent.trim().length === 0){
+      notify({
+        type: "error",
+        message: "All fields are required!"
+      })
+      return;
+    }
+    if(!image) {
+      notify({
+        type: "error",
+        message: "Image is required!"
+      })
+      return;
+    }
     showLoading();
     const fD = new FormData();
     fD.append("file", image);
@@ -89,7 +125,7 @@ const DestinationsController = () => {
       let response;
      if(isEditDestination){
        response = await destinationRepository.updateDestination(fD,idToUpdate);
-       setDestinationList(prev => prev.map(item => item._id === idToUpdate ? {...item, title: formData.title, description: formData.description, image: image || item.image} : item));
+       setDestinationList(prev => prev.map(item => item._id === idToUpdate ? {...item, title: formData.title, description: formData.description, image: imagePreview || item.image} : item));
      } else {
         response = await destinationRepository.addDestination(fD);
         setDestinationList(prev => [...prev, response.data])
@@ -109,7 +145,6 @@ const DestinationsController = () => {
     } finally {
       hideLoading();
     }
-
   };
   const handleViewButtonClick = (item) => {
     setOpenedView(true);
@@ -151,6 +186,7 @@ const DestinationsController = () => {
         handleImageSelect={handleImageSelect}
         isEditDestination={isEditDestination}
         destination={destination}
+        imagePreview={isEditDestination ? destination?.image : null}
       />
 
       <CustomDialogModal

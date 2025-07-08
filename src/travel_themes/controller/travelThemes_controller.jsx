@@ -91,7 +91,7 @@ const TravelThemesController = () => {
   };
 
   const handleSubmit = async (formData) => {
-    if (!formData.title || (!image && !isEditTravelTheme)) {
+    if (!formData.title || (!image )) {
       notify({
         type: "error",
         message: "Title and image are required.",

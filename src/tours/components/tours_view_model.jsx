@@ -73,7 +73,7 @@ const ToursViewModel = ({
         sectionTop - containerTop + scrollContainerRef.current.scrollTop;
 
       scrollContainerRef.current.scrollTo({
-        top: scrollOffset - 30,
+        top: scrollOffset - 40,
         behavior: "smooth",
       });
     }
@@ -89,42 +89,37 @@ const ToursViewModel = ({
       style={{ fontSize: "15px" }}
       styles={{
         content: {
-          overflowY: "auto",
           scrollbarWidth: "none", // Firefox
-          msOverflowStyle: "none",
-        },
-        contentScrollbar: {
-          display: "none",
-        },
-      }}
-      classNames={{
-        content: "custom-modal-content",
+        }
       }}
     >
       <div
         ref={scrollContainerRef}
-        className="scroll-container overflow-y-auto max-h-[calc(100vh-50px)]"
+        className="scroll-container overflow-y-auto max-h-[calc(100vh-200px)]"
       >
         {tour?.image && (
           <>
             {/* <Title style={{ fontWeight: "500", fontSize: "20px" }} order={4}>
                 Image
               </Title> */}
-            <Image
+           <div className="w-full h-[80vh] pt-[56.25%] relative">
+             <Image
               src={tour.image}
               alt="Travel Theme"
               radius="md"
-              h={350}
-              w={500}
+              h="100%"
+              w="100%"
               fit="cover"
               withPlaceHolder
               fallbackSrc="https://placeholder.com/600x400?text=Placeholder"
+              className="absolute top-0 "
             />
+           </div>
           </>
         )}
         {tour ? (
-          <Stack spacing="sm" className="text-[14px] max-w-[500px]">
-            {titles.map((t, idx) => {
+          <Stack spacing="sm" className="text-[14px] w-[1250px]">
+            {titles.map((t) => {
               const key = t.label;
               const value = tour[key];
 
@@ -134,23 +129,24 @@ const ToursViewModel = ({
               if (key === "overview" && tour.discountInPercentage) {
                 discountBadge = (
                   <div
-                    className="absolute right-[20px]
-  top-[-20px]
-  translate-y-[-50%]
-  bg-red-600
-  text-white
-  px-2.5
-  py-1.5
-  rounded-lg
-  font-bold
-  text-sm
-  whitespace-nowrap
-  shadow-md
-  pointer-events-none
-  select-none"
+                    className="
+                    absolute right-[20px]
+                    top-[-20px]
+                    translate-y-[-50%]
+                    bg-red-600
+                    text-white
+                    px-2.5
+                    py-1.5
+                    rounded-lg
+                    font-bold
+                    text-sm
+                    whitespace-nowrap
+                    shadow-md
+                    pointer-events-none
+                    select-none"
                   >
                     <span style={{ fontSize: "20px", lineHeight: 1 }}>🏷️</span>
-                    {tour.discountInPercentage}%
+                    {tour.discountInPercentage}% off
                   </div>
                 );
               }
@@ -181,7 +177,7 @@ const ToursViewModel = ({
                 );
               } else if (key === "destinationIds") {
                 content = (
-                  <div className="flex gap-3 flex-wrap w-[500px]">
+                  <div className="flex gap-3 flex-wrap w-[500px] pl-2">
                     {destinations?.map((d) => (
                       <li className="list-none ring w-fit rounded-full   px-2 py-1 mt-2">
                         {d.title || "N/A"}
@@ -191,7 +187,7 @@ const ToursViewModel = ({
                 );
               } else if (key === "travelThemeIds") {
                 content = (
-                  <div className="flex gap-3 flex-wrap w-[500px]">
+                  <div className="flex gap-3 flex-wrap w-[500px] pl-2">
                     {travelThemes?.map((t) => (
                       <li className="list-none ring w-fit rounded-full  px-2 py-1 mt-2">
                         {t.title || "N/A"}
@@ -217,11 +213,11 @@ const ToursViewModel = ({
                 content = (
                   <ul
                     ref={sectionsRef[t.label?.toLowerCase?.()]}
-                    className="space-y-3"
+                    className="space-y-3 "
                   >
                     {value.map((day, idx) => (
-                      <li>
-                        <span>{day.dayAndTitle}</span> <br />
+                      <li className="bg-gray-100 p-2 rounded">
+                        <strong>{day.dayAndTitle}</strong> <br />
                         <span>Details: </span> {day.details?.[0]}
                       </li>
                     ))}
@@ -258,7 +254,7 @@ const ToursViewModel = ({
               } else if (key === "duration") {
                 content = value + " day(s)";
               } else if (key === "discountInPercentage") {
-                content = <div className="bg-red-400">{value + "%"}</div>;
+                return;
               } else {
                 content = (
                   <Text ref={sectionsRef[t.label?.toLowerCase?.()]} inherit>
@@ -277,7 +273,7 @@ const ToursViewModel = ({
                   <Text tyle={{ fontSize: "18px" }}>{content || "N/A"}</Text>
 
                   {key === "travelThemeIds" && (
-                    <div className="mt-6 gap-3 flex flex-wrap w-[500px] ">
+                    <div className="mt-6 gap-3 flex flex-wrap w-full ">
                       {buttons.map((b) => (
                         <button
                           onClick={() => scrollToSection(b.name.toLowerCase())}

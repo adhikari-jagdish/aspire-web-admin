@@ -26,7 +26,7 @@ const TravelThemesView = ({
         <CustomTable
           columns={columns}
           data={travelThemes}
-          shouldShowDelete={true}
+          shouldShowDelete={false}
           shouldShowEdit={true}
           onEdit={(item) => onEditButtonClick(item)}
           onDelete={(item) => onDeleteButtonClick(item)}

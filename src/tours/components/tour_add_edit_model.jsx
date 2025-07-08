@@ -37,6 +37,7 @@ const ToursAddEditModel = ({
   handleImageSelect,
   tour = {},
   idToUpdate,
+  imagePreview
 }) => {
   const [formData, setFormData] = useState(initialFormState);
   // Initialize form data
@@ -56,7 +57,7 @@ const ToursAddEditModel = ({
         hotels: Array.isArray(tour.hotels) ? tour.hotels : [],
         packageRate: Array.isArray(tour.packageRate)? tour.packageRate : [],
         discountInPercentage: tour.discountInPercentage ?? 0,
-        file: tour.file || null,
+        file: imagePreview || null,
       });
     } else {
       setFormData(initialFormState);
@@ -175,6 +176,8 @@ const ToursAddEditModel = ({
             onChange={handleChange}
             onImageChange={onImageChange}
             isEditTour={isEditTour}
+            tour={tour}
+            defaultImage= {isEditTour && (tour?.image || imagePreview)}
           />
         </div>
         <Group position="right" mt="md" pr={10} pb={4} spacing="sm">

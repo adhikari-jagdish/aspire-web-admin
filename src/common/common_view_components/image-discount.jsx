@@ -9,10 +9,11 @@ const ImageDiscount = ({
   onChange,
   onImageChange,
   isEditTour,
+  tour,
+  defaultImage
 }) => {
   const [image, setImage] = useState(null);
   const [discount, setDiscount] = useState("");
-
   useEffect(() => {
     if (isEditTour) {
       setDiscount(discountValue);
@@ -26,7 +27,6 @@ const ImageDiscount = ({
 
   const handleDiscountChange = (value) => {
     setDiscount(value);
-    console.log(value);
     onChange({ target: { name: discountName, value } });
   };
   return (
@@ -36,7 +36,7 @@ const ImageDiscount = ({
           Image
         </Title>
         <div>
-          <ImagePicker onImageSelect={handleImageSelect} defaultimage={null} />
+          <ImagePicker onImageSelect={handleImageSelect} defaultImage={defaultImage} />
         </div>
       </div>
 

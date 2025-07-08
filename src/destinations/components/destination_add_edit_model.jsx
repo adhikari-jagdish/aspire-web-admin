@@ -1,6 +1,17 @@
 import { useState, useEffect } from "react";
-import { Modal, TextInput, Button, Group, Textarea } from "@mantine/core";
+import {
+  Modal,
+  TextInput,
+  Button,
+  Group,
+  Textarea,
+  Title,
+} from "@mantine/core";
 import ImagePicker from "../../common/common_view_components/image_picker";
+import { RichTextEditor } from "@mantine/tiptap";
+import { useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
 
 const DestinationAddEditModel = ({
   opened,
@@ -9,6 +20,7 @@ const DestinationAddEditModel = ({
   handleSubmit,
   handleImageSelect,
   destination,
+  imagePreview
 }) => {
   const [formData, setFormData] = useState({
     title: "",
@@ -29,16 +41,38 @@ const DestinationAddEditModel = ({
     }
   }, [isEditDestination, opened]);
 
+ const descriptionEditor = useEditor({
+    extensions: [StarterKit, Underline],
+    content: formData.description || "",
+    onUpdate({ editor }) {
+      const html = editor.getHTML();
+
+      setFormData(prev =>({...prev, description: html}))
+    },
+  });
+  useEffect(() => {
+    if(descriptionEditor && formData.description !== descriptionEditor.getHTML()){
+      descriptionEditor.commands.setContent(formData.description || "", false)
+    }
+  },[descriptionEditor, formData])
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+ 
   return (
     <Modal
       opened={opened}
       onClose={onClose}
       title={isEditDestination ? "Edit Destination" : "Add Destination"}
       centered
+      size="xl"
+      styles={{
+        content: {
+          scrollbarWidth: "none",
+        }
+      }}
     >
       <TextInput
         label="Title"
@@ -48,20 +82,47 @@ const DestinationAddEditModel = ({
         onChange={handleChange}
         required
       />
-      <Textarea
-        rows={8}
-        label="Description"
-        placeholder="Enter Description"
-        name="description"
-        value={formData.description}
-        onChange={handleChange}
-        required
-        mt="md"
-      />
+
+      <Title
+        order={4}
+        mt={20}
+        mb={10}
+        ta="left"
+        c="dark"
+        className="flex flex-col"
+      >
+        Description
+      </Title>
+
+      <RichTextEditor
+        editor={descriptionEditor}
+        className="border border-gray-500 rounded"
+      >
+        <RichTextEditor.Toolbar sticky stickyOffset={60}>
+           <RichTextEditor.ControlsGroup>
+          <RichTextEditor.Bold />
+          <RichTextEditor.Italic />
+          <RichTextEditor.Underline />
+        </RichTextEditor.ControlsGroup>
+
+        <RichTextEditor.ControlsGroup>
+          <RichTextEditor.H1 />
+          <RichTextEditor.H2 />
+          <RichTextEditor.H3 />
+        </RichTextEditor.ControlsGroup>
+
+        <RichTextEditor.ControlsGroup>
+          <RichTextEditor.BulletList />
+          <RichTextEditor.OrderedList />
+        </RichTextEditor.ControlsGroup>
+
+        </RichTextEditor.Toolbar>
+        <RichTextEditor.Content className="h-[250px] [&_ul]:list-disc [&_ol]:list-decimal" />
+      </RichTextEditor>
 
       <ImagePicker
         onImageSelect={handleImageSelect}
-        defaultImage={destination.image}
+        defaultImage={isEditDestination && (destination?.image || imagePreview)}
       />
 
       <Group position="right" mt="md">

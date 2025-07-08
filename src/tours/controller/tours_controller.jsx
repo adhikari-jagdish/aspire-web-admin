@@ -10,6 +10,7 @@ import ToursViewModel from "../components/tours_view_model";
 import ToursAddEditModel from "../components/tour_add_edit_model";
 import TravelThemeRepository from "../../travel_themes/repository/travelTheme_repository";
 import TripHighlightRepository from "../../trip highlights/repository/tripHighlight_repository";
+import { object } from "framer-motion/client";
 
 const ToursController = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -18,6 +19,7 @@ const ToursController = () => {
   const [tour, setTour] = useState({});
   const { getToken } = useAuth();
   const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
@@ -143,11 +145,25 @@ const ToursController = () => {
   };
 
   const handleImageSelect = (image) => {
-    setImage(image);
+
+    if(image){
+      const objectUrl = URL.createObjectURL(image);
+      setImagePreview(objectUrl);
+      setImage(image);
+    } else {
+      setImage(null);
+      setImagePreview(null);
+    }
   };
 
+  //avoids memory leaks when switching or removing pages
+  useEffect(() => {
+    if(imagePreview) {
+      URL.revokeObjectURL(imagePreview);
+    }
+  },[imagePreview])
+
   const handleSubmit = async (formData) => {
-    console.log(formData);
 
     if (
       !formData.destinationIds ||
@@ -166,6 +182,13 @@ const ToursController = () => {
       notify({
         type: "error",
         message: "All fields are required.",
+      });
+      return;
+    }
+    if(!image){
+      notify({
+        type: "error",
+        message: "Image is required"
       });
       return;
     }
@@ -214,7 +237,7 @@ const ToursController = () => {
                   hotels: formData.hotels,
                   packageRate: formData.packageRate,
                   discountInPercentage: formData.discountInPercentage,
-                  file: image || item.file,
+                  file: imagePreview || item.file,
                 }
               : item
           )
@@ -261,7 +284,7 @@ const ToursController = () => {
     // { label: "Hotels", accessor: "hotels" },
     // { label: "Package Rate", accessor: "packageRate" },
     { label: "Discount", accessor: "discountInPercentage" },
-    { label: "Image", accessor: "file" },
+    { label: "Image", accessor: "image" },
   ];
   return (
     <>
@@ -304,6 +327,8 @@ const ToursController = () => {
         tour={tour}
         destinationList={destinationList}
         travelThemeList={travelThemeList}
+        imagePreview={isEditTour ? tour?.image : null}
+        
       />
       <CustomDialogModal
         opened={isDeleteTour}
