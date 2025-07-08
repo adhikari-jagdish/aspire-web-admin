@@ -164,7 +164,6 @@ const ToursController = () => {
   },[imagePreview])
 
   const handleSubmit = async (formData) => {
-
     if (
       !formData.destinationIds ||
       !formData.travelThemeIds ||
@@ -177,7 +176,7 @@ const ToursController = () => {
       !formData.exclusions ||
       !formData.hotels ||
       !formData.packageRate ||
-      (!formData.discountInPercentage && !isEditTour)
+      !formData.discountInPercentage 
     ) {
       notify({
         type: "error",

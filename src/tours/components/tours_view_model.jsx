@@ -1,4 +1,4 @@
-import { Image, Modal, Stack, Text, Title } from "@mantine/core";
+import { Image, Modal, Stack, Table, Text, Title } from "@mantine/core";
 import SafeHtml from "../../common/common_view_components/safeHtml";
 import overview from "../../assets/icons/overview.svg";
 import hotels from "../../assets/icons/hotels.svg";
@@ -8,6 +8,8 @@ import itinerary from "../../assets/icons/itinerary.svg";
 import location from "../../assets/icons/location.svg";
 import packageRate from "../../assets/icons/packageRate.svg";
 import { useRef } from "react";
+import { FaRupeeSign, FaDollarSign, FaEuroSign } from 'react-icons/fa';
+
 
 const titles = [
   { name: "Trip Highlights", label: "tripHighlights" },
@@ -78,7 +80,7 @@ const ToursViewModel = ({
       });
     }
   };
-
+const tableInsideBorder = "text-center border"
   return (
     <Modal
       opened={openedView}
@@ -86,11 +88,15 @@ const ToursViewModel = ({
       title="View Tour Package"
       centered
       size="xxl"
-      style={{ fontSize: "15px" }}
       styles={{
+        title: {
+          fontSize: "34px",
+          color: "#0890cf",
+          fontWeight: 700
+        },
         content: {
-          scrollbarWidth: "none", // Firefox
-        }
+          scrollbarWidth: "none", 
+        },
       }}
     >
       <div
@@ -102,19 +108,19 @@ const ToursViewModel = ({
             {/* <Title style={{ fontWeight: "500", fontSize: "20px" }} order={4}>
                 Image
               </Title> */}
-           <div className="w-full h-[80vh] pt-[56.25%] relative">
-             <Image
-              src={tour.image}
-              alt="Travel Theme"
-              radius="md"
-              h="100%"
-              w="100%"
-              fit="cover"
-              withPlaceHolder
-              fallbackSrc="https://placeholder.com/600x400?text=Placeholder"
-              className="absolute top-0 "
-            />
-           </div>
+            <div className="w-full h-[80vh] pt-[56.25%] relative">
+              <Image
+                src={tour.image}
+                alt="Travel Theme"
+                radius="md"
+                h="100%"
+                w="100%"
+                fit="cover"
+                withPlaceHolder
+                fallbackSrc="https://placehold.co/600x400?text=Placeholder"
+                className="absolute top-0 "
+              />
+            </div>
           </>
         )}
         {tour ? (
@@ -158,7 +164,12 @@ const ToursViewModel = ({
                       <div key={idx} className="flex items-center gap-2">
                         <img
                           src={tripHighlights[idx]?.icon}
-                          alt="tripHighlightIcon"
+                          onError={(e) => {
+                            e.target.onerror = null; // Prevent infinite loops if fallback img also fails to laod
+                            e.target.src =
+                              "https://img.favpng.com/5/1/8/no-icon-png-favpng-PdDFZn3LtBiKi6JEapF5jAtgi.jpg";
+                          }}
+                          alt="Icon"
                           className="w-8 mt-2"
                         />
                         <div className="pt-2">
@@ -203,7 +214,7 @@ const ToursViewModel = ({
                 content = (
                   <div
                     ref={sectionsRef[t.label?.toLowerCase?.()]}
-                    style={{ position: "relative" }}
+                    style={{ position: "relative", paddingLeft: "5px" }}
                   >
                     <SafeHtml html={value} />
                     {discountBadge}
@@ -236,20 +247,43 @@ const ToursViewModel = ({
                 );
               } else if (key === "packageRate" && Array.isArray(value)) {
                 content = (
-                  <ul
-                    ref={sectionsRef[t.label?.toLowerCase?.()]}
-                    className="space-y-3"
-                  >
-                    {value.map((p, idx) => (
-                      <div key={p._id || idx} className="space-y-2">
-                        <li>Hotel Category: {p.hotelCategory} </li>
-                        <li>Rate in NPR: {p.rateInNPR}</li>
-                        <li>Rate in USD: {p.rateInUSD}</li>
-                        <li>Rate in INR: {p.rateInINR}</li>
-                        <li>Rate in EUR: {p.rateInEUR}</li>
-                      </div>
-                    ))}
-                  </ul>
+                  <div
+  ref={sectionsRef[t.label?.toLowerCase?.()]}
+  className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-5"
+>
+  {value.map((p, idx) => (
+    <div
+      key={p._id || idx}
+      className="bg-white shadow-md rounded-lg overflow-hidden border"
+    >
+      <div className="bg-gray-100 p-3 border-b text-center text-lg font-bold ">
+        Hotel Category: {p.hotelCategory}
+      </div>
+
+      <div className="p-4">
+        <table className="w-full text-sm text-left text-gray-700">
+          <thead className="bg-gray-50 border-b">
+            <tr>
+              <th className="px-4 py-2 border-r">NPR</th>
+              <th className="px-4 py-2 border-r">INR</th>
+              <th className="px-4 py-2 border-r">USD</th>
+              <th className="px-4 py-2">EUR</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr className="bg-white hover:bg-gray-50 transition">
+              <td className="px-4 py-2 border-r"><strong className="text-xl">Rs.</strong> {p.rateInNPR}</td>
+              <td className="px-4 py-2 border-r"><strong className="text-xl">₹ </strong>{p.rateInINR}</td>
+              <td className="px-4 py-2 border-r"><strong className="text-xl">$</strong> {p.rateInUSD}</td>
+              <td className="px-4 py-2"><strong className="text-xl">€</strong> {p.rateInEUR}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  ))}
+</div>
+
                 );
               } else if (key === "duration") {
                 content = value + " day(s)";
@@ -273,7 +307,7 @@ const ToursViewModel = ({
                   <Text tyle={{ fontSize: "18px" }}>{content || "N/A"}</Text>
 
                   {key === "travelThemeIds" && (
-                    <div className="mt-6 gap-3 flex flex-wrap w-full ">
+                    <div className="mt-6 gap-3 flex flex-wrap justify-between w-full ">
                       {buttons.map((b) => (
                         <button
                           onClick={() => scrollToSection(b.name.toLowerCase())}

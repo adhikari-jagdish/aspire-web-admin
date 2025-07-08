@@ -69,6 +69,11 @@ const DestinationAddEditModel = ({
       centered
       size="xl"
       styles={{
+         title: {
+          fontSize: "34px",
+          color: "#0890cf",
+          fontWeight: 700
+        },
         content: {
           scrollbarWidth: "none",
         }

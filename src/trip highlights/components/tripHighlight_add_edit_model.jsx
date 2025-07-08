@@ -44,6 +44,16 @@ const TripHighlightAddEditModel = ({
       onClose={onClose}
       title={isEditTripHighlight ? "Edit Trip Highlight" : "Add Trip Highlight"}
       centered
+       styles={{
+        title: {
+          fontSize: "34px",
+          color: "#0890cf",
+          fontWeight: 700
+        },
+        content: {
+          scrollbarWidth: "none", 
+        },
+      }}
     >
       <TextInput
         label="Title"

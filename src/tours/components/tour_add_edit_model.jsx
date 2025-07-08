@@ -37,12 +37,12 @@ const ToursAddEditModel = ({
   handleImageSelect,
   tour = {},
   idToUpdate,
-  imagePreview
+  imagePreview,
 }) => {
   const [formData, setFormData] = useState(initialFormState);
   // Initialize form data
   useEffect(() => {
-    setFormData()
+    setFormData();
     if (isEditTour && opened && tour) {
       setFormData({
         destinationIds: tour.destinationIds || "",
@@ -50,12 +50,14 @@ const ToursAddEditModel = ({
         title: tour.title || "",
         duration: String(tour.duration || 0),
         overview: tour.overview || "",
-        tripHighlights: Array.isArray(tour.tripHighlights)? tour.tripHighlights: [],
+        tripHighlights: Array.isArray(tour.tripHighlights)
+          ? tour.tripHighlights
+          : [],
         itinerary: Array.isArray(tour.itinerary) ? tour.itinerary : [],
         inclusions: tour.inclusions || "",
         exclusions: tour.exclusions || "",
         hotels: Array.isArray(tour.hotels) ? tour.hotels : [],
-        packageRate: Array.isArray(tour.packageRate)? tour.packageRate : [],
+        packageRate: Array.isArray(tour.packageRate) ? tour.packageRate : [],
         discountInPercentage: tour.discountInPercentage ?? 0,
         file: imagePreview || null,
       });
@@ -81,19 +83,26 @@ const ToursAddEditModel = ({
   const onSubmit = () => {
     handleSubmit(formData, formData.file, isEditTour, idToUpdate);
   };
+
   return (
     <Modal
       opened={opened}
       onClose={onClose}
-      title={
-        <Title order={2} ta="center" c="dark">
-          {isEditTour ? "Edit" : "Add"} Tour Packages
-        </Title>
-      }
+      title={isEditTour ? "Edit Tour Packages" : "Add Tour Packages"}
       size="xxl"
       centered
       padding="lg"
       radius="md"
+      styles={{
+         title: {
+          fontSize: "34px",
+          color: "#0890cf",
+          fontWeight: 700
+        },
+        content: {
+          scrollbarWidth: "none",
+        },
+      }}
     >
       <div className="text-[15px]">
         <div className="space-y-8">
@@ -130,7 +139,7 @@ const ToursAddEditModel = ({
             value={formData.itinerary}
             onChange={handleChange}
             isEditTour={isEditTour}
-            durationLimit = {formData.duration || "0"}
+            durationLimit={formData.duration || "0"}
             // onChange={(value) =>
             //   setFormData((prev) => ({ ...prev, itinerary: value }))
             // }
@@ -157,7 +166,6 @@ const ToursAddEditModel = ({
             isEditTour={isEditTour}
             // onChange={(value) =>
             //   setFormData((prev) => ({ ...prev, exclusions: value }))}
-            
           />
 
           <Hotels
@@ -177,7 +185,7 @@ const ToursAddEditModel = ({
             onImageChange={onImageChange}
             isEditTour={isEditTour}
             tour={tour}
-            defaultImage= {isEditTour && (tour?.image || imagePreview)}
+            defaultImage={isEditTour && (tour?.image || imagePreview)}
           />
         </div>
         <Group position="right" mt="md" pr={10} pb={4} spacing="sm">

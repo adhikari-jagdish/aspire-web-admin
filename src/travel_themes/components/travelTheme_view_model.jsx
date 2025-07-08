@@ -7,7 +7,13 @@ const TravelThemeViewModel = ({ openedView, onClose, travelTheme }) => {
       onClose={onClose}
       title="View Travel Theme"
       centered
-      style={{ fontSize: "15px" }}
+       styles={{
+        title: {
+          fontSize: "34px",
+          color: "#0890cf",
+          fontWeight: 700
+        }
+      }}
       
     >
       {travelTheme ? (

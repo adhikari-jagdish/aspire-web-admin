@@ -93,7 +93,7 @@ const PackageRate = ({ name, value, onChange, isEditTour }) => {
                   Hotel Category:
                 </label>
                 <select
-                  className="border border-gray-400 p-1 rounded text-xl text-center w-[85%] outline-0"
+                  className="border border-gray-400t p-1 rounded text-xl text-center w-[85%] outline-0"
                   value={p.hotelCategory}
                   onChange={(e) =>
                     handleUpdate(idx, "hotelCategory", e.target.value)

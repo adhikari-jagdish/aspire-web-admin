@@ -10,6 +10,11 @@ const DestinationViewModel = ({ openedView, onClose, destination }) => {
       centered
       style={{ fontSize: "15px" }}
       styles={{
+         title: {
+          fontSize: "34px",
+          color: "#0890cf",
+          fontWeight: 700
+        },
         content:{
           scrollbarWidth: "none"
         }
@@ -18,7 +23,7 @@ const DestinationViewModel = ({ openedView, onClose, destination }) => {
     >
       {destination ? (
         <Stack spacing="sm" className="text-[14px]">
-          <Title style={{ fontWeight: "500", fontSize: "15px" }} order={4}>
+          <Title  style={{ fontWeight: "500", fontSize: "15px" }} order={4}>
             Title
           </Title>
           <Text inherit>{destination?.title}</Text>

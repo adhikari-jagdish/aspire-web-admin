@@ -36,6 +36,16 @@ const TravelThemeAddEditModel = ({
       onClose={onClose}
       title={isEditTravelTheme ? "Edit Travel Theme" : "Add Travel Theme"}
       centered
+       styles={{
+        title: {
+          fontSize: "34px",
+          color: "#0890cf",
+          fontWeight: 700
+        },
+        content: {
+          scrollbarWidth: "none", 
+        },
+      }}
     >
       <TextInput
         label="Title"
