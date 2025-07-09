@@ -14,8 +14,8 @@ import AdventuresView from "./adventures/view/adventures_view";
 import AboutView from "./about/view/about_view";
 import ContactView from "./contact/view/contact_view";
 import ToursController from "./tours/controller/tours_controller";
-import TrekkingsController from "./trekkings/controller/trekkings_controller";
 import TripHighLightsController from "./trip highlights/controller/tripHighlights_controller";
+import TrekkingsController from "./trekkings/controller/trekkings_controller";
 
 function App() {
   return (

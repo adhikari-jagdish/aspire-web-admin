@@ -1,170 +1,201 @@
-import { Button, Title } from "@mantine/core";
+import { Button, Title, Modal, Group } from "@mantine/core";
 import TitleDuration from "../../common/common_view_components/title-Duration";
 import Overview from "../../common/common_view_components/overview";
 import Itinerary from "../../common/common_view_components/itinerary";
 import Inclusions from "../../common/common_view_components/inclusions";
 import Exclusions from "../../common/common_view_components/exclusions";
 import Hotels from "../../common/common_view_components/hotels";
-// import ImageDiscount from "../../common/common_view_components/file-discount";
+import FileDiscount from "../../common/common_view_components/image-discount";
 import { useEffect, useState } from "react";
 import Destinations from "../../common/common_view_components/destinations";
 import TravelThemes from "../../common/common_view_components/travelThemes";
 import PackageRate from "../../common/common_view_components/packageRate";
-import PackageInclusions from "../../common/common_view_components/packageInclusions";
+import TripHighlights from "../../common/common_view_components/tripHighlights";
+import ImageDiscount from "../../common/common_view_components/image-discount";
 
+// Define initial form state for type safety and consistency
+const initialFormState = {
+  destinationIds: "",
+  travelThemeIds: "",
+  title: "",
+  duration: 0,
+  overview: "",
+  tripHighlights: [],
+  itinerary: [],
+  inclusions: "",
+  exclusions: "",
+  hotels: [],
+  packageRate: "",
+  discountInPercentage: 0,
+  file: null,
+};
 const TrekkingsAddEditModel = ({
   opened,
   onClose,
   isEditTrekking,
   handleSubmit,
   handleImageSelect,
-  trekking,
+  trekking = {},
+  idToUpdate,
+  imagePreview,
 }) => {
-  const [formData, setFormData] = useState({
-    destinationIds: "",
-    travelThemeIds: "",
-    title: "",
-    duration: 0,
-    overview: "",
-    packageInclusions: "",
-    itinerary: [],
-    inclusions: [],
-    exclusions: [],
-    hotels: [],
-    packageRate: 0,
-    discount: 0,
-    image: null,
-  });
-
-
+  const [formData, setFormData] = useState(initialFormState);
+  // Initialize form data
   useEffect(() => {
-    if (isEditTrekking && opened) {
+    setFormData();
+    if (isEditTrekking && opened && trekking) {
       setFormData({
         destinationIds: trekking.destinationIds || "",
         travelThemeIds: trekking.travelThemeIds || "",
         title: trekking.title || "",
-        duration: trekking.duration || "",
+        duration: String(trekking.duration || 0),
         overview: trekking.overview || "",
-        packageInclusions: trekking.packageInclusions || "",
-        itinerary: trekking.itinerary,
+        tripHighlights: Array.isArray(trekking.tripHighlights)
+          ? trekking.tripHighlights
+          : [],
+        itinerary: Array.isArray(trekking.itinerary) ? trekking.itinerary : [],
         inclusions: trekking.inclusions || "",
         exclusions: trekking.exclusions || "",
-        hotels: trekking.hotels || "",
-        packageRate: trekking.packageRate || "",
-        discount: trekking.discount || "",
-        image: trekking.image || null,
+        hotels: Array.isArray(trekking.hotels) ? trekking.hotels : [],
+        packageRate: Array.isArray(trekking.packageRate) ? trekking.packageRate : [],
+        discountInPercentage: trekking.discountInPercentage ?? 0,
+        file: imagePreview || null,
       });
     } else {
-      // Clear form for new trekking package
-      setFormData({
-        destinationId: [],
-        travelThemeId: [],
-        title: "",
-        duration: "",
-        overview: "",
-        packageInclusions: "",
-        itinerary: [],
-        inclusions: [],
-        exclusions: [],
-        hotels: [],
-        packageRate: "",
-        discount: "",
-        image: null,
-      });
+      setFormData(initialFormState);
     }
   }, [isEditTrekking, opened, trekking]);
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
+  const onImageChange = (image) => {
+    setFormData((prev) => ({ ...prev, image }));
+    if (handleImageSelect) {
+      handleImageSelect(image);
+    }
+  };
+
+  const onSubmit = () => {
+    handleSubmit(formData, formData.file, isEditTrekking, idToUpdate);
+  };
+
   return (
-    <>
-      <div className="text-[15px] pl-2">
-        <Title mt={20} mb={10} ta="center" c="dark">
-          Trekking Packages
-        </Title>
-        <div className="space-y-6">
-        {/* Destinations */}
-        <Destinations value={formData.destinationId} onChange={handleChange} />
-        {/* Travel Themes */}
-        <TravelThemes value={formData.travelThemeId} onChange={handleChange} />
-
-        {/* Title & Duration */}
-        <TitleDuration
-          titleName="title"
-          durationName="duration"
-          titleValue={formData.title}
-          durationValue={formData.duration}
-          onChange={handleChange}
-        />
-
-        {/* Overview */}
-
-        <Overview
-          name="overview"
-          value={formData.overview}
-          onChange={handleChange}
-        />
-
-        {/* Package inclusion */}
-        <PackageInclusions
-          name="packageInclusions"
-          value={formData.packageInclusions}
-          onChange={handleChange}
-        />
-        {/* Itinerary */}
-
-        <Itinerary
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      title={isEditTrekking ? "Edit Trekking Packages" : "Add Trekking Packages"}
+      size="xxl"
+      centered
+      padding="lg"
+      radius="md"
+      styles={{
+         title: {
+          fontSize: "34px",
+          color: "#0890cf",
+          fontWeight: 700
+        },
+        content: {
+          scrollbarWidth: "none",
+        },
+      }}
+    >
+      <div className="text-[15px]">
+        <div className="space-y-8">
+          <Destinations
+            name="destinationIds"
+            value={formData.destinationIds}
+            onChange={handleChange}
+          />
+          <TravelThemes
+            name="travelThemeIds"
+            value={formData.travelThemeIds}
+            onChange={handleChange}
+          />
+          <TitleDuration
+            titleName="title"
+            durationName="duration"
+            titleValue={formData.title}
+            durationValue={formData.duration}
+            onChange={handleChange}
+          />
+          <Overview
+            name="overview"
+            value={formData.overview}
+            onChange={handleChange}
+          />
+          <TripHighlights
+            name="tripHighlights"
+            value={formData.tripHighlights}
+            onChange={handleChange}
+            isEdittrekking={isEditTrekking}
+          />
+          <Itinerary
             name="itinerary"
             value={formData.itinerary}
             onChange={handleChange}
+            isEdittrekking={isEditTrekking}
+            durationLimit={formData.duration || "0"}
+            // onChange={(value) =>
+            //   setFormData((prev) => ({ ...prev, itinerary: value }))
+            // }
           />
-
-        {/* Package Rate */}
-        <PackageRate 
-        name="packageRate" 
-        onChange={handleChange}
-         />
-
-        {/* Inclusions  */}
-
-        <Inclusions
+          <PackageRate
+            name="packageRate"
+            value={formData.packageRate}
+            onChange={handleChange}
+            isEdittrekking={isEditTrekking}
+          />
+          <Inclusions
             name="inclusions"
             value={formData.inclusions}
-            onChange={handleChange}
+            // onChange={handleChange}
+            onChange={(value) =>
+              setFormData((prev) => ({ ...prev, inclusions: value }))
+            }
+            isEdittrekking={isEditTrekking}
           />
-
-        {/* Exclusions  */}
-
-        <Exclusions
+          <Exclusions
             name="exclusions"
             value={formData.exclusions}
             onChange={handleChange}
+            isEdittrekking={isEditTrekking}
+            // onChange={(value) =>
+            //   setFormData((prev) => ({ ...prev, exclusions: value }))}
           />
 
-        {/* Hotels */}
-
-        <Hotels 
-        name="hotels" 
-        onChange={handleChange} />
-
-        {/*  Image & Discount  */}
-        {/* <ImageDiscount
-            imageName="image"
-            discountName="discount"
-            discountValue={formData.discount}
+          <Hotels
+            name="hotels"
+            value={formData.hotels}
             onChange={handleChange}
-          /> */}
+            isEdittrekking={isEditTrekking}
+            // onChange={(value) =>
+            //   setFormData((prev) => ({ ...prev, hotels: value }))
+            // }
+          />
+          <ImageDiscount
+            imageName="file"
+            discountName="discountInPercentage"
+            discountValue={formData.discountInPercentage}
+            onChange={handleChange}
+            onImageChange={onImageChange}
+            isEdittrekking={isEditTrekking}
+            trekking={trekking}
+            defaultImage={isEditTrekking && (trekking?.image || imagePreview)}
+          />
+        </div>
+        <Group position="right" mt="md" pr={10} pb={4} spacing="sm">
+          <Button variant="default" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button onClick={onSubmit}>Submit</Button>
+        </Group>
       </div>
-      <div className="flex items-center justify-end pr-10 pb-4 gap-4">
-        <Button variant="default"  onClick={() => window.history.back()}>
-          {" "}
-         
-          Cancel
-        </Button>
-        <Button onClick={() => handleSubmit(formData)}>Submit</Button>{" "}
-      </div>
-      </div>
-    </>
+    </Modal>
   );
 };
 

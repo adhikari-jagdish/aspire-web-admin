@@ -33,10 +33,10 @@ const buttons = [
   { name: "PackageRate", icon: packageRate },
 ];
 
-const ToursViewModel = ({
+const TrekkingsViewModel = ({
   openedView,
   onClose,
-  tour,
+  trekking,
   destinationList,
   travelThemeList,
   tripHighlightList,
@@ -57,7 +57,7 @@ const ToursViewModel = ({
 
   useEffect(() => {
     const container = scrollContainerRef.current;
-    if (!container) return; // safety check
+    if (!container) return; 
 
     const handleScroll = () => {
       //get the whole view modal height
@@ -84,15 +84,15 @@ const ToursViewModel = ({
     };
   }, [openedView]);
 
-  const destinationIds = tour.destinationIds;
+  const destinationIds = trekking.destinationIds;
   const destinations = destinationList?.filter((dl) =>
     destinationIds?.some((d) => dl._id === d)
   );
-  const travelThemeIds = tour.travelThemeIds;
+  const travelThemeIds = trekking.travelThemeIds;
   const travelThemes = travelThemeList?.filter((tl) =>
     travelThemeIds?.some((t) => tl._id === t)
   );
-  const tripHighlightIds = tour?.tripHighlights?.map((t) => t.tripHighlightsId);
+  const tripHighlightIds = trekking?.tripHighlights?.map((t) => t.tripHighlightsId);
   const tripHighlights = tripHighlightList.filter((trip) =>
     tripHighlightIds?.some((t) => trip._id === t)
   );
@@ -117,7 +117,7 @@ const ToursViewModel = ({
     <Modal
       opened={openedView}
       onClose={onClose}
-      title="View Tour Package"
+      title="View trekking Package"
       centered
       size="xxl"
       styles={{
@@ -135,11 +135,11 @@ const ToursViewModel = ({
         ref={scrollContainerRef}
         className="scroll-container overflow-y-auto max-h-[calc(100vh-200px)]"
       >
-        {tour?.image && (
+        {trekking?.image && (
           <>
             <div className="w-full relative h-[40vh]">
               <Image
-                src={tour.image}
+                src={trekking.image}
                 alt="Travel Theme"
                 fit="fill"
                 withPlaceholder
@@ -153,16 +153,16 @@ const ToursViewModel = ({
             </div>
           </>
         )}
-        {tour ? (
+        {trekking ? (
           <Stack spacing="sm" className="text-[14px] w-[1250px]">
             {titles.map((t) => {
               const key = t.label;
-              const value = tour[key];
+              const value = trekking[key];
 
               let content;
               let discountBadge = null;
 
-              if (key === "overview" && tour.discountInPercentage) {
+              if (key === "overview" && trekking.discountInPercentage) {
                 discountBadge = (
                   <div
                     className="
@@ -182,7 +182,7 @@ const ToursViewModel = ({
                     select-none"
                   >
                     <span style={{ fontSize: "20px", lineHeight: 1 }}>🏷️</span>
-                    {tour.discountInPercentage}% off
+                    {trekking.discountInPercentage}% off
                   </div>
                 );
               }
@@ -391,7 +391,7 @@ const ToursViewModel = ({
             })}
           </Stack>
         ) : (
-          <Text c="dimmed">No tour data available.</Text>
+          <Text c="dimmed">No trekking data available.</Text>
         )}
         {showScrollToTop && (
           <button
@@ -407,4 +407,4 @@ const ToursViewModel = ({
   );
 };
 
-export default ToursViewModel;
+export default TrekkingsViewModel;

@@ -3,9 +3,15 @@ import useAuth from "../../auth/components/use_auth";
 import useLoadingOverlay from "../../common/hooks/useLoadingOverlay";
 import { useNotification } from "../../common/hooks/useNotification";
 import CustomDialogModal from "../../common/common_view_components/custom_dialog_model";
-import TrekkingsView from "../view/trekkings_view";
 import TrekkingRepository from "../repository/trekking_repository";
+import TrekkingsView from "../view/trekkings_view";
+import DestinationRepository from "../../destinations/repository/destination_repository";
 import TrekkingsAddEditModel from "../components/trekking_add_edit_model";
+import TravelThemeRepository from "../../travel_themes/repository/travelTheme_repository";
+import TripHighlightRepository from "../../trip highlights/repository/tripHighlight_repository";
+import { object } from "framer-motion/client";
+import TrekkingsViewModel from "../components/trekking_view_model";
+
 const TrekkingsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [openedView, setOpenedView] = useState(false);
@@ -13,6 +19,7 @@ const TrekkingsController = () => {
   const [trekking, setTrekking] = useState({});
   const { getToken } = useAuth();
   const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
@@ -24,7 +31,7 @@ const TrekkingsController = () => {
   const trekkingRepository = new TrekkingRepository(getToken);
 
   useEffect(() => {
-    const fetchTours = async () => {
+    const fetchTrekkings = async () => {
       try {
         showLoading();
         const trekkingResponse = await trekkingRepository.getTrekkingPackages();
@@ -32,34 +39,72 @@ const TrekkingsController = () => {
       } catch (err) {
         notify({
           type: "error",
-          message: err.message ?? "Failed to fetch Tours.",
+          message: err.message ?? "Failed to fetch trekkings.",
         });
       } finally {
         hideLoading();
       }
     };
-    fetchTours();
+    fetchTrekkings();
   }, []);
 
-  // const [destinationList, setDestinationList] = useState([]);
-  // const destinationRepository = new DestinationRepository(getToken);
+  const [destinationList, setDestinationList] = useState([]);
+  const destinationRepository = new DestinationRepository(getToken);
 
-  // useEffect(() => {
-  //   const fetchDestinations = async () => {
-  //     try {
-  //       const destinationsResponse =
-  //         await destinationRepository.getDestinations();
-  //       setDestinationList(destinationsResponse.data);
-  //     } catch (err) {
-  //       notify({
-  //         type: "error",
-  //         message: err.message ?? "Something went wrong. Please try again.",
-  //       });
-  //     }
-  //   };
-  //   fetchDestinations();
-  // }, []);
+  useEffect(() => {
+    const fetchDestinations = async () => {
+      try {
+        const destinationsResponse =
+          await destinationRepository.getDestinations();
+        setDestinationList(destinationsResponse.data);
+      } catch (err) {
+        notify({
+          type: "error",
+          message: err.message ?? "Something went wrong. Please try again.",
+        });
+      }
+    };
+    fetchDestinations();
+  }, []);
 
+  const [travelThemeList, setTravelThemeList] = useState([]);
+  const travelThemeRepository = new TravelThemeRepository(getToken);
+
+  useEffect(() => {
+    const fetchTravelThemes = async () => {
+      try {
+        const travelThemesResponse =
+          await travelThemeRepository.getTravelThemes();
+        setTravelThemeList(travelThemesResponse.data);
+      } catch (err) {
+        notify({
+          type: "error",
+          message: err.message ?? "Something went wrong. Please try again.",
+        });
+      }
+    };
+    fetchTravelThemes();  
+  }, []);
+
+  //get all trip highlights
+  const [tripHighlightList, setTripHighlightList] = useState([]);
+  const tripHighlightRepository = new TripHighlightRepository(getToken);
+
+  useEffect(() => {
+    const fetchTripHighlights = async () => {
+      try {
+        const tripHighlightResponse =
+          await tripHighlightRepository.getTripHighlights();
+        setTripHighlightList(tripHighlightResponse.data);
+      } catch (error) {
+        notify({
+          type: "error",
+          message: error.message ?? "Something went wrong. Please try again",
+        });
+      }
+    };
+    fetchTripHighlights();
+  }, []);
   const handleClick = () => {
     setModalOpen(true);
     setTrekking({});
@@ -84,13 +129,13 @@ const TrekkingsController = () => {
     setTrekkingList((prev) => prev.filter((p) => p._id !== idToDelete));
     try {
       showLoading();
-      await trekkingRepository.deleteTrekking(idToDelete);
-      notify({ type: "success", message: "Trekking deleted successfully." });
+      await trekkingRepository.deleteTrekkingPackage(idToDelete);
+      notify({ type: "success", message: "trekking deleted successfully." });
     } catch (err) {
       setTrekkingList(previousList);
       notify({
         type: "error",
-        message: err.message ?? "Failed to delete trekking package.",
+        message: err.message ?? "Failed to delete travel theme.",
       });
     } finally {
       hideLoading();
@@ -99,28 +144,50 @@ const TrekkingsController = () => {
     }
   };
 
-  const handleImageSelect = (file) => {
-    setImage(file);
+  const handleImageSelect = (image) => {
+
+    if(image){
+      const objectUrl = URL.createObjectURL(image);
+      setImagePreview(objectUrl);
+      setImage(image);
+    } else {
+      setImage(null);
+      setImagePreview(null);
+    }
   };
+
+  //avoids memory leaks when switching or removing pages
+  useEffect(() => {
+    if(imagePreview) {
+      URL.revokeObjectURL(imagePreview);
+    }
+  },[imagePreview])
 
   const handleSubmit = async (formData) => {
     if (
-      !formData.destinationId ||
-      !formData.travelThemeId ||
+      !formData.destinationIds ||
+      !formData.travelThemeIds ||
       !formData.title ||
-      !formData.duration  ||
+      !formData.duration ||
       !formData.overview ||
-      !formData.packageInclusions  ||
-      !formData.itinerary  ||
-      !formData.inclusions  ||
-      !formData.exclusions  ||
-      !formData.hotels||
-      !formData.packageRate||
-      (!formData.discount && !isEditTour)
+      !formData.tripHighlights ||
+      !formData.itinerary ||
+      !formData.inclusions ||
+      !formData.exclusions ||
+      !formData.hotels ||
+      !formData.packageRate ||
+      !formData.discountInPercentage 
     ) {
       notify({
         type: "error",
         message: "All fields are required.",
+      });
+      return;
+    }
+    if(!image){
+      notify({
+        type: "error",
+        message: "Image is required"
       });
       return;
     }
@@ -129,18 +196,24 @@ const TrekkingsController = () => {
     if (image) {
       fD.append("file", image);
     }
-    fD.append("destinationId", formData.destinationId);
-    fD.append("travelThemeId", formData.travelThemeId);
+
+    // Normalize hotel data to array of _id strings
+    const hotelIds = formData.hotels.map((hotel) =>
+      typeof hotel === "object" && hotel !== null ? hotel._id : hotel
+    );
+    fD.append("destinationIds", JSON.stringify(formData.destinationIds));
+    fD.append("travelThemeIds", JSON.stringify(formData.travelThemeIds));
     fD.append("title", formData.title);
-    fD.append("duration", formData.duration);
+    fD.append("duration", parseInt(formData.duration));
     fD.append("overview", formData.overview);
-    fD.append("packageInclusions", formData.packageInclusions);
-    fD.append("itinerary", formData.itinerary);
+    fD.append("tripHighlights", JSON.stringify(formData.tripHighlights));
+    fD.append("itinerary", JSON.stringify(formData.itinerary));
     fD.append("inclusions", formData.inclusions);
     fD.append("exclusions", formData.exclusions);
-    fD.append("hotels", formData.hotels);
-    fD.append("packageRate", formData.packageRate);
-    fD.append("discount", formData.discount );
+    fD.append("hotels", JSON.stringify(hotelIds));
+    fD.append("packageRate", JSON.stringify(formData.packageRate));
+    fD.append("discountInPercentage", parseInt(formData.discountInPercentage));
+
     try {
       let responseMessage;
       let response;
@@ -151,19 +224,19 @@ const TrekkingsController = () => {
             item._id === idToUpdate
               ? {
                   ...item,
-                  destinationId: formData.destinationId,
-                  travelThemeId: formData.travelThemeId,
+                  destinationIds: formData.destinationIds,
+                  travelThemeIds: formData.travelThemeIds,
                   title: formData.title,
                   duration: formData.duration,
                   overview: formData.overview,
-                  packageInclusions: formData.packageInclusions,
+                  tripHighlights: formData.tripHighlights,
                   itinerary: formData.itinerary,
                   inclusions: formData.inclusions,
                   exclusions: formData.exclusions,
                   hotels: formData.hotels,
-                  packageRate: formData.packageRate ,
-                  discount : formData.discount,
-                  image: image || item.image,
+                  packageRate: formData.packageRate,
+                  discountInPercentage: formData.discountInPercentage,
+                  file: imagePreview || item.file,
                 }
               : item
           )
@@ -172,6 +245,7 @@ const TrekkingsController = () => {
         response = await trekkingRepository.createTrekkingPackage(fD);
         setTrekkingList((prev) => [...prev, response.data]);
       }
+
       responseMessage = response.message;
       setModalOpen(false);
       setImage(null);
@@ -197,18 +271,18 @@ const TrekkingsController = () => {
   };
 
   const columns = [
-    { label: "Destination", accessor: "destinationId" },
-    { label: "Travel Theme", accessor: "travelThemeId" },
+    { label: "Destination", accessor: "destinationIds" },
+    // { label: "Travel Theme", accessor: "travelThemeIds" },
     { label: "Title", accessor: "title" },
     { label: "Duration", accessor: "duration" },
-    { label: "Overview", accessor: "overview" },
-    { label: "Package Inclusions", accessor: "packageInclusions" },
-    { label: "Itinerary", accessor: "itinerary" },
-    { label: "Inclusions", accessor: "inclusions" },
-    { label: "exclusions", accessor: "exclusions" },
-    { label: "Hotels", accessor: "hotels" },
-    { label: "Package Rate", accessor: "packageRate" },
-    { label: "Discount", accessor: "discount" },
+    // { label: "Overview", accessor: "overview" },
+    // { label: "Package Inclusions", accessor: "tripHighlights" },
+    // { label: "Itinerary", accessor: "itinerary" },
+    // { label: "Inclusions", accessor: "inclusions" },
+    // { label: "exclusions", accessor: "exclusions" },
+    // { label: "Hotels", accessor: "hotels" },
+    // { label: "Package Rate", accessor: "packageRate" },
+    { label: "Discount", accessor: "discountInPercentage" },
     { label: "Image", accessor: "image" },
   ];
   return (
@@ -218,7 +292,7 @@ const TrekkingsController = () => {
         onClose={() => {
           setModalOpen(false);
           setIsEditTrekking(false);
-          setTour({});
+          setTrekking({});
           setImage(null);
         }}
         columns={columns}
@@ -227,14 +301,17 @@ const TrekkingsController = () => {
         onEditButtonClick={handleEditButtonClick}
         onDeleteButtonClick={onDeleteButtonClick}
         onViewButtonClick={handleViewButtonClick}
-        // destinationList={destinationList}
+        destinationList={destinationList}
+        travelThemeList={travelThemeList}
       />
-      {/* <TourViewModel
+      <TrekkingsViewModel
         openedView={openedView}
         onClose={() => setOpenedView(false)}
-        tour={tour}
+        trekking={trekking}
         destinationList={destinationList}
-      /> */}
+        travelThemeList={travelThemeList}
+        tripHighlightList={tripHighlightList}
+      />
       <TrekkingsAddEditModel
         opened={modalOpen}
         onClose={() => {
@@ -245,13 +322,16 @@ const TrekkingsController = () => {
         }}
         handleSubmit={handleSubmit}
         handleImageSelect={handleImageSelect}
-        isEditTrekking={isEditTrekking}
+        isEdittrekking={isEditTrekking}
         trekking={trekking}
-        // destinationList={destinationList}
+        destinationList={destinationList}
+        travelThemeList={travelThemeList}
+        imagePreview={isEditTrekking ? trekking?.image : null}
+        
       />
       <CustomDialogModal
         opened={isDeleteTrekking}
-        onClose={() => setIsDeleteTour(false)}
+        onClose={() => setIsDeleteTrekking(false)}
         title="Alert!!"
         message="Are you sure you want to delete?"
         onConfirm={handleDeleteButtonClick}
