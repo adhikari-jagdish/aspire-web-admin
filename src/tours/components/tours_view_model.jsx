@@ -13,7 +13,6 @@ const titles = [
   { name: "Trip Highlights", label: "tripHighlights" },
   { name: "Destinations", label: "destinationIds" },
   { name: "Travel Themes", label: "travelThemeIds" },
-  { name: "Title", label: "title" },
   { name: "Duration", label: "duration" },
   { name: "Overview", label: "overview" },
   { name: "Itinerary", label: "itinerary" },
@@ -117,12 +116,12 @@ const ToursViewModel = ({
     <Modal
       opened={openedView}
       onClose={onClose}
-      title="View Tour Package"
+      title={tour.title || "Tour Package"}
       centered
       size="xxl"
       styles={{
         title: {
-          fontSize: "34px",
+          fontSize: "25px",
           color: "#0890cf",
           fontWeight: 700,
         },
@@ -251,10 +250,10 @@ const ToursViewModel = ({
                     ref={sectionsRef[t.label?.toLowerCase?.()]}
                     className={`scroll-mt-[60px] relative mt-[5px] text-justify ${
                       key === "inclusions" &&
-                      "bg-green-50 border-gray-400 border-dotted p-2 rounded"
+                      "bg-green-100 border border-gray-500 border-dotted p-2 rounded"
                     } ${
                       key === "exclusions" &&
-                      "bg-red-50 border-gray-400 border-dotted p-2 rounded"
+                      "bg-red-100 border border-gray-500 border-dotted p-2 rounded"
                     }`}
                   >
                     <SafeHtml html={value} />
