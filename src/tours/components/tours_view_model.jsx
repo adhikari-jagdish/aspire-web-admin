@@ -275,15 +275,42 @@ const ToursViewModel = ({
                   </ul>
                 );
               } else if (key === "hotels" && Array.isArray(value)) {
+                console.log(value)
                 content = (
-                  <ul
+                <div
                     ref={sectionsRef[t.label?.toLowerCase?.()]}
-                    className="space-y-3"
+                    className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-5 scroll-mt-[60px]"
                   >
                     {value.map((hotel, idx) => (
-                      <li key={idx}>{hotel?.title}</li>
+                      <div
+                        key={hotel._id || idx}
+                        className="bg-white shadow-md rounded-lg overflow-hidden border"
+                      >
+
+                        <div className="p-4">
+                          <table className="w-full text-sm text-left text-gray-700">
+                            <thead className="bg-gray-50 border-b">
+                              <tr>
+                                <th className="px-4 py-2 border-r"> Hotel Name</th>
+                                <th className="px-4 py-2 ">City</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr className="bg-white hover:bg-gray-50 transition text-2xl">
+                                <td className="px-4 py-2 border-r">
+                                  {hotel.title}
+                                </td>
+                                <td className="px-4 py-2">
+                                  {hotel.city}
+                                </td>
+                                
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 );
               } else if (key === "packageRate" && Array.isArray(value)) {
                 content = (
@@ -311,12 +338,12 @@ const ToursViewModel = ({
                               </tr>
                             </thead>
                             <tbody>
-                              <tr className="bg-white hover:bg-gray-50 transition">
+                              <tr className="bg-white hover:bg-gray-50 transition text-2xl">
                                 <td className="px-4 py-2 border-r">
                                   <strong className="text-xl">Rs.</strong>{" "}
                                   {p.rateInNPR}
                                 </td>
-                                <td className="px-4 py-2 border-r">
+                                <td className="px-4 py-2 border-r ">
                                   <strong className="text-xl">₹ </strong>
                                   {p.rateInINR}
                                 </td>
