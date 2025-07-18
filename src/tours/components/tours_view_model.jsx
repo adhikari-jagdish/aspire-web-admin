@@ -136,24 +136,15 @@ const ToursViewModel = ({
       >
         {tour?.image && (
           <>
-            <div className="w-full relative h-[40vh]">
-              <Image
-                src={tour.image}
-                alt="Travel Theme"
-                fit="fill"
-                withPlaceholder
-                fallbackSrc="/assets/images/fallback-image.jpg"
-                radius="md"
-                className="absolute top-0 left-0 w-full h-full"
-              />
-              <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black/40 text-white text-3xl font-semibold">
-                PLACEHOLDER IMAGE
+            <div className="w-full relative h-[40vh] bg-gray-400 rounded-md">
+              <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center text-gray-700 text-3xl font-semibold">
+                BANNER IMAGE HERE
               </div>
             </div>
           </>
         )}
         {tour ? (
-          <Stack spacing="sm" className="text-[14px] w-[1250px]">
+          <Stack spacing="sm" className="text-[14px]">
             {titles.map((t) => {
               const key = t.label;
               const value = tour[key];
@@ -248,13 +239,11 @@ const ToursViewModel = ({
                 content = (
                   <div
                     ref={sectionsRef[t.label?.toLowerCase?.()]}
-                    className={`scroll-mt-[60px] relative mt-[5px] text-justify ${
-                      key === "inclusions" &&
+                    className={`scroll-mt-[60px] relative mt-[5px] text-justify ${key === "inclusions" &&
                       "bg-green-100 border border-gray-500 border-dotted p-2 rounded"
-                    } ${
-                      key === "exclusions" &&
+                      } ${key === "exclusions" &&
                       "bg-red-100 border border-gray-500 border-dotted p-2 rounded"
-                    }`}
+                      }`}
                   >
                     <SafeHtml html={value} />
                     {discountBadge}
@@ -277,7 +266,7 @@ const ToursViewModel = ({
               } else if (key === "hotels" && Array.isArray(value)) {
                 console.log(value)
                 content = (
-                <div
+                  <div
                     ref={sectionsRef[t.label?.toLowerCase?.()]}
                     className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-5 scroll-mt-[60px]"
                   >
@@ -296,14 +285,14 @@ const ToursViewModel = ({
                               </tr>
                             </thead>
                             <tbody>
-                              <tr className="bg-white hover:bg-gray-50 transition text-2xl">
+                              <tr className="bg-white hover:bg-gray-50 transition">
                                 <td className="px-4 py-2 border-r">
                                   {hotel.title}
                                 </td>
                                 <td className="px-4 py-2">
                                   {hotel.city}
                                 </td>
-                                
+
                               </tr>
                             </tbody>
                           </table>
@@ -396,10 +385,9 @@ const ToursViewModel = ({
                             scrollToSection(b.name.toLowerCase()),
                               setActiveSection(b.name.toLowerCase());
                           }}
-                          className={`text-black font-black flex items-center justify-center gap-2 rounded px-4 py-2 cursor-pointer hover:bg-blue-300  outline-0 ${
-                            activeSection === b.name.toLowerCase() &&
+                          className={`text-black font-black flex items-center justify-center gap-2 rounded px-4 py-2 cursor-pointer hover:bg-blue-300  outline-0 ${activeSection === b.name.toLowerCase() &&
                             "bg-blue-300"
-                          }`}
+                            }`}
                         >
                           <img
                             src={b?.icon}
