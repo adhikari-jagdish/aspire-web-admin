@@ -272,16 +272,8 @@ const ToursController = () => {
 
   const columns = [
     { label: "Destination", accessor: "destinationIds" },
-    // { label: "Travel Theme", accessor: "travelThemeIds" },
     { label: "Title", accessor: "title" },
     { label: "Duration", accessor: "duration" },
-    // { label: "Overview", accessor: "overview" },
-    // { label: "Package Inclusions", accessor: "tripHighlights" },
-    // { label: "Itinerary", accessor: "itinerary" },
-    // { label: "Inclusions", accessor: "inclusions" },
-    // { label: "exclusions", accessor: "exclusions" },
-    // { label: "Hotels", accessor: "hotels" },
-    // { label: "Package Rate", accessor: "packageRate" },
     { label: "Discount", accessor: "discountInPercentage" },
     { label: "Image", accessor: "image" },
   ];
@@ -308,9 +300,6 @@ const ToursController = () => {
         openedView={openedView}
         onClose={() => setOpenedView(false)}
         tour={tour}
-        destinationList={destinationList}
-        travelThemeList={travelThemeList}
-        tripHighlightList={tripHighlightList}
       />
       <ToursAddEditModel
         opened={modalOpen}
