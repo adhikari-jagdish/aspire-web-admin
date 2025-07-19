@@ -1,5 +1,5 @@
 import { Image, Modal, Stack, Table, Text, Title } from "@mantine/core";
-import SafeHtml from "../../common/common_view_components/safeHtml";
+
 import overview from "../../assets/icons/overview.svg";
 import hotels from "../../assets/icons/hotels.svg";
 import includes from "../../assets/icons/includes.svg";
@@ -12,6 +12,12 @@ import CommonDiscountBatchComponent from "../../common/common_view_components/to
 import CommonImageBannerComponent from "../../common/common_view_components/tour_trek_view_common_components/common_image_banner_component";
 import CommonTripHighlightsViewComponent from "../../common/common_view_components/tour_trek_view_common_components/common_trip_highlights_view_component";
 import CommonTitleComponent from "../../common/common_view_components/common_title_component";
+import CommmonDestinationsViewComponent from "../../common/common_view_components/tour_trek_view_common_components/common_destinations_view_component";
+import CommonTravelThemesViewComponent from "../../common/common_view_components/tour_trek_view_common_components/common_travel_themes_view_component";
+import CommonRichTextViewComponent from "../../common/common_view_components/tour_trek_view_common_components/common_richtext_view_component";
+import CommonItineraryViewComponent from "../../common/common_view_components/tour_trek_view_common_components/common_itinerary_view_component";
+import CommonPackageRateViewComponent from "../../common/common_view_components/tour_trek_view_common_components/common_package_rate_view_component";
+import CommonHotelsViewComponent from "../../common/common_view_components/tour_trek_view_common_components/common_hotels_view_component";
 
 const titles = [
   { name: "Trip Highlights", label: "tripHighlights" },
@@ -36,11 +42,7 @@ const buttons = [
   { name: "PackageRate", icon: packageRate },
 ];
 
-const ToursViewModel = ({
-  openedView,
-  onClose,
-  tour,
-}) => {
+const ToursViewModel = ({ openedView, onClose, tour }) => {
   const scrollContainerRef = useRef(null);
   const buttonGroupRef = useRef(null);
   const [showScrollToTop, setShowScrollToTop] = useState(false);
@@ -104,12 +106,14 @@ const ToursViewModel = ({
     <Modal
       opened={openedView}
       onClose={onClose}
-      title={tour.title || "Tour Package"}
+      title={
+        tour.title ? `${tour.title} ( ${tour.duration} days )` : "Tour Package"
+      }
       centered
       size="xxl"
       styles={{
         title: {
-          fontSize: "25px",
+          fontSize: "20px",
           color: "#0890cf",
           fontWeight: 700,
         },
@@ -122,21 +126,97 @@ const ToursViewModel = ({
         ref={scrollContainerRef}
         className="scroll-container overflow-y-auto max-h-[calc(100vh-200px)]"
       >
-
         {tour ? (
           <>
             {/*Renders The Banner Image */}
             <CommonImageBannerComponent image={tour?.image} />
             <Stack spacing="sm" className="text-[14px]">
-
               {/*Renders The Discount Batch Shown on the top right */}
-              <CommonDiscountBatchComponent discountInPercentage={tour.discountInPercentage} />
+              <CommonDiscountBatchComponent
+                discountInPercentage={tour.discountInPercentage}
+              />
 
               {/*Trip Hightlight Section Title */}
               <CommonTitleComponent title={"Trip Highlights"} />
 
               {/*Renders The Trip Highlights Section */}
-              <CommonTripHighlightsViewComponent tripHighlightList={tour.tripHighlights} />
+              <CommonTripHighlightsViewComponent
+                tripHighlightList={tour.tripHighlights}
+              />
+
+              {/*Destinations Section Title */}
+              <CommonTitleComponent title={"Destinations"} />
+
+              {/*Renders the Destinations Section */}
+              <CommmonDestinationsViewComponent
+                destinations={tour.destinationIds}
+              />
+
+              {/*Travel Themes Section Title */}
+              <CommonTitleComponent title={"Travel Themes"} />
+
+              {/*Renders the Travel Themes Section */}
+              <CommonTravelThemesViewComponent
+                travelThemes={tour.travelThemeIds}
+              />
+
+              {/*Overview Section Title */}
+              <CommonTitleComponent title={"Overview"} />
+
+              {/*Renders the Overview Section */}
+              <CommonRichTextViewComponent
+                sectionsRef={sectionsRef["overview"]}
+                title={"Overview"}
+                data={tour?.overview}
+              />
+
+              {/*Itinerary Section Title */}
+              <CommonTitleComponent title={"Itinerary"} />
+
+              {/*Renders the Itinerary Section */}
+              <CommonItineraryViewComponent
+                sectionsRef={sectionsRef["itinerary"]}
+                title={"Itinerary"}
+                itineraryData={tour?.itinerary}
+              />
+
+              {/*Package Rates Section Title */}
+              <CommonTitleComponent title={"Package Rates"} />
+
+              {/*Renders the Package Rate Section */}
+              <CommonPackageRateViewComponent
+                sectionsRef={sectionsRef["packageRate"]}
+                packageRateList={tour?.packageRate}
+              />
+
+              {/*Inclusions Section Title */}
+              <CommonTitleComponent title={"Inclusions"} />
+
+              {/*Inclusions Section Title */}
+              <CommonRichTextViewComponent
+                sectionsRef={sectionsRef["inclusions"]}
+                title={"Inclusions"}
+                data={tour?.inclusions}
+              />
+
+              {/*Exclusions Section Title */}
+              <CommonTitleComponent title={"Exclusions"} />
+
+              {/*Exclusions Section Title */}
+              <CommonRichTextViewComponent
+                sectionsRef={sectionsRef["exclusions"]}
+                title={"Exclusions"}
+                data={tour?.exclusions}
+              />
+
+              {/*Hotels Section Title */}
+              <CommonTitleComponent title={"Hotels"} />
+
+              {/*Renders the Hotels Section */}
+              <CommonHotelsViewComponent
+                sectionsRef={sectionsRef["hotels"]}
+                hotelList={tour?.hotels}
+              />
             </Stack>
           </>
         ) : (
