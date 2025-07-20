@@ -1,6 +1,6 @@
 const CommonItineraryViewComponent = ({ sectionsRef, itineraryData }) => {
   return (
-    <ul ref={sectionsRef} className="space-y-3 mt-3 scroll-mt-[60px]">
+    <ul ref={sectionsRef} className="space-y-3 scroll-mt-[60px]">
       {itineraryData.map((day, idx) => (
         <li
           key={idx}

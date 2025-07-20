@@ -2,7 +2,7 @@ const CommonPackageRateViewComponent = ({ sectionsRef, packageRateList }) => {
   return (
     <div
       ref={sectionsRef}
-      className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-5 scroll-mt-[60px]"
+      className="grid grid-cols-1 sm:grid-cols-2 gap-6 scroll-mt-[60px]"
     >
       {packageRateList.map((p, idx) => (
         <div

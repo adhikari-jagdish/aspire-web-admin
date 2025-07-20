@@ -1,13 +1,15 @@
 import { Image, Modal, Stack, Table, Text, Title } from "@mantine/core";
+import { RiMoneyDollarCircleFill } from "react-icons/ri";
 
-import overview from "../../assets/icons/overview.svg";
-import hotels from "../../assets/icons/hotels.svg";
-import includes from "../../assets/icons/includes.svg";
-import excludes from "../../assets/icons/excludes.svg";
-import itinerary from "../../assets/icons/itinerary.svg";
-import packageRate from "../../assets/icons/packageRate.svg";
 import { useEffect, useRef, useState } from "react";
-import { FaAngleUp } from "react-icons/fa";
+import {
+  FaAngleUp,
+  FaPaperPlane,
+  FaCheckCircle,
+  FaHotel,
+} from "react-icons/fa";
+import { IoMdCloseCircle } from "react-icons/io";
+import { GrOverview } from "react-icons/gr";
 import CommonDiscountBatchComponent from "../../common/common_view_components/tour_trek_view_common_components/common_discount_batch_component";
 import CommonImageBannerComponent from "../../common/common_view_components/tour_trek_view_common_components/common_image_banner_component";
 import CommonTripHighlightsViewComponent from "../../common/common_view_components/tour_trek_view_common_components/common_trip_highlights_view_component";
@@ -18,6 +20,7 @@ import CommonRichTextViewComponent from "../../common/common_view_components/tou
 import CommonItineraryViewComponent from "../../common/common_view_components/tour_trek_view_common_components/common_itinerary_view_component";
 import CommonPackageRateViewComponent from "../../common/common_view_components/tour_trek_view_common_components/common_package_rate_view_component";
 import CommonHotelsViewComponent from "../../common/common_view_components/tour_trek_view_common_components/common_hotels_view_component";
+import CommonViewModelTabsComponent from "../../common/common_view_components/tour_trek_view_common_components/common_view_model_tabs_component";
 
 const titles = [
   { name: "Trip Highlights", label: "tripHighlights" },
@@ -34,19 +37,18 @@ const titles = [
 ];
 
 const buttons = [
-  { name: "Overview", icon: overview },
-  { name: "Itinerary", icon: itinerary },
-  { name: "Inclusions", icon: includes },
-  { name: "Exclusions", icon: excludes },
-  { name: "Hotels", icon: hotels },
-  { name: "PackageRate", icon: packageRate },
+  { name: "Overview", icon: GrOverview },
+  { name: "Itinerary", icon: FaPaperPlane },
+  { name: "Inclusions", icon: FaCheckCircle },
+  { name: "Exclusions", icon: IoMdCloseCircle },
+  { name: "Hotels", icon: FaHotel },
+  { name: "PackageRate", icon: RiMoneyDollarCircleFill },
 ];
 
 const ToursViewModel = ({ openedView, onClose, tour }) => {
   const scrollContainerRef = useRef(null);
   const buttonGroupRef = useRef(null);
   const [showScrollToTop, setShowScrollToTop] = useState(false);
-  const [activeSection, setActiveSection] = useState("overview");
 
   const sectionsRef = {
     overview: useRef(null),
@@ -85,15 +87,6 @@ const ToursViewModel = ({ openedView, onClose, tour }) => {
       container.removeEventListener("scroll", handleScroll);
     };
   }, [openedView]);
-
-  const scrollToSection = (key) => {
-    const ref = sectionsRef[key];
-
-    ref?.current.scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
-  };
 
   const scrollToButtonGroup = () => {
     buttonGroupRef.current?.scrollIntoView({
@@ -158,6 +151,13 @@ const ToursViewModel = ({ openedView, onClose, tour }) => {
               {/*Renders the Travel Themes Section */}
               <CommonTravelThemesViewComponent
                 travelThemes={tour.travelThemeIds}
+              />
+
+              {/*Renders the Common Tabs/Menu Section */}
+              <CommonViewModelTabsComponent
+                buttonGroupRef={buttonGroupRef}
+                buttons={buttons}
+                sectionsRef={sectionsRef}
               />
 
               {/*Overview Section Title */}
