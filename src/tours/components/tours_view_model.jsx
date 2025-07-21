@@ -185,7 +185,7 @@ const ToursViewModel = ({ openedView, onClose, tour }) => {
 
               {/*Renders the Package Rate Section */}
               <CommonPackageRateViewComponent
-                sectionsRef={sectionsRef["packageRate"]}
+                sectionsRef={sectionsRef["packagerate"]}
                 packageRateList={tour?.packageRate}
               />
 

@@ -9,11 +9,13 @@ const CommonViewModelTabsComponent = ({
   const scrollToSection = (key) => {
     const ref = sectionsRef[key];
 
+
     ref?.current.scrollIntoView({
       behavior: "smooth",
       block: "start",
     });
   };
+
 
   return (
     <div
