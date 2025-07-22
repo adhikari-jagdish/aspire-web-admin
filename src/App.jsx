@@ -8,7 +8,6 @@ import DestinationsController from "./destinations/controller/destinations_contr
 import TravelThemesController from "./travel_themes/controller/travelThemes_controller";
 import HotelsController from "./hotels/controller/hotels_controller";
 import CarouselsController from "./Carousels/controller/carousels_controller";
-import ExpeditionsView from "./Expeditions/view/expeditions_view";
 import PeakClimbingsView from "./peak climbings/view/peakClimbings_view";
 import AdventuresView from "./adventures/view/adventures_view";
 import AboutView from "./about/view/about_view";
@@ -16,6 +15,7 @@ import ContactView from "./contact/view/contact_view";
 import ToursController from "./tours/controller/tours_controller";
 import TripHighLightsController from "./trip highlights/controller/tripHighlights_controller";
 import TrekkingsController from "./trekkings/controller/trekkings_controller";
+import ExpeditionsController from "./expeditions/controller/expeditions_controller";
 
 function App() {
   return (
@@ -33,7 +33,7 @@ function App() {
           <Route path="tours" element={<ToursController />} />
           <Route path="triphighlights" element={<TripHighLightsController />} />
           <Route path="trekkings" element={<TrekkingsController />} />
-          <Route path="expeditions" element={<ExpeditionsView />} />
+          <Route path="expeditions" element={<ExpeditionsController />} />
           <Route path="peakClimbings" element={<PeakClimbingsView />} />
           <Route path="adventures" element={<AdventuresView />} />
 
