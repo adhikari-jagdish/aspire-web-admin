@@ -4,25 +4,38 @@ const CommonDiscountBatchComponent = ({ discountInPercentage }) => {
     return (
         <div
             className="
-                    absolute right-[20px]
-                    top-[-20px]
+                    absolute 
+                    right-[20px]
+                    top-[120px]
                     translate-y-[-50%]
                     bg-red-600
                     text-white
                     px-2.5
                     py-1.5
-                    rounded-lg
+                    rounded-[50%]
                     font-bold
+                    w-[90px]
+                    h-[90px]
                     text-sm
                     whitespace-nowrap
                     shadow-md
                     pointer-events-none
-                    select-none"
+                    select-none
+                    flex
+                    items-center 
+                    justify-center
+                    z-[999]
+                    "
         >
-            <span style={{ fontSize: "20px", lineHeight: 1 }}>🏷️</span>
-            {discountInPercentage}% off
+            <span className="font-bold text-5xl">{discountInPercentage}</span>
+             <div className="flex flex-col items-center justify-center">
+             <span className="text-xl">%</span>
+                <span className="">OFF</span>
+             </div>
         </div>
     );
 }
 
 export default CommonDiscountBatchComponent;
+
+// 🏷️
