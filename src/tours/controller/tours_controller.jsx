@@ -164,6 +164,7 @@ const ToursController = () => {
   },[imagePreview])
 
   const handleSubmit = async (formData) => {
+    console.log({formData})
     if (
       !formData.destinationIds ||
       !formData.travelThemeIds ||

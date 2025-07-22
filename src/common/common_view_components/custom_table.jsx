@@ -104,13 +104,14 @@ const CustomTable = ({
                             </span>
                           ) : col.accessor === "destinationIds" ? (
                             <span className="w-[250px]">
-                              {item[col.accessor]
+                              {/* {item[col.accessor]
                                 .map(
                                   (d) =>
                                     destinationList.find((dl) => dl._id === d)
                                       ?.title || "N/A"
                                 )
-                                .join(", ")}
+                                .join(", ")} */}
+                                {item[col.accessor].map(d => d.title || "N/A").join(", ")}
                             </span>
                           ) : col.accessor === "description" ? 
                             <SafeHtml html={item[col.accessor]}/>

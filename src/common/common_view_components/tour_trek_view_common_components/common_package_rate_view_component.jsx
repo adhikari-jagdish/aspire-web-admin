@@ -10,7 +10,7 @@ const CommonPackageRateViewComponent = ({ sectionsRef, packageRateList }) => {
           className="bg-white shadow-md rounded-lg overflow-hidden border"
         >
           <div className="bg-gray-100 p-3 border-b text-center text-md font-bold ">
-            Hotel Category: {p.hotelCategory}
+            No of Person: {p.noOfPerson}
           </div>
 
           <div className="p-4">

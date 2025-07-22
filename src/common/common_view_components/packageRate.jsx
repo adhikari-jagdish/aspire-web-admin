@@ -2,9 +2,15 @@ import { Group, TextInput, Title } from "@mantine/core";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 
-const hotelCategories = ["Budget", "Standard", "Deluxe", "Luxury", "Boutique"];
+const noOfPerson = [
+  { label : "2-3 pax", value : 2 },
+  { label : "4-7 pax", value : 4 },
+  { label : "8-13 pax", value: 8 },
+  { label: "14-21 pax", value : 14 },
+  { label: "22-30 pax", value: 22 },
+];
 const initialRate = {
-  hotelCategory: "",
+  noOfPerson: null,
   rateInNPR: null,
   rateInUSD: null,
   rateInINR: null,
@@ -21,28 +27,28 @@ const currencyFields = [
 const PackageRate = ({ name, value, onChange, isEditTour }) => {
   const [packageRates, setPackageRates] = useState([]);
   useEffect(() => {
-    if(isEditTour && Array.isArray(value)){
-      const initialized = value?.map(v => ({
-          hotelCategory: v.hotelCategory || "",
-          rateInNPR: v.rateInNPR || null,
-          rateInEUR: v.rateInEUR || null,
-          rateInUSD: v.rateInUSD || null,
-          rateInINR: v.rateInINR || null
+    if (isEditTour && Array.isArray(value)) {
+      const initialized = value?.map((v) => ({
+        noOfPerson: v.noOfPerson || null,
+        rateInNPR: v.rateInNPR || null,
+        rateInEUR: v.rateInEUR || null,
+        rateInUSD: v.rateInUSD || null,
+        rateInINR: v.rateInINR || null,
       }));
 
-      setPackageRates(initialized)
-    } 
-  },[isEditTour, JSON.stringify(value)]);
+      setPackageRates(initialized);
+    }
+  }, [isEditTour, JSON.stringify(value)]);
   const handleAdd = () => {
-    const updated = [...packageRates, { ...initialRate }]
+    const updated = [...packageRates, { ...initialRate }];
     setPackageRates(updated);
-    
+
     onChange({ target: { name, value: updated } });
   };
 
   const handleUpdate = (idx, field, value) => {
-    const isNumericField  = field.startsWith('rateIn');
-    const parsedValue = isNumericField ? parseFloat (value) || 0: value;
+    const isNumericField = field.startsWith("rateIn");
+    const parsedValue = isNumericField ? parseFloat(value) || 0 : value;
     setPackageRates((prev) => {
       const updated = prev.map((item, i) =>
         i === idx ? { ...item, [field]: parsedValue } : item
@@ -53,8 +59,8 @@ const PackageRate = ({ name, value, onChange, isEditTour }) => {
     });
   };
   //disable selected hotel
-  const selectedHotels = packageRates
-    ?.map((p) => p.hotelCategory)
+  const selectedPax = packageRates
+    ?.map((p) => p.noOfPerson)
     .filter(Boolean);
 
   const handleDelete = (idx) =>
@@ -75,7 +81,7 @@ const PackageRate = ({ name, value, onChange, isEditTour }) => {
 
         <button
           onClick={handleAdd}
-          className="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 flex items-center gap-1"
+          className="bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 flex items-center gap-1 cursor-pointer"
         >
           <IconPlus size={20} />
         </button>
@@ -87,31 +93,31 @@ const PackageRate = ({ name, value, onChange, isEditTour }) => {
             <div key={idx} className="space-y-4">
               <div className="space-x-8">
                 <label
-                  htmlFor="hotelCategory"
+                  htmlFor="noOfPerson"
                   className="font-medium text-[17px]"
                 >
-                  Hotel Category:
+                  No of Person:
                 </label>
                 <select
-                  className="border border-gray-400t p-1 rounded text-xl text-center w-[85%] outline-0"
-                  value={p.hotelCategory}
+                  className="border border-gray-400t p-1 rounded text-xl text-center w-[85%] outline-0 cursor-pointer"
+                  value={p.noOfPerson}
                   onChange={(e) =>
-                    handleUpdate(idx, "hotelCategory", e.target.value)
+                    handleUpdate(idx, "noOfPerson", parseInt(e.target.value))
                   }
                   style={{ fontSize: "14px" }}
                 >
-                  <option value="">Select Category</option>
-                  {hotelCategories.map((cat, i) => (
-                    <option
+                  <option value="">Select No of Person</option>
+                  {noOfPerson.map((p, i) => {
+                    return <option
                       key={i}
-                      value={cat}
+                      value={p.value}
                       disabled={
-                        selectedHotels.includes(cat) && p.hotelCategory !== cat
+                        selectedPax.includes(p.value) 
                       }
                     >
-                      {cat}
+                      {p.label}
                     </option>
-                  ))}
+                  })}
                 </select>
               </div>
 
@@ -125,20 +131,25 @@ const PackageRate = ({ name, value, onChange, isEditTour }) => {
                       label={label}
                       type="number"
                       value={p[name] === 0 ? "" : p[name] || ""}
-                      onChange={(e) =>{ 
-                        const value = e.target.value; 
-                      handleUpdate(idx, name, value === "" ? "" : Number(value))}}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        handleUpdate(
+                          idx,
+                          name,
+                          value === "" ? "" : Number(value)
+                        );
+                      }}
                       placeholder={`Enter Rate in ${label}`}
                       name={name}
                       required
                       labelProps={{
-                        style: { fontSize: "13px", fontWeight: 500,  },
+                        style: { fontSize: "13px", fontWeight: 500 },
                       }}
                       className="placeholder:text-sm"
-                      onWheel={e => e.target.blur()}
-                      onKeyDown={e => {
-                        if(["e", "E", "+", "-"].includes(e.key)){
-                          e.preventDefault();;
+                      onWheel={(e) => e.target.blur()}
+                      onKeyDown={(e) => {
+                        if (["e", "E", "+", "-"].includes(e.key)) {
+                          e.preventDefault();
                         }
                       }}
                     />
