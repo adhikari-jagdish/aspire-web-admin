@@ -2,14 +2,12 @@ import useAuth from "../../auth/components/use_auth";
 import { useNotification } from "../hooks/useNotification";
 import { useEffect, useState } from "react";
 import { Title } from "@mantine/core";
-import { IconTrash } from "@tabler/icons-react";
+import { IconPlus, IconTrash, IconX } from "@tabler/icons-react";
 import TripHighlightRepository from "../../trip highlights/repository/tripHighlight_repository";
 
 const TripHighlights = ({ name, onChange, value, isEditTour }) => {
-
   const [tripHighlightList, setTripHighlightList] = useState([]);
-  const [selectedTripHighlights, setSelectedTripHighlights] = useState([]);
-  const [description, setDescription] = useState([]);
+  const [tripHighlightRows, setTripHighlightRows] = useState([]);
 
   const { getToken } = useAuth();
   const notify = useNotification();
@@ -36,74 +34,36 @@ const TripHighlights = ({ name, onChange, value, isEditTour }) => {
       const trip = tripHighlightList.filter((h) =>
         value.some((v) => h._id === v.tripHighlightsId)
       );
-      const descriptions = value.map(v => v.description);
 
       setSelectedTripHighlights(trip);
-      setDescription(descriptions || "")
     }
   }, [isEditTour, value, tripHighlightList]);
 
-  const handleTripHighlightChange = (e) => {
-    const selected = e.target.value;
 
-    if (selected && !selectedTripHighlights?.some((s) => s._id === selected)) {
-
-      const trip = tripHighlightList.find((h) => h._id === selected);
-
-      if (trip) {
-
-        const updated = [...selectedTripHighlights, trip];
-        const updatedDescription = [...description, ""];
-
-        setSelectedTripHighlights(updated);
-        setDescription(updatedDescription);
-
-        const payload = updated.map((u, idx) => ({
-          tripHighlightsId: u._id,
-          description: updatedDescription[idx] || ""
-        }));
-        onChange({ target: { name, value: payload } });
-      }
-    }
-  };
-  const removeTripHighlightRow = (idx, tripHighlightId) => {
-    const trip = selectedTripHighlights.find((s) => s._id === tripHighlightId);
-
-    if (trip) {
-
-      const updated = selectedTripHighlights.filter((_, i) => i !== idx);
-      const updatedDescription = description.filter((_, i) => i !== idx);
-
-      setSelectedTripHighlights(updated);
-      setDescription(updatedDescription);
-
-      const payload = updated.map(u => ({
-        tripHighlightsId: u._id,
-        description: updatedDescription[idx] || ""
-      }))
-      onChange({ target: { name, value: payload } });
+  const handleAddTripHighlights = () => {
+    if(tripHighlightRows.length < tripHighlightList.length){
+      setTripHighlightRows(prev => [...prev, {tripHighlightsId: "", description: ""}])
     }
   };
 
-  const handleDescriptionChange = (value, idx) => {
-    const newDescriptions = [...description];
-    newDescriptions[idx] = value;
+  const handleTripHighlightRowChange = (idx, field, value) => {
+    const updated = [...tripHighlightRows];
+    updated[idx][field] = value;
 
-    setDescription(newDescriptions);
+    setTripHighlightRows(updated);
 
-    const payload = selectedTripHighlights.map((t, idx) => ({
-      tripHighlightsId: t._id,
-      description: newDescriptions[idx] || ""
-    }));
-    
-      onChange({ target: { name, value: payload } });
+    onChange({target: {name, value: updated}})
+  }
 
-  };
+const handleTripHighlightRemove = (idx) => {
+  const updated = tripHighlightRows.filter((_, i) =>  i !== idx);
+  setTripHighlightRows(updated);
 
-
+  onChange({target: {name, value: updated}})
+}
   return (
     <div className="w-full space-y-4">
-      <div className="flex items-center w-[100%] gap-5">
+      <div className="flex justify-between  w-[100%] ">
         <Title
           order={4}
           mt={20}
@@ -112,60 +72,59 @@ const TripHighlights = ({ name, onChange, value, isEditTour }) => {
           c="dark"
           className="flex flex-col"
         >
-          Trip Highlights:
+          Trip Highlights
         </Title>
-        <select
-          name={name}
-          id={name}
-          className="border border-gray-500 outline-0 rounded  h-[30px] w-[85%] mt-2 cursor-pointer text-center "
-          onChange={handleTripHighlightChange}
+        <button
+          onClick={handleAddTripHighlights}
+          className="bg-blue-600
+           text-white px-2 py-1 h-fit rounded hover:bg-blue-700 flex items-center gap-1"
         >
-          <option value="">List of Trip Highlights</option>
-          {tripHighlightList?.map((t, idx) => (
-            <option
-              disabled={selectedTripHighlights.some((s) => s._id === t._id)}
-              value={t?._id}
-              key={t._id || idx}
-            >
-              {t?.title}
-            </option>
-          ))}
-        </select>
+          <IconPlus size={20} />
+        </button>
       </div>
 
-      {/* selected TripHighlights */}
-      {selectedTripHighlights.length > 0 && (
-        <ul className="border border-gray-400 rounded p-2 w-full flex flex-col gap-6">
-          {selectedTripHighlights.map((trip, idx) => {
-            return <>
-              <li
-                key={trip?._id || idx}
-                className="bg-gray-100 px-2 py-1 rounded flex justify-between"
-              >
-                {trip?.title}
-                <button
-                  onClick={() => removeTripHighlightRow(idx, trip._id)}
-                  className=" bg-red-200 text-red-600 w-fit px-2 py-1 cursor-pointer hover:bg-red-300 rounded flex items-center justify-center gap-1 text-xl"
+      <div className="border p-2 border-gray-400 rounded space-y-4">
+        {tripHighlightRows.map((trip, i) => (
+          <>
+            <div className="flex gap-6 items-center justify-center">
+              <select
+              name={name}
+              id={name}
+              className="border border-gray-500 outline-0 rounded  h-[30px] w-full mt-2 cursor-pointer text-center"
+              onChange={e => handleTripHighlightRowChange(i, "tripHighlightsId", e.target.value)}
+            >
+              <option value="">List of Trip Highlights</option>
+              {tripHighlightList?.map((t, idx) => (
+                <option
+                  value={t?._id}
+                  key={t._id || idx}
+                  disabled={tripHighlightRows.some((trip) => trip.tripHighlightsId === t._id)}
                 >
-                  <IconTrash size={14} />
-                </button>
-              </li>
+                  {t?.title}
+                </option>
+              ))}
+            </select>
+            <button
+              className="bg-red-200 text-red-600 px-2 py-1 rounded hover:bg-red-300 h-[30px]  text-xl"
+              onClick={() => handleTripHighlightRemove(i, trip?.tripHighlightsId)}
+            >
+              <IconX size={10} />
+            </button>
+            </div>
+
               <textarea
-                key={idx}
-                value={description[idx] || ""}
-                onChange={(e) => handleDescriptionChange(e.target.value, idx)}
-                rows={6}
-                cols={5}
-                className="border border-gray-400 rounded p-2 outline-0 resize-none"
-                placeholder="Description..."
+                rows={5}
+                value={trip?.description}
+                className="border border-gray-400 outline-0 resize-none p-2 w-full rounded"
+                placeholder="Details....."
+                onChange={e => handleTripHighlightRowChange(i, "description", e.target.value)}
+
               ></textarea>
-              {selectedTripHighlights.length > 1 && (
-                <hr className="border-gray-400" />
-              )}
-            </>
-          })}
-        </ul>
-      )}
+          </>
+        ))}
+
+        {tripHighlightRows.length === 0 && <div>No Trip highlights yet.</div>}
+      </div>
     </div>
   );
 };

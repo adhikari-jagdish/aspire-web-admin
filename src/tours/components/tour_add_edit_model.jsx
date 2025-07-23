@@ -4,7 +4,7 @@ import Overview from "../../common/common_view_components/overview";
 import Itinerary from "../../common/common_view_components/itinerary";
 import Inclusions from "../../common/common_view_components/inclusions";
 import Exclusions from "../../common/common_view_components/exclusions";
-import Hotels from "../../common/common_view_components/hotels";
+// import Hotels from "../../common/common_view_components/hotels";
 import FileDiscount from "../../common/common_view_components/image-discount";
 import { useEffect, useState } from "react";
 import Destinations from "../../common/common_view_components/destinations";
@@ -140,9 +140,6 @@ const ToursAddEditModel = ({
             onChange={handleChange}
             isEditTour={isEditTour}
             durationLimit={formData.duration || "0"}
-            // onChange={(value) =>
-            //   setFormData((prev) => ({ ...prev, itinerary: value }))
-            // }
           />
           <PackageRate
             name="packageRate"
@@ -165,18 +162,10 @@ const ToursAddEditModel = ({
             onChange={handleChange}
             isEditTour={isEditTour}
             // onChange={(value) =>
-            //   setFormData((prev) => ({ ...prev, exclusions: value }))}
+            // setFormData((prev) => ({ ...prev, exclusions: value }))}
           />
 
-          <Hotels
-            name="hotels"
-            value={formData.hotels}
-            onChange={handleChange}
-            isEditTour={isEditTour}
-            // onChange={(value) =>
-            //   setFormData((prev) => ({ ...prev, hotels: value }))
-            // }
-          />
+          
           <ImageDiscount
             imageName="file"
             discountName="discountInPercentage"

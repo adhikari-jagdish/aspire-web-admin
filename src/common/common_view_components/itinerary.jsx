@@ -2,6 +2,9 @@ import { Title } from "@mantine/core";
 import { IconPlus, IconX } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
 import { useNotification } from "../hooks/useNotification";
+// import Hotels from "./hotels";
+// import MealPlan from "./mealPlan";
+import HotelAndMealPlan from "./hotel-mealPlan";
 
 const ItineraryFactors = [
   "Trek Distance",
@@ -14,6 +17,7 @@ const ItineraryFactors = [
 
 const Itinerary = ({ name, value, onChange, isEditTour, durationLimit }) => {
   const [itineraries, setItineraries] = useState([]);
+  const [hotelAndMealPlan, setHotelAndMealPlan] = useState({});
   const notify = useNotification();
 
   useEffect(() => {
@@ -147,6 +151,7 @@ const Itinerary = ({ name, value, onChange, isEditTour, durationLimit }) => {
 
     onChange({ target: { name, value: updatedItineraries } });
   };
+console.log({hotelAndMealPlan})
   return (
     <div className="">
       <div className=" flex justify-between items-center ">
@@ -173,7 +178,7 @@ const Itinerary = ({ name, value, onChange, isEditTour, durationLimit }) => {
         </button>
       </div>
 
-      <div className="border border-gray-400 rounded p-2 max-h-[550px] overflow-y-scroll">
+      <div className="border border-gray-400 rounded p-2 grid grid-template-cols grid-cols-2 gap-6  ">
         {itineraries.length > 0 ? (
           itineraries.map((item, idx) => (
             <div key={idx}>
@@ -278,6 +283,7 @@ const Itinerary = ({ name, value, onChange, isEditTour, durationLimit }) => {
                     }
                     className="border border-gray-400 text-black w-full rounded p-2 resize-none outline-0"
                   />
+                    <HotelAndMealPlan hotelAndMealPlan={hotelAndMealPlan} setHotelAndMealPlan={setHotelAndMealPlan}/>
                 </div>
 
                 <div className="pl-3">
@@ -290,7 +296,7 @@ const Itinerary = ({ name, value, onChange, isEditTour, durationLimit }) => {
                 </div>
               </div>
 
-              {itineraries.length > 1 && <hr className="opacity-50 py-2" />}
+              {itineraries.length > 1 && <hr className="opacity-50 py-2 w-[95%]" />}
             </div>
           ))
         ) : (

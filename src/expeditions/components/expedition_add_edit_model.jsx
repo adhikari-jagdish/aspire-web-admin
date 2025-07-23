@@ -4,7 +4,7 @@ import Overview from "../../common/common_view_components/overview";
 import Itinerary from "../../common/common_view_components/itinerary";
 import Inclusions from "../../common/common_view_components/inclusions";
 import Exclusions from "../../common/common_view_components/exclusions";
-import Hotels from "../../common/common_view_components/hotels";
+// import Hotels from "../../common/common_view_components/hotels";
 import FileDiscount from "../../common/common_view_components/image-discount";
 import { useEffect, useState } from "react";
 import Destinations from "../../common/common_view_components/destinations";
@@ -168,7 +168,7 @@ const ExpeditionsAddEditModel = ({
             //   setFormData((prev) => ({ ...prev, exclusions: value }))}
           />
 
-          <Hotels
+          {/* <Hotels
             name="hotels"
             value={formData.hotels}
             onChange={handleChange}
@@ -176,7 +176,7 @@ const ExpeditionsAddEditModel = ({
             // onChange={(value) =>
             //   setFormData((prev) => ({ ...prev, hotels: value }))
             // }
-          />
+          /> */}
           <ImageDiscount
             imageName="file"
             discountName="discountInPercentage"
