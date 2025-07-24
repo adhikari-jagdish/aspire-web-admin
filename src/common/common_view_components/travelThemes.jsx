@@ -8,9 +8,9 @@ const TravelThemes = ({ name, value, onChange }) => {
   const [travelThemeList, setTravelThemeList] = useState([]);
   const { getToken } = useAuth();
   const notify = useNotification();
-
   const travelThemeRepository = new TravelThemeRepository(getToken);
 
+  const purifiedTravelThemeIds = value && value?.map(v => v?._id);
   useEffect(() => {
     //get all travel themes
     const fetchTravelThemes = async () => {
@@ -58,7 +58,7 @@ const TravelThemes = ({ name, value, onChange }) => {
                 id={inputId}
                 name="travelThemeId"
                 className="w-4 h-4 mr-1 cursor-pointer"
-                checked={value?.includes(t?._id)}
+                checked={purifiedTravelThemeIds?.includes(t?._id)}
                 value={t?._id}
                 onChange={() => handleChange(t?._id)}
               />

@@ -35,7 +35,6 @@ const TripHighlights = ({ name, onChange, value, isEditTour }) => {
         value.some((v) => h._id === v.tripHighlightsId)
       );
 
-      setSelectedTripHighlights(trip);
     }
   }, [isEditTour, value, tripHighlightList]);
 

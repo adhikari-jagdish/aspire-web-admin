@@ -202,8 +202,15 @@ const ToursController = () => {
     const hotelIds = formData.hotels.map((hotel) =>
       typeof hotel === "object" && hotel !== null ? hotel._id : hotel
     );
-    fD.append("destinationIds", JSON.stringify(formData.destinationIds));
-    fD.append("travelThemeIds", JSON.stringify(formData.travelThemeIds));
+
+    // Normalize destinations data to array of _id strings
+    const destinationIds = formData.destinationIds.map(d => d._id);
+
+     // Normalize travel theme data to array of _id strings
+    const travelThemeIds = formData.travelThemeIds.map(d => d._id);
+
+    fD.append("destinationIds", JSON.stringify(destinationIds));
+    fD.append("travelThemeIds", JSON.stringify(travelThemeIds));
     fD.append("title", formData.title);
     fD.append("duration", parseInt(formData.duration));
     fD.append("overview", formData.overview);

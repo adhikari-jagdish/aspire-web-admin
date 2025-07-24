@@ -16,11 +16,8 @@ const mealPlan = [
   },
 ];
 const HotelAndMealPlan = ({
-  name,
   onChange,
   value,
-  isEditTour,
-  setHotelAndMealPlan,
 }) => {
   const [hotelList, setHotelList] = useState([]);
   const [selectedHotel, setSelectedHotel] = useState("");
@@ -62,7 +59,8 @@ const HotelAndMealPlan = ({
       const hotel = hotelList.find((h) => h._id === selected);
       setSelectedHotel(hotel?.title);
 
-      setHotelAndMealPlan({ hotel: selected });
+
+      onChange({ hotel: selected});
     }
   };
 
@@ -75,9 +73,13 @@ const HotelAndMealPlan = ({
       const singleMealPlan = mealPlan.find((nmp) => nmp.key === selected);
       setSelectedMealPlan(singleMealPlan?.value);
 
-      setHotelAndMealPlan({ mealPlan: selected });
+
+      onChange({mealPlan: selected});
     }
   };
+
+  
+
   return (
     <div className="w-full space-y-4 flex flex-col gap-2">
       <div className="flex gap-4">
@@ -125,12 +127,12 @@ const HotelAndMealPlan = ({
           </select>
         </div>
       </div>
-      {(selectedHotel && selectedMealPlan) && (
+      {((selectedHotel && selectedMealPlan) || JSON.stringify(value) !== "{}") && (
         <ul className="border border-gray-400 rounded p-2 w-full  flex flex-col ">
           <li className="bg-gray-100 px-2 py-1 rounded flex justify-around ">
-            <span>{selectedHotel} </span>
+            <span>{ value ? hotelList.find(h => h?._id === value?.hotel)?.title : selectedHotel} </span>
             |
-            <span>{selectedMealPlan}</span>
+            <span>{value ? value?.mealPlan : selectedMealPlan}</span>
          <button
               onClick={() => {
                 setSelectedMealPlan("");

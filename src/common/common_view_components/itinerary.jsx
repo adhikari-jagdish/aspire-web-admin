@@ -17,18 +17,20 @@ const ItineraryFactors = [
 
 const Itinerary = ({ name, value, onChange, isEditTour, durationLimit }) => {
   const [itineraries, setItineraries] = useState([]);
-  const [hotelAndMealPlan, setHotelAndMealPlan] = useState({});
   const notify = useNotification();
 
   useEffect(() => {
     if (isEditTour && Array.isArray(value)) {
       const initialized = value.map((v) => ({
         dayAndTitle: v.dayAndTitle,
-        details: (v.details || []).join("\n"),
+        details: v.details,
+        itineraryFactors: v.itineraryFactors,
+        hotelAndMealPlan: v.hotelAndMealPlan
       }));
       setItineraries(initialized);
     }
   }, [isEditTour, value]);
+  
 
   const handleAddItinerary = () => {
     if (durationLimit < 1) {
@@ -48,6 +50,7 @@ const Itinerary = ({ name, value, onChange, isEditTour, durationLimit }) => {
       dayAndTitle: `Day ${itineraries.length + 1}: `,
       details: "",
       itineraryFactors: [],
+      hotelAndMealPlan: {}
     };
     const updated = [...itineraries, newItem];
     setItineraries(updated);
@@ -151,7 +154,7 @@ const Itinerary = ({ name, value, onChange, isEditTour, durationLimit }) => {
 
     onChange({ target: { name, value: updatedItineraries } });
   };
-console.log({hotelAndMealPlan})
+
   return (
     <div className="">
       <div className=" flex justify-between items-center ">
@@ -214,19 +217,19 @@ console.log({hotelAndMealPlan})
                         <IconPlus size={20} />
                       </button>
                     </div>
-                    {item?.itineraryFactors.length === 0 ? (
+                    {item?.itineraryFactors?.length === 0 ? (
                       <div className="text-center text-gray-400 py-2">
                         No Itinerary Facts yet!
                       </div>
                     ) : (
                       <>
                         <Title order={4}>Itinerary Facts</Title>
-                        {item?.itineraryFactors.map((o, i) => (
+                        {item?.itineraryFactors?.map((o, i) => (
                           <div className="space-x-5 space-y-4 w-full flex items-center ">
                             <select
                               name="ItineraryFactors"
                               className="border w-[45%] text-center border-gray-400 p-2 rounded outline-0"
-                              value={o?.itineraryFactors}
+                              value={o?.title}
                               onChange={(e) =>
                                 handleItineraryFactorsUpdate(
                                   i,
@@ -238,7 +241,7 @@ console.log({hotelAndMealPlan})
                             >
                               <option value="">Select ItineraryFactors</option>
 
-                              {ItineraryFactors.map((opt, idx) => (
+                              {ItineraryFactors?.map((opt, idx) => (
                                 <option key={idx} value={opt}>
                                   {opt}
                                 </option>
@@ -283,7 +286,18 @@ console.log({hotelAndMealPlan})
                     }
                     className="border border-gray-400 text-black w-full rounded p-2 resize-none outline-0"
                   />
-                    <HotelAndMealPlan hotelAndMealPlan={hotelAndMealPlan} setHotelAndMealPlan={setHotelAndMealPlan}/>
+                    <HotelAndMealPlan 
+                      value={item?.hotelAndMealPlan}
+                      onChange = {newData => {
+                        const updated = [...itineraries];
+                        updated[idx].hotelAndMealPlan = {
+                          ...updated[idx].hotelAndMealPlan,
+                          ...newData
+                        }
+                        setItineraries(updated);;
+                        onChange({target: {name, value: updated}})
+                      }}
+                    />
                 </div>
 
                 <div className="pl-3">

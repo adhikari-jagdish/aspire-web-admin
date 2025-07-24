@@ -1,12 +1,13 @@
+import CommonDiscountBatchComponent from "./common_discount_batch_component";
 
-const CommonImageBannerComponent = ({ image }) => {
-    const isValidImage = image && image.trim() !== "";
+const CommonImageBannerComponent = ({  tour }) => {
+    const isValidImage = tour?.image && tour?.image.trim() !== "";
 
     return (
         <div className="w-full relative h-[40vh] rounded-md overflow-hidden bg-gray-400">
             {isValidImage ? (
                 <img
-                    src={image}
+                    src={tour?.image}
                     alt="Banner"
                     className="w-full h-full object-cover"
                 />
@@ -15,6 +16,10 @@ const CommonImageBannerComponent = ({ image }) => {
                     BANNER IMAGE HERE
                 </div>
             )}
+              {/*Renders The Discount Batch Shown on the top right */}
+              <CommonDiscountBatchComponent
+                discountInPercentage={tour.discountInPercentage}
+              />
         </div>
     );
 };

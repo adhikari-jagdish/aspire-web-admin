@@ -4,7 +4,7 @@ const CommonHotelsViewComponent = ({ sectionsRef, hotelList }) => {
       ref={sectionsRef}
       className="grid grid-cols-1 sm:grid-cols-2 gap-6 scroll-mt-[60px]"
     >
-      {hotelList.map((hotel, idx) => (
+      {hotelList?.map((hotel, idx) => (
         <div
           key={hotel._id || idx}
           className="bg-white shadow-md rounded-lg overflow-hidden border"

@@ -9,6 +9,7 @@ const Destinations = ({ name, value, onChange}) => {
   const { getToken } = useAuth();
   const notify = useNotification();
 
+const purifiedDestinationIds = value && value?.map(v => v._id);
 
   const destinationRepository = new DestinationRepository(getToken);
   useEffect(() => {
@@ -57,7 +58,7 @@ const Destinations = ({ name, value, onChange}) => {
                 name="destinationId"
                 className="w-4 h-4 mr-1 cursor-pointer"
                 value={d?._id}
-                checked={value?.includes(d?._id)}
+                checked={purifiedDestinationIds?.includes(d?._id)}
                 onChange={() => handleChange(d?._id)}
               />
               <label htmlFor={inputId} className="cursor-pointer">

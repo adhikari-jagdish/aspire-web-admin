@@ -122,12 +122,9 @@ const ToursViewModel = ({ openedView, onClose, tour }) => {
         {tour ? (
           <>
             {/*Renders The Banner Image */}
-            <CommonImageBannerComponent image={tour?.image} />
+            <CommonImageBannerComponent tour={tour}  />
             <Stack spacing="sm" className="text-[14px]">
-              {/*Renders The Discount Batch Shown on the top right */}
-              <CommonDiscountBatchComponent
-                discountInPercentage={tour.discountInPercentage}
-              />
+            
 
               {/*Trip Hightlight Section Title */}
               <CommonTitleComponent title={"Trip Highlights"} />
@@ -222,7 +219,6 @@ const ToursViewModel = ({ openedView, onClose, tour }) => {
         ) : (
           <Text c="dimmed">No tour data available.</Text>
         )}
-        {showScrollToTop && (
           <button
             onClick={scrollToButtonGroup}
             aria-label="Scroll to button sections"
@@ -230,7 +226,6 @@ const ToursViewModel = ({ openedView, onClose, tour }) => {
           >
             <FaAngleUp className="text-xl" />
           </button>
-        )}{" "}
       </div>
     </Modal>
   );

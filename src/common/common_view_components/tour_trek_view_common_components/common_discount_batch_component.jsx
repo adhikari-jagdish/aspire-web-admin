@@ -5,8 +5,8 @@ const CommonDiscountBatchComponent = ({ discountInPercentage }) => {
         <div
             className="
                     absolute 
-                    right-[20px]
-                    top-[120px]
+                    right-[10px]
+                    top-[70px]
                     translate-y-[-50%]
                     bg-red-600
                     text-white
