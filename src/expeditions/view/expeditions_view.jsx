@@ -4,9 +4,9 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import CustomTable from "../../common/common_view_components/custom_table";
 
-const ToursView = ({
+const ExpeditionsView = ({
   columns,
-  tours,
+  expeditions,
   handleClick,
   onEditButtonClick,
   onDeleteButtonClick,
@@ -25,11 +25,11 @@ const ToursView = ({
       </button>
       <div className="p-4">
         <Title order={3} mt={20} mb={10} ta="left" c="dark">
-          Tours
+          Expeditions
         </Title>
         <CustomTable
           columns={columns}
-          data={tours}
+          data={expeditions}
           shouldShowDelete
           shouldShowEdit
           onEdit={onEditButtonClick}
@@ -57,4 +57,4 @@ const ToursView = ({
 //   onViewButtonClick: PropTypes.func.isRequired,
 // };
 
-export default ToursView;
+export default ExpeditionsView;

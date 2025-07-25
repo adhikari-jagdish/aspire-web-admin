@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import HotelRepository from "../../../hotels/repository/hotel_repository";
 import useAuth from "../../../auth/components/use_auth";
 import { useNotification } from "../../hooks/useNotification";
-import bedIcon from '../../../assets/icons/bed-hotel.svg';
-import spoonIcon from '../../../assets/icons/utensils-food.svg';
 import { FaBed } from "react-icons/fa6";
 import { FaUtensils } from "react-icons/fa";
 
@@ -18,7 +16,7 @@ const mealPlan = [
   },
 ];
 
-const CommonItineraryViewComponent = ({ sectionsRef, itineraryData }) => {
+const CommonItineraryViewComponent = ({ sectionsRef, itineraryData, parentName }) => {
   const [hotelList, setHotelList] = useState([]);
 
     const { getToken } = useAuth();
@@ -67,7 +65,7 @@ const CommonItineraryViewComponent = ({ sectionsRef, itineraryData }) => {
            <div className="mt-4">{day.details}</div> <br />
           <div className="flex items-center gap-2" >
           
-             <span className="flex items-center justify-center gap-2"><FaBed color="#0890cf" size={18}/>{hotelList.find(h => h._id === day?.hotelAndMealPlan?.hotel)?.title}</span> | &nbsp;
+             <span className="flex items-center justify-center gap-2"><FaBed color="#0890cf" size={18}/>{parentName === "expeditions" ? day?.hotelAndMealPlan?.hotel :  hotelList.find(h => h._id === day?.hotelAndMealPlan?.hotel)?.title}</span> | &nbsp;
              
          <span  className="flex items-center justify-center gap-2"> <FaUtensils color="#0890cf" size={18}/>  {mealPlan.find(m => m.key === day?.hotelAndMealPlan?.mealPlan)?.value}</span>
           </div>

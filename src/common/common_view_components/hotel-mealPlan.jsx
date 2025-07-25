@@ -15,12 +15,10 @@ const mealPlan = [
     value: "JP - Room, Breakfast, Lunch and Dinner + Jungle Activities ",
   },
 ];
-const HotelAndMealPlan = ({
-  onChange,
-  value,
-}) => {
+const HotelAndMealPlan = ({ onChange, value, parentName, isEditTour,isEditTrekking }) => {
   const [hotelList, setHotelList] = useState([]);
   const [selectedHotel, setSelectedHotel] = useState("");
+  const [hotelName, setHotelName] = useState("");
   const { getToken } = useAuth();
   const notify = useNotification();
   const hotelRepository = new HotelRepository(getToken);
@@ -39,18 +37,13 @@ const HotelAndMealPlan = ({
     };
     fetchHotels();
   }, []);
-  // useEffect(() => {
-  //   if (isEditTour && Array.isArray(value) && hotelList.length > 0) {
-  //     const hotel = hotelList.filter((h) =>
-  //       value.some((v) =>
-  //         typeof v === "object" ? h._id === v._id : h._id === v
-  //       )
-  //     );
-  //     setSelectedHotels(hotel);
-  //     // setSelectedHotels(updated);
 
-  //   }
-  // }, [isEditTour, value, hotelList]);
+  useEffect(() => {
+    if ((isEditTour || isEditTrekking) && Array.isArray(value) && hotelList.length > 0) {
+      
+
+    }
+  }, [isEditTour, value]);
 
   const handleHotelChange = (e) => {
     const selected = e.target.value;
@@ -59,8 +52,7 @@ const HotelAndMealPlan = ({
       const hotel = hotelList.find((h) => h._id === selected);
       setSelectedHotel(hotel?.title);
 
-
-      onChange({ hotel: selected});
+      onChange({ hotel: selected  });
     }
   };
 
@@ -72,18 +64,14 @@ const HotelAndMealPlan = ({
     if (selected) {
       const singleMealPlan = mealPlan.find((nmp) => nmp.key === selected);
       setSelectedMealPlan(singleMealPlan?.value);
-
-
-      onChange({mealPlan: selected});
+      onChange({ mealPlan: selected });
     }
   };
-
-  
-
+console.log({value})
   return (
     <div className="w-full space-y-4 flex flex-col gap-2">
       <div className="flex gap-4">
-        <div className="flex items-center w-[50%] gap-5">
+        <div className="flex items-center  w-[50%] gap-5">
           {/* <Title
           order={4}
           mt={20}
@@ -94,29 +82,37 @@ const HotelAndMealPlan = ({
         >
           Hotels:
         </Title> */}
-          <select
-            name={name}
-            id={name}
-            className="border border-gray-500 outline-0 rounded  h-[30px]  mt-2 cursor-pointer text-center "
-            onChange={handleHotelChange}
-          >
-            <option value="">List of Hotels</option>
-            {hotelList?.map((h, idx) => (
-              <option
-                disabled={selectedHotel === h._id}
-                value={h?._id}
-                key={h._id || idx}
-              >
-                {h?.title}
-              </option>
-            ))}
-          </select>
+          {parentName == "expeditions" ? (
+            <div className="w-full">
+              <input value={hotelName} onChange={e => {setHotelName(e.target.value); onChange({hotel: e.target.value})}} type="text" required placeholder="Enter Hotel Name here...." className="border border-gray-600 outline-0 p-2 rounded w-70 h-[30px] mt-2 " />
+            </div>
+          ) : (
+            <select
+              name={name}
+              id={name}
+              className="border border-gray-500 outline-0 rounded  h-[30px]  mt-2 cursor-pointer text-center "
+              onChange={handleHotelChange}
+              value={value?.hotel}
+            >
+              <option value="">List of Hotels</option>
+              {hotelList?.map((h, idx) => (
+                <option
+                  disabled={selectedHotel === h._id}
+                  value={h?._id}
+                  key={h._id || idx}
+                >
+                  {h?.title}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
 
         <div className="w-full space-y-4">
           <select
             className="border border-gray-500 outline-0 rounded w-full  h-[30px] w- mt-2 cursor-pointer text-center "
             onChange={handleMealPlanChange}
+            value={value?.mealPlan}
           >
             <option value="">List of Meal Plans</option>
             {mealPlan?.map((mp, idx) => (
@@ -127,13 +123,17 @@ const HotelAndMealPlan = ({
           </select>
         </div>
       </div>
-      {((selectedHotel && selectedMealPlan) || JSON.stringify(value) !== "{}") && (
+      {((selectedHotel && selectedMealPlan) ||
+        JSON.stringify(value) !== "{}" || hotelName.trim() !== "") && (
         <ul className="border border-gray-400 rounded p-2 w-full  flex flex-col ">
           <li className="bg-gray-100 px-2 py-1 rounded flex justify-around ">
-            <span>{ value ? hotelList.find(h => h?._id === value?.hotel)?.title : selectedHotel} </span>
-            |
-            <span>{value ? value?.mealPlan : selectedMealPlan}</span>
-         <button
+            <span>
+              {(value
+                ? hotelList.find((h) => h?._id === value?.hotel)?.title
+                : selectedHotel) || hotelName}{" "}
+            </span>
+            |<span>{value ? mealPlan.find(m => m.key === value?.mealPlan )?.value : selectedMealPlan}</span>
+            <button
               onClick={() => {
                 setSelectedMealPlan("");
               }}

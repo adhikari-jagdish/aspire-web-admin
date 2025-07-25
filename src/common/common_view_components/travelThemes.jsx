@@ -6,6 +6,7 @@ import { useNotification } from "../hooks/useNotification";
 
 const TravelThemes = ({ name, value, onChange }) => {
   const [travelThemeList, setTravelThemeList] = useState([]);
+  const [selectedTravelThemes, setSelectedTravelThemes] = useState([]);
   const { getToken } = useAuth();
   const notify = useNotification();
   const travelThemeRepository = new TravelThemeRepository(getToken);
@@ -32,6 +33,7 @@ const TravelThemes = ({ name, value, onChange }) => {
     const updated = value.includes(id)
       ? value.filter((v) => v !== id)
       : [...value, id];
+      setSelectedTravelThemes(updated)
 
     onChange({ target: { name, value: updated } });
   };
@@ -58,7 +60,7 @@ const TravelThemes = ({ name, value, onChange }) => {
                 id={inputId}
                 name="travelThemeId"
                 className="w-4 h-4 mr-1 cursor-pointer"
-                checked={purifiedTravelThemeIds?.includes(t?._id)}
+                checked={purifiedTravelThemeIds?.includes(t?._id) || selectedTravelThemes.includes(t?._id)}
                 value={t?._id}
                 onChange={() => handleChange(t?._id)}
               />

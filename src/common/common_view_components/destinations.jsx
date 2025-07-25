@@ -6,6 +6,7 @@ import { useNotification } from "../hooks/useNotification";
 
 const Destinations = ({ name, value, onChange}) => {
   const [destinationList, setDestinationList] = useState([]);
+  const [selectedDestinations, setSelectedDestinations] = useState([]);
   const { getToken } = useAuth();
   const notify = useNotification();
 
@@ -31,7 +32,7 @@ const purifiedDestinationIds = value && value?.map(v => v._id);
 
   const handleChange  = (id) => {
     const updated = value?.includes(id)? value.filter(v => v !== id): [...value, id];
-
+    setSelectedDestinations(updated);
     onChange({target: {name, value: updated}})
   }
   return (
@@ -58,7 +59,7 @@ const purifiedDestinationIds = value && value?.map(v => v._id);
                 name="destinationId"
                 className="w-4 h-4 mr-1 cursor-pointer"
                 value={d?._id}
-                checked={purifiedDestinationIds?.includes(d?._id)}
+                checked={purifiedDestinationIds?.includes(d?._id) || selectedDestinations.includes(d?._id)  }
                 onChange={() => handleChange(d?._id)}
               />
               <label htmlFor={inputId} className="cursor-pointer">

@@ -22,27 +22,13 @@ import CommonPackageRateViewComponent from "../../common/common_view_components/
 import CommonHotelsViewComponent from "../../common/common_view_components/tour_trek_view_common_components/common_hotels_view_component";
 import CommonViewModelTabsComponent from "../../common/common_view_components/tour_trek_view_common_components/common_view_model_tabs_component";
 
-const titles = [
-  { name: "Trip Highlights", label: "tripHighlights" },
-  { name: "Destinations", label: "destinationIds" },
-  { name: "Travel Themes", label: "travelThemeIds" },
-  { name: "Duration", label: "duration" },
-  { name: "Overview", label: "overview" },
-  { name: "Itinerary", label: "itinerary" },
-  { name: "Package Rate", label: "packageRate" },
-  { name: "Inclusions", label: "inclusions" },
-  { name: "Exclusions", label: "exclusions" },
-  { name: "Hotels", label: "hotels" },
-  { name: "Discount", label: "discountInPercentage" },
-];
-
 const buttons = [
   { name: "Overview", icon: GrOverview },
   { name: "Itinerary", icon: FaPaperPlane },
+  { name: "PackageRate", icon: RiMoneyDollarCircleFill },
   { name: "Inclusions", icon: FaCheckCircle },
   { name: "Exclusions", icon: IoMdCloseCircle },
-  { name: "Hotels", icon: FaHotel },
-  { name: "PackageRate", icon: RiMoneyDollarCircleFill },
+  // { name: "Hotels", icon: FaHotel },
 ];
 
 const ExpeditionsViewModel = ({ openedView, onClose, expedition }) => {
@@ -55,9 +41,11 @@ const ExpeditionsViewModel = ({ openedView, onClose, expedition }) => {
     itinerary: useRef(null),
     inclusions: useRef(null),
     exclusions: useRef(null),
-    hotels: useRef(null),
+    // hotels: useRef(null),
     packagerate: useRef(null),
   };
+
+
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -94,13 +82,12 @@ const ExpeditionsViewModel = ({ openedView, onClose, expedition }) => {
       block: "start",
     });
   };
-
   return (
     <Modal
       opened={openedView}
       onClose={onClose}
       title={
-        expedition.title ? `${expedition.title} ( ${expedition.duration} days )` : "Expedition Package"
+        expedition.title ? `${expedition.title} ( ${expedition.duration} days )` : "expedition Package"
       }
       centered
       size="xxl"
@@ -122,12 +109,9 @@ const ExpeditionsViewModel = ({ openedView, onClose, expedition }) => {
         {expedition ? (
           <>
             {/*Renders The Banner Image */}
-            <CommonImageBannerComponent image={expedition?.image} />
+            <CommonImageBannerComponent expedition={expedition}  />
             <Stack spacing="sm" className="text-[14px]">
-              {/*Renders The Discount Batch Shown on the top right */}
-              <CommonDiscountBatchComponent
-                discountInPercentage={expedition.discountInPercentage}
-              />
+            
 
               {/*Trip Hightlight Section Title */}
               <CommonTitleComponent title={"Trip Highlights"} />
@@ -178,6 +162,7 @@ const ExpeditionsViewModel = ({ openedView, onClose, expedition }) => {
                 sectionsRef={sectionsRef["itinerary"]}
                 title={"Itinerary"}
                 itineraryData={expedition?.itinerary}
+                parentName="expeditions"
               />
 
               {/*Package Rates Section Title */}
@@ -210,19 +195,18 @@ const ExpeditionsViewModel = ({ openedView, onClose, expedition }) => {
               />
 
               {/*Hotels Section Title */}
-              <CommonTitleComponent title={"Hotels"} />
+              {/* <CommonTitleComponent title={"Hotels"} /> */}
 
               {/*Renders the Hotels Section */}
-              <CommonHotelsViewComponent
+              {/* <CommonHotelsViewComponent
                 sectionsRef={sectionsRef["hotels"]}
                 hotelList={expedition?.hotels}
-              />
+              /> */}
             </Stack>
           </>
         ) : (
           <Text c="dimmed">No Expedition data available.</Text>
         )}
-        {showScrollToTop && (
           <button
             onClick={scrollToButtonGroup}
             aria-label="Scroll to button sections"
@@ -230,7 +214,6 @@ const ExpeditionsViewModel = ({ openedView, onClose, expedition }) => {
           >
             <FaAngleUp className="text-xl" />
           </button>
-        )}{" "}
       </div>
     </Modal>
   );

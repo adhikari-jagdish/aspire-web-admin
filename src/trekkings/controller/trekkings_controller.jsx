@@ -6,11 +6,10 @@ import CustomDialogModal from "../../common/common_view_components/custom_dialog
 import TrekkingRepository from "../repository/trekking_repository";
 import TrekkingsView from "../view/trekkings_view";
 import DestinationRepository from "../../destinations/repository/destination_repository";
+import TrekkingsViewModel from "../components/trekking_view_model";
 import TrekkingsAddEditModel from "../components/trekking_add_edit_model";
 import TravelThemeRepository from "../../travel_themes/repository/travelTheme_repository";
 import TripHighlightRepository from "../../trip highlights/repository/tripHighlight_repository";
-import { object } from "framer-motion/client";
-import TrekkingsViewModel from "../components/trekking_view_model";
 
 const TrekkingsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -39,7 +38,7 @@ const TrekkingsController = () => {
       } catch (err) {
         notify({
           type: "error",
-          message: err.message ?? "Failed to fetch trekkings.",
+          message: err.message ?? "Failed to fetch Trekkings.",
         });
       } finally {
         hideLoading();
@@ -130,7 +129,7 @@ const TrekkingsController = () => {
     try {
       showLoading();
       await trekkingRepository.deleteTrekkingPackage(idToDelete);
-      notify({ type: "success", message: "trekking deleted successfully." });
+      notify({ type: "success", message: "Trekking deleted successfully." });
     } catch (err) {
       setTrekkingList(previousList);
       notify({
@@ -164,6 +163,7 @@ const TrekkingsController = () => {
   },[imagePreview])
 
   const handleSubmit = async (formData) => {
+    console.log({formData})
     if (
       !formData.destinationIds ||
       !formData.travelThemeIds ||
@@ -184,7 +184,7 @@ const TrekkingsController = () => {
       });
       return;
     }
-    if(!image){
+    if(!image && !formData.file){
       notify({
         type: "error",
         message: "Image is required"
@@ -201,8 +201,15 @@ const TrekkingsController = () => {
     const hotelIds = formData.hotels.map((hotel) =>
       typeof hotel === "object" && hotel !== null ? hotel._id : hotel
     );
-    fD.append("destinationIds", JSON.stringify(formData.destinationIds));
-    fD.append("travelThemeIds", JSON.stringify(formData.travelThemeIds));
+
+    // // Normalize destinations data to array of _id strings
+    const destinationIds = formData.destinationIds.map(d => d._id);
+
+    //  // Normalize travel theme data to array of _id strings
+    const travelThemeIds = formData.travelThemeIds.map(d => d._id);
+
+    fD.append("destinationIds", JSON.stringify(destinationIds));
+    fD.append("travelThemeIds", JSON.stringify(travelThemeIds));
     fD.append("title", formData.title);
     fD.append("duration", parseInt(formData.duration));
     fD.append("overview", formData.overview);
@@ -272,16 +279,8 @@ const TrekkingsController = () => {
 
   const columns = [
     { label: "Destination", accessor: "destinationIds" },
-    // { label: "Travel Theme", accessor: "travelThemeIds" },
     { label: "Title", accessor: "title" },
     { label: "Duration", accessor: "duration" },
-    // { label: "Overview", accessor: "overview" },
-    // { label: "Package Inclusions", accessor: "tripHighlights" },
-    // { label: "Itinerary", accessor: "itinerary" },
-    // { label: "Inclusions", accessor: "inclusions" },
-    // { label: "exclusions", accessor: "exclusions" },
-    // { label: "Hotels", accessor: "hotels" },
-    // { label: "Package Rate", accessor: "packageRate" },
     { label: "Discount", accessor: "discountInPercentage" },
     { label: "Image", accessor: "image" },
   ];
@@ -308,9 +307,6 @@ const TrekkingsController = () => {
         openedView={openedView}
         onClose={() => setOpenedView(false)}
         trekking={trekking}
-        destinationList={destinationList}
-        travelThemeList={travelThemeList}
-        tripHighlightList={tripHighlightList}
       />
       <TrekkingsAddEditModel
         opened={modalOpen}
@@ -322,7 +318,7 @@ const TrekkingsController = () => {
         }}
         handleSubmit={handleSubmit}
         handleImageSelect={handleImageSelect}
-        isEdittrekking={isEditTrekking}
+        isEditTrekking={isEditTrekking}
         trekking={trekking}
         destinationList={destinationList}
         travelThemeList={travelThemeList}

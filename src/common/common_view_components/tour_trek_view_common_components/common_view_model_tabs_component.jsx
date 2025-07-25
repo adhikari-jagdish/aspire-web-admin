@@ -20,7 +20,7 @@ const CommonViewModelTabsComponent = ({
   return (
     <div
       ref={buttonGroupRef}
-      className={`mt-15 gap-3 flex flex-wrap justify-between rounded w-full border-1 border-solid border-blue-200 my-5 p-1 `}
+      className={`mt-15 gap-3 flex flex-wrap justify-between shadow-lg w-full border-t-1 border-b-1 border-solid border-blue-200 my-5 p-1 `}
     >
       {buttons.map((b) => (
         <button

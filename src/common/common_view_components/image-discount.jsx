@@ -10,15 +10,19 @@ const ImageDiscount = ({
   onImageChange,
   isEditTour,
   tour,
+  isEditTrekking,
   defaultImage
 }) => {
   const [image, setImage] = useState(null);
   const [discount, setDiscount] = useState("");
+
+  console.log({defaultImage})
+  
   useEffect(() => {
-    if (isEditTour) {
+    if (isEditTour || isEditTrekking) {
       setDiscount(discountValue);
     }
-  }, [isEditTour, discountValue]);
+  }, [isEditTour,isEditTrekking, discountValue]);
   const handleImageSelect = (image) => {
     setImage(image);
     onChange({ target: { name: imageName, value: image } });

@@ -1,5 +1,6 @@
 import { Title } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
+import PropTypes from "prop-types";
 import CustomTable from "../../common/common_view_components/custom_table";
 
 const TrekkingsView = ({
@@ -41,6 +42,18 @@ const TrekkingsView = ({
   );
 };
 
-
+TrekkingsView.propTypes = {
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  trekkings: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onAddButtonClick: PropTypes.func.isRequired,
+  onEditButtonClick: PropTypes.func.isRequired,
+  onDeleteButtonClick: PropTypes.func.isRequired,
+  onViewButtonClick: PropTypes.func.isRequired,
+};
 
 export default TrekkingsView;

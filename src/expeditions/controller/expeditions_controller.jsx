@@ -4,13 +4,12 @@ import useLoadingOverlay from "../../common/hooks/useLoadingOverlay";
 import { useNotification } from "../../common/hooks/useNotification";
 import CustomDialogModal from "../../common/common_view_components/custom_dialog_model";
 import ExpeditionRepository from "../repository/expedition_repository";
-import ExpeditionsView from "../view/Expeditions_view";
 import DestinationRepository from "../../destinations/repository/destination_repository";
-import ExpeditionsViewModel from "../components/expeditions_view_model";
-import ExpeditionsAddEditModel from "../components/expedition_add_edit_model";
 import TravelThemeRepository from "../../travel_themes/repository/travelTheme_repository";
 import TripHighlightRepository from "../../trip highlights/repository/tripHighlight_repository";
-import { object } from "framer-motion/client";
+import ExpeditionsView from "../view/expeditions_view";
+import ExpeditionsViewModel from "../components/expeditions_view_model";
+import ExpeditionsAddEditModel from "../components/expedition_add_edit_model";
 
 const ExpeditionsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -34,7 +33,7 @@ const ExpeditionsController = () => {
     const fetchExpeditions = async () => {
       try {
         showLoading();
-        const expeditionResponse = await exportsxpeditionRepository.getExpeditionPackages();
+        const expeditionResponse = await expeditionRepository.getExpeditionPackages();
         setExpeditionList(expeditionResponse.data || []);
       } catch (err) {
         notify({
@@ -202,6 +201,12 @@ const ExpeditionsController = () => {
     const hotelIds = formData.hotels.map((hotel) =>
       typeof hotel === "object" && hotel !== null ? hotel._id : hotel
     );
+
+    // Normalize destinations data to array of _id strings
+    // const destinationIds = formData.destinationIds.map(d => d._id);
+     // Normalize travel theme data to array of _id strings
+    // const travelThemeIds = formData.travelThemeIds.map(d => d._id);
+
     fD.append("destinationIds", JSON.stringify(formData.destinationIds));
     fD.append("travelThemeIds", JSON.stringify(formData.travelThemeIds));
     fD.append("title", formData.title);

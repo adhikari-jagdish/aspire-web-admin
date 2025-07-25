@@ -5,7 +5,7 @@ import { Title } from "@mantine/core";
 import { IconPlus, IconTrash, IconX } from "@tabler/icons-react";
 import TripHighlightRepository from "../../trip highlights/repository/tripHighlight_repository";
 
-const TripHighlights = ({ name, onChange, value, isEditTour }) => {
+const TripHighlights = ({ name, onChange, value, isEditTour, isEditTrekking }) => {
   const [tripHighlightList, setTripHighlightList] = useState([]);
   const [tripHighlightRows, setTripHighlightRows] = useState([]);
 
@@ -28,17 +28,14 @@ const TripHighlights = ({ name, onChange, value, isEditTour }) => {
     };
     fetchTripHighlights();
   }, []);
-
   useEffect(() => {
-    if (isEditTour && Array.isArray(value)) {
+    if ((isEditTour || isEditTrekking) && Array.isArray(value)) {
       const trip = tripHighlightList.filter((h) =>
-        value.some((v) => h._id === v.tripHighlightsId)
+        value.some((v) => v.tripHighlightsId === h._id )
       );
-
+      setTripHighlightRows(value)
     }
-  }, [isEditTour, value, tripHighlightList]);
-
-
+  }, [isEditTour, value, isEditTrekking]);
   const handleAddTripHighlights = () => {
     if(tripHighlightRows.length < tripHighlightList.length){
       setTripHighlightRows(prev => [...prev, {tripHighlightsId: "", description: ""}])
@@ -91,6 +88,7 @@ const handleTripHighlightRemove = (idx) => {
               id={name}
               className="border border-gray-500 outline-0 rounded  h-[30px] w-full mt-2 cursor-pointer text-center"
               onChange={e => handleTripHighlightRowChange(i, "tripHighlightsId", e.target.value)}
+              value={trip.tripHighlightsId}
             >
               <option value="">List of Trip Highlights</option>
               {tripHighlightList?.map((t, idx) => (

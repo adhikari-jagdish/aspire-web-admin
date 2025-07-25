@@ -17,6 +17,7 @@ const CustomTable = ({
   shouldShowDelete = false,
   destinationList,
 }) => {
+  console.log({data})
   const safeColumns = Array.isArray(columns) ? columns : [];
   return (
     <Box
