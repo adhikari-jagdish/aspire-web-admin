@@ -22,27 +22,13 @@ import CommonPackageRateViewComponent from "../../common/common_view_components/
 import CommonHotelsViewComponent from "../../common/common_view_components/tour_trek_view_common_components/common_hotels_view_component";
 import CommonViewModelTabsComponent from "../../common/common_view_components/tour_trek_view_common_components/common_view_model_tabs_component";
 
-const titles = [
-  { name: "Trip Highlights", label: "tripHighlights" },
-  { name: "Destinations", label: "destinationIds" },
-  { name: "Travel Themes", label: "travelThemeIds" },
-  { name: "Duration", label: "duration" },
-  { name: "Overview", label: "overview" },
-  { name: "Itinerary", label: "itinerary" },
-  { name: "Package Rate", label: "packageRate" },
-  { name: "Inclusions", label: "inclusions" },
-  { name: "Exclusions", label: "exclusions" },
-  { name: "Hotels", label: "hotels" },
-  { name: "Discount", label: "discountInPercentage" },
-];
-
 const buttons = [
   { name: "Overview", icon: GrOverview },
   { name: "Itinerary", icon: FaPaperPlane },
+  { name: "PackageRate", icon: RiMoneyDollarCircleFill },
   { name: "Inclusions", icon: FaCheckCircle },
   { name: "Exclusions", icon: IoMdCloseCircle },
-  { name: "Hotels", icon: FaHotel },
-  { name: "PackageRate", icon: RiMoneyDollarCircleFill },
+  // { name: "Hotels", icon: FaHotel },
 ];
 
 const ToursViewModel = ({ openedView, onClose, tour }) => {
@@ -55,9 +41,11 @@ const ToursViewModel = ({ openedView, onClose, tour }) => {
     itinerary: useRef(null),
     inclusions: useRef(null),
     exclusions: useRef(null),
-    hotels: useRef(null),
+    // hotels: useRef(null),
     packagerate: useRef(null),
   };
+
+
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -94,7 +82,7 @@ const ToursViewModel = ({ openedView, onClose, tour }) => {
       block: "start",
     });
   };
-
+console.log({tour})
   return (
     <Modal
       opened={openedView}
@@ -207,13 +195,13 @@ const ToursViewModel = ({ openedView, onClose, tour }) => {
               />
 
               {/*Hotels Section Title */}
-              <CommonTitleComponent title={"Hotels"} />
+              {/* <CommonTitleComponent title={"Hotels"} /> */}
 
               {/*Renders the Hotels Section */}
-              <CommonHotelsViewComponent
+              {/* <CommonHotelsViewComponent
                 sectionsRef={sectionsRef["hotels"]}
                 hotelList={tour?.hotels}
-              />
+              /> */}
             </Stack>
           </>
         ) : (

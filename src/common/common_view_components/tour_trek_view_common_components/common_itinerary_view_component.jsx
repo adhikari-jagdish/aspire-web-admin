@@ -47,7 +47,7 @@ const CommonItineraryViewComponent = ({ sectionsRef, itineraryData }) => {
             
           </div>
            <div className="mt-4">{day.details}</div> <br />
-          <div>
+          <div >
              {hotelList.find(h => h._id === day?.hotelAndMealPlan?.hotel)?.title} | &nbsp;
            {day?.hotelAndMealPlan?.mealPlan}
           </div>
