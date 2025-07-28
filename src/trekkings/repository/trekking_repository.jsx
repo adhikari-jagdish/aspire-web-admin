@@ -136,7 +136,7 @@ class TrekkingRepository {
      //Function to get  tour package by destination id
   async updateTrekkingPackage(formData, trekkingPackageId) {
     try {
-      const response = await this.AxiosService.put("/api/updateTourPackage/"+trekkingPackageId, formData);
+      const response = await this.AxiosService.put("/api/updateTrekkingPackage/"+trekkingPackageId, formData);
 
       if (response.status >= 200 || response.status < 300) {
         return {

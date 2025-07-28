@@ -82,7 +82,6 @@ const ToursViewModel = ({ openedView, onClose, tour }) => {
       block: "start",
     });
   };
-console.log({tour})
   return (
     <Modal
       opened={openedView}

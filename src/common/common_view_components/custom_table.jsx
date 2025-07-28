@@ -111,7 +111,7 @@ const CustomTable = ({
                                     destinationList.find((dl) => dl._id === d)
                                       ?.title || "N/A"
                                 )
-                                .join(", ")} */}
+                                .join(", ") } */}
                                 {item[col.accessor].map(d => d.title || "N/A").join(", ")}
                             </span>
                           ) : col.accessor === "description" ? 

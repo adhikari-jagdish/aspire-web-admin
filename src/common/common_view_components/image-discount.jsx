@@ -16,7 +16,6 @@ const ImageDiscount = ({
   const [image, setImage] = useState(null);
   const [discount, setDiscount] = useState("");
 
-  console.log({defaultImage})
   
   useEffect(() => {
     if (isEditTour || isEditTrekking) {
