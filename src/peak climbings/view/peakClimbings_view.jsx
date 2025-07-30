@@ -1,39 +1,60 @@
 import { Title } from "@mantine/core";
 import { IconPlus } from "@tabler/icons-react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import CustomTable from "../../common/common_view_components/custom_table";
 
-const PeakClimbingsView = ({columns, shouldShowDelete, shouldShowEdit,  onEditButtonClick,onDeleteButtonClick, onViewButtonClick}) => {
-
-
-  const nav = useNavigate();
-
+const PeakClimbingsView = ({
+  columns,
+  peakClimbings,
+  handleClick,
+  onEditButtonClick,
+  onDeleteButtonClick,
+  onViewButtonClick,
+  destinationList,
+  travelThemeList
+}) => {
   return (
     <>
       <button
-        onClick={() => nav('/peakClimbings/addPeakClimbingPackage')}
-        className="fixed bottom-15 right-6 bg-blue-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-blue-800 hover:cursor-pointer transition-colors duration-200 z-50 duration-200 z-50"
+        onClick={handleClick}
+        className="fixed bottom-15 right-6 bg-blue-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-blue-800 hover:cursor-pointer transition-colors duration-200 z-50"
         aria-label="Add new item"
       >
         <IconPlus size={24} stroke={2} />
       </button>
-      <div style={{ padding: "16px" }}>
+      <div className="p-4">
         <Title order={3} mt={20} mb={10} ta="left" c="dark">
-          Peak Climbings
+          PeakClimbings
         </Title>
         <CustomTable
           columns={columns}
-          // data={destinations}
-          shouldShowDelete={true}
-          shouldShowEdit={true}
-          onEdit={(item) => onEditButtonClick(item)}
-          onDelete={(item) => onDeleteButtonClick(item)}
-          onView={item => onViewButtonClick(item)}
+          data={peakClimbings}
+          shouldShowDelete
+          shouldShowEdit
+          onEdit={onEditButtonClick}
+          onDelete={onDeleteButtonClick}
+          onView={onViewButtonClick}
+          destinationList={destinationList}
+          travelThemeList={travelThemeList}
         />
-
       </div>
     </>
   );
+};
+
+PeakClimbingsView.propTypes = {
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  tours: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onAddButtonClick: PropTypes.func.isRequired,
+  onEditButtonClick: PropTypes.func.isRequired,
+  onDeleteButtonClick: PropTypes.func.isRequired,
+  onViewButtonClick: PropTypes.func.isRequired,
 };
 
 export default PeakClimbingsView;

@@ -15,7 +15,7 @@ const mealPlan = [
     value: "JP - Room, Breakfast, Lunch and Dinner + Jungle Activities ",
   },
 ];
-const HotelAndMealPlan = ({ onChange, value, parentName, isEditTour,isEditTrekking }) => {
+const HotelAndMealPlan = ({ onChange, value, parentName, isEditTour,isEditTrekking, isEditPeakClimbing, isEditExpedition }) => {
   const [hotelList, setHotelList] = useState([]);
   const [selectedHotel, setSelectedHotel] = useState("");
   const [hotelName, setHotelName] = useState("");
@@ -37,13 +37,6 @@ const HotelAndMealPlan = ({ onChange, value, parentName, isEditTour,isEditTrekki
     };
     fetchHotels();
   }, []);
-
-  useEffect(() => {
-    if ((isEditTour || isEditTrekking) && Array.isArray(value) && hotelList.length > 0) {
-      
-
-    }
-  }, [isEditTour, value]);
 
   const handleHotelChange = (e) => {
     const selected = e.target.value;
@@ -81,9 +74,9 @@ const HotelAndMealPlan = ({ onChange, value, parentName, isEditTour,isEditTrekki
         >
           Hotels:
         </Title> */}
-          {parentName == "expeditions" ? (
+          {(parentName == "expeditions" || parentName == "peakClimbings") ? (
             <div className="w-full">
-              <input value={hotelName} onChange={e => {setHotelName(e.target.value); onChange({hotel: e.target.value})}} type="text" required placeholder="Enter Hotel Name here...." className="border border-gray-600 outline-0 p-2 rounded w-70 h-[30px] mt-2 " />
+              <input value={(isEditPeakClimbing || isEditExpedition) ? value.hotel : hotelName} onChange={e => {setHotelName(e.target.value); onChange({hotel: e.target.value})}} type="text" required placeholder="Enter Hotel Name here...." className="border border-gray-600 outline-0 p-2 rounded w-70 h-[30px] mt-2 " />
             </div>
           ) : (
             <select
@@ -129,7 +122,7 @@ const HotelAndMealPlan = ({ onChange, value, parentName, isEditTour,isEditTrekki
             <span>
               {(value
                 ? hotelList.find((h) => h?._id === value?.hotel)?.title
-                : selectedHotel) || hotelName}{" "}
+                : selectedHotel) || hotelName || value.hotel}{" "}
             </span>
             |<span>{value ? mealPlan.find(m => m.key === value?.mealPlan )?.value : selectedMealPlan}</span>
             <button

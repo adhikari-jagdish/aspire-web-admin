@@ -11,7 +11,6 @@ const Destinations = ({ name, value, onChange, isEditTrekking }) => {
   const notify = useNotification();
 
   const purifiedDestinationIds = value && value?.map((v) => v?._id);
-  console.log({ value });
   const destinationRepository = new DestinationRepository(getToken);
   useEffect(() => {
     //get all destinations

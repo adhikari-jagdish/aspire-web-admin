@@ -5,7 +5,7 @@ import { Title } from "@mantine/core";
 import { IconPlus, IconTrash, IconX } from "@tabler/icons-react";
 import TripHighlightRepository from "../../trip highlights/repository/tripHighlight_repository";
 
-const TripHighlights = ({ name, onChange, value, isEditTour, isEditTrekking }) => {
+const TripHighlights = ({ name, onChange, value, isEditTour, isEditTrekking, isEditPeakClimbing, isEditExpedition }) => {
   const [tripHighlightList, setTripHighlightList] = useState([]);
   const [tripHighlightRows, setTripHighlightRows] = useState([]);
 
@@ -29,13 +29,13 @@ const TripHighlights = ({ name, onChange, value, isEditTour, isEditTrekking }) =
     fetchTripHighlights();
   }, []);
   useEffect(() => {
-    if ((isEditTour || isEditTrekking) && Array.isArray(value)) {
+    if ((isEditTour || isEditTrekking || isEditPeakClimbing || isEditExpedition) && Array.isArray(value)) {
       const trip = tripHighlightList.filter((h) =>
         value.some((v) => v.tripHighlightsId === h._id )
       );
       setTripHighlightRows(value)
     }
-  }, [isEditTour, value, isEditTrekking]);
+  }, [isEditTour, value, isEditTrekking, isEditExpedition, isEditPeakClimbing]);
   const handleAddTripHighlights = () => {
     if(tripHighlightRows.length < tripHighlightList.length){
       setTripHighlightRows(prev => [...prev, {tripHighlightsId: "", description: ""}])

@@ -14,7 +14,6 @@ import TripHighlights from "../../common/common_view_components/tripHighlights";
 import ImageDiscount from "../../common/common_view_components/image-discount";
 import { FaAngleUp } from "react-icons/fa";
 
-
 // Define initial form state for type safety and consistency
 const initialFormState = {
   destinationIds: "",
@@ -31,13 +30,13 @@ const initialFormState = {
   discountInPercentage: 0,
   file: null,
 };
-const ToursAddEditModel = ({
+const PeakClimbingsAddEditModel = ({
   opened,
   onClose,
-  isEditTour,
+  isEditPeakClimbing,
   handleSubmit,
   handleImageSelect,
-  tour = {},
+  peakClimbing = {},
   idToUpdate,
   imagePreview,
 }) => {
@@ -45,28 +44,28 @@ const ToursAddEditModel = ({
   // Initialize form data
   useEffect(() => {
     setFormData();
-    if (isEditTour && opened && tour) {
+    if (isEditPeakClimbing && opened && peakClimbing) {
       setFormData({
-        destinationIds: tour.destinationIds || "",
-        travelThemeIds: tour.travelThemeIds || "",
-        title: tour.title || "",
-        duration: String(tour.duration || 0),
-        overview: tour.overview || "",
-        tripHighlights: Array.isArray(tour.tripHighlights)
-          ? tour.tripHighlights
+        destinationIds: peakClimbing.destinationIds || "",
+        travelThemeIds: peakClimbing.travelThemeIds || "",
+        title: peakClimbing.title || "",
+        duration: String(peakClimbing.duration || 0),
+        overview: peakClimbing.overview || "",
+        tripHighlights: Array.isArray(peakClimbing.tripHighlights)
+          ? peakClimbing.tripHighlights
           : [],
-        itinerary: Array.isArray(tour.itinerary) ? tour.itinerary : [],
-        inclusions: tour.inclusions || "",
-        exclusions: tour.exclusions || "",
-        hotels: Array.isArray(tour.hotels) ? tour.hotels : [],
-        packageRate: Array.isArray(tour.packageRate) ? tour.packageRate : [],
-        discountInPercentage: tour.discountInPercentage ?? 0,
+        itinerary: Array.isArray(peakClimbing.itinerary) ? peakClimbing.itinerary : [],
+        inclusions: peakClimbing.inclusions || "",
+        exclusions: peakClimbing.exclusions || "",
+        hotels: Array.isArray(peakClimbing.hotels) ? peakClimbing.hotels : [],
+        packageRate: Array.isArray(peakClimbing.packageRate) ? peakClimbing.packageRate : [],
+        discountInPercentage: peakClimbing.discountInPercentage ?? 0,
         file: imagePreview || null,
       });
     } else {
       setFormData(initialFormState);
     }
-  }, [isEditTour, opened, tour]);
+  }, [isEditPeakClimbing, opened, peakClimbing]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -83,15 +82,13 @@ const ToursAddEditModel = ({
   };
 
   const onSubmit = () => {
-    handleSubmit(formData, formData.file, isEditTour, idToUpdate);
+    handleSubmit(formData, formData.file, isEditPeakClimbing, idToUpdate);
   };
-
-  
   return (
       <Modal
         opened={opened}
         onClose={onClose}
-        title={isEditTour ? "Edit Tour Packages" : "Add Tour Packages"}
+        title={isEditPeakClimbing ? "Edit PeakClimbing Packages" : "Add PeakClimbing Packages"}
         size="xxl"
         centered
         padding="lg"
@@ -135,20 +132,21 @@ const ToursAddEditModel = ({
               name="tripHighlights"
               value={formData.tripHighlights}
               onChange={handleChange}
-              isEditTour={isEditTour}
+              isEditPeakClimbing={isEditPeakClimbing}
             />
             <Itinerary
               name="itinerary"
+              parentName="peakClimbings"
               value={formData.itinerary}
               onChange={handleChange}
-              isEditTour={isEditTour}
+              isEditPeakClimbing={isEditPeakClimbing}
               durationLimit={formData.duration || "0"}
             />
             <PackageRate
               name="packageRate"
               value={formData.packageRate}
               onChange={handleChange}
-              isEditTour={isEditTour}
+              isEditPeakClimbing={isEditPeakClimbing}
             />
             <Inclusions
               name="inclusions"
@@ -157,13 +155,13 @@ const ToursAddEditModel = ({
               onChange={(value) =>
                 setFormData((prev) => ({ ...prev, inclusions: value }))
               }
-              isEditTour={isEditTour}
+              isEditPeakClimbing={isEditPeakClimbing}
             />
             <Exclusions
               name="exclusions"
               value={formData.exclusions}
               onChange={handleChange}
-              isEditTour={isEditTour}
+              isEditPeakClimbing={isEditPeakClimbing}
               // onChange={(value) =>
               // setFormData((prev) => ({ ...prev, exclusions: value }))}
             />
@@ -174,9 +172,9 @@ const ToursAddEditModel = ({
               discountValue={formData.discountInPercentage}
               onChange={handleChange}
               onImageChange={onImageChange}
-              isEditTour={isEditTour}
-              tour={tour}
-              defaultImage={isEditTour && (tour?.image || imagePreview)}
+              isEditPeakClimbing={isEditPeakClimbing}
+              peakClimbing={peakClimbing}
+              defaultImage={isEditPeakClimbing && (peakClimbing?.image || imagePreview)}
             />
           </div>
           {/* Sticky Button inside Modal */}
@@ -201,4 +199,4 @@ const ToursAddEditModel = ({
   );
 };
 
-export default ToursAddEditModel;
+export default PeakClimbingsAddEditModel;

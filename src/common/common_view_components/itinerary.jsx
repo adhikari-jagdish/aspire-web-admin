@@ -15,12 +15,12 @@ const ItineraryFactors = [
   "Walking Duration",
 ];
 
-const Itinerary = ({ name, parentName, value, onChange, isEditTour, durationLimit,isEditTrekking }) => {
+const Itinerary = ({ name, parentName, value, onChange, isEditTour, durationLimit,isEditTrekking, isEditPeakClimbing, isEditExpedition }) => {
   const [itineraries, setItineraries] = useState([]);
   const notify = useNotification();
 
   useEffect(() => {
-    if ((isEditTour|| isEditTrekking) && Array.isArray(value)) {
+    if ((isEditTour|| isEditTrekking ||  isEditPeakClimbing || isEditExpedition) && Array.isArray(value)) {
       const initialized = value.map((v) => ({
         dayAndTitle: v.dayAndTitle,
         details: v.details,
@@ -29,7 +29,7 @@ const Itinerary = ({ name, parentName, value, onChange, isEditTour, durationLimi
       }));
       setItineraries(initialized);
     }
-  }, [isEditTour, value]);
+  }, [isEditTour, isEditTrekking, isEditPeakClimbing, isEditExpedition, value]);
   
 
   const handleAddItinerary = () => {
@@ -300,6 +300,8 @@ const Itinerary = ({ name, parentName, value, onChange, isEditTour, durationLimi
                       parentName = {parentName}
                       isEditTrekking={isEditTrekking}
                       isEditTour={isEditTour}
+                      isEditPeakClimbing={isEditPeakClimbing}
+                      isEditExpedition={isEditExpedition}
                     />
                 </div>
 

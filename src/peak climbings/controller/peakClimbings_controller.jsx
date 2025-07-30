@@ -4,8 +4,13 @@ import useLoadingOverlay from "../../common/hooks/useLoadingOverlay";
 import { useNotification } from "../../common/hooks/useNotification";
 import CustomDialogModal from "../../common/common_view_components/custom_dialog_model";
 import PeakClimbingRepository from "../repository/peakClimbing_repository";
+import DestinationRepository from "../../destinations/repository/destination_repository";
+import TravelThemeRepository from "../../travel_themes/repository/travelTheme_repository";
+import TripHighlightRepository from "../../trip highlights/repository/tripHighlight_repository";
 import PeakClimbingsView from "../view/peakClimbings_view";
-import PeakClimbingsAddEditForm from "../view/peakClimbing_add_edit_form";
+import PeakClimbingsViewModel from "../components/peakClimbings_view_model";
+import PeakClimbingsAddEditModel from "../components/peakClimbing_add_edit_model";
+
 const PeakClimbingsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [openedView, setOpenedView] = useState(false);
@@ -13,6 +18,7 @@ const PeakClimbingsController = () => {
   const [peakClimbing, setPeakClimbing] = useState({});
   const { getToken } = useAuth();
   const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
@@ -24,7 +30,7 @@ const PeakClimbingsController = () => {
   const peakClimbingRepository = new PeakClimbingRepository(getToken);
 
   useEffect(() => {
-    const fetchPeakClimbings = async () => {
+    const fetchpeakClimbings = async () => {
       try {
         showLoading();
         const peakClimbingResponse = await peakClimbingRepository.getPeakClimbingPackages();
@@ -32,34 +38,72 @@ const PeakClimbingsController = () => {
       } catch (err) {
         notify({
           type: "error",
-          message: err.message ?? "Failed to fetch Tours.",
+          message: err.message ?? "Failed to fetch peakClimbings.",
         });
       } finally {
         hideLoading();
       }
     };
-    fetchPeakClimbings();
+    fetchpeakClimbings();
   }, []);
 
-  // const [destinationList, setDestinationList] = useState([]);
-  // const destinationRepository = new DestinationRepository(getToken);
+  const [destinationList, setDestinationList] = useState([]);
+  const destinationRepository = new DestinationRepository(getToken);
 
-  // useEffect(() => {
-  //   const fetchDestinations = async () => {
-  //     try {
-  //       const destinationsResponse =
-  //         await destinationRepository.getDestinations();
-  //       setDestinationList(destinationsResponse.data);
-  //     } catch (err) {
-  //       notify({
-  //         type: "error",
-  //         message: err.message ?? "Something went wrong. Please try again.",
-  //       });
-  //     }
-  //   };
-  //   fetchDestinations();
-  // }, []);
+  useEffect(() => {
+    const fetchDestinations = async () => {
+      try {
+        const destinationsResponse =
+          await destinationRepository.getDestinations();
+        setDestinationList(destinationsResponse.data);
+      } catch (err) {
+        notify({
+          type: "error",
+          message: err.message ?? "Something went wrong. Please try again.",
+        });
+      }
+    };
+    fetchDestinations();
+  }, []);
 
+  const [travelThemeList, setTravelThemeList] = useState([]);
+  const travelThemeRepository = new TravelThemeRepository(getToken);
+
+  useEffect(() => {
+    const fetchTravelThemes = async () => {
+      try {
+        const travelThemesResponse =
+          await travelThemeRepository.getTravelThemes();
+        setTravelThemeList(travelThemesResponse.data);
+      } catch (err) {
+        notify({
+          type: "error",
+          message: err.message ?? "Something went wrong. Please try again.",
+        });
+      }
+    };
+    fetchTravelThemes();  
+  }, []);
+
+  //get all trip highlights
+  const [tripHighlightList, setTripHighlightList] = useState([]);
+  const tripHighlightRepository = new TripHighlightRepository(getToken);
+
+  useEffect(() => {
+    const fetchTripHighlights = async () => {
+      try {
+        const tripHighlightResponse =
+          await tripHighlightRepository.getTripHighlights();
+        setTripHighlightList(tripHighlightResponse.data);
+      } catch (error) {
+        notify({
+          type: "error",
+          message: error.message ?? "Something went wrong. Please try again",
+        });
+      }
+    };
+    fetchTripHighlights();
+  }, []);
   const handleClick = () => {
     setModalOpen(true);
     setPeakClimbing({});
@@ -84,13 +128,13 @@ const PeakClimbingsController = () => {
     setPeakClimbingList((prev) => prev.filter((p) => p._id !== idToDelete));
     try {
       showLoading();
-      await PeakClimbingRepository.deletePeakClimbingPackage(idToDelete);
-      notify({ type: "success", message: "Peak Climbing deleted successfully." });
+      await peakClimbingRepository.deletePeakClimbingPackage(idToDelete);
+      notify({ type: "success", message: "PeakClimbing deleted successfully." });
     } catch (err) {
       setPeakClimbingList(previousList);
       notify({
         type: "error",
-        message: err.message ?? "Failed to delete Peak Climbing package.",
+        message: err.message ?? "Failed to delete travel theme.",
       });
     } finally {
       hideLoading();
@@ -99,28 +143,50 @@ const PeakClimbingsController = () => {
     }
   };
 
-  const handleImageSelect = (file) => {
-    setImage(file);
+  const handleImageSelect = (image) => {
+
+    if(image){
+      const objectUrl = URL.createObjectURL(image);
+      setImagePreview(objectUrl);
+      setImage(image);
+    } else {
+      setImage(null);
+      setImagePreview(null);
+    }
   };
 
+  //avoids memory leaks when switching or removing pages
+  useEffect(() => {
+    if(imagePreview) {
+      URL.revokeObjectURL(imagePreview);
+    }
+  },[imagePreview])
+
   const handleSubmit = async (formData) => {
+    console.log({formData})
     if (
-      !formData.destinationId ||
-      !formData.travelThemeId ||
+      !formData.destinationIds ||
+      !formData.travelThemeIds ||
       !formData.title ||
       !formData.duration ||
       !formData.overview ||
-      !formData.packageInclusions ||
+      !formData.tripHighlights ||
       !formData.itinerary ||
       !formData.inclusions ||
       !formData.exclusions ||
-      !formData.hotels ||
       !formData.packageRate ||
-      (!formData.discount && !isEditTour)
+      !formData.discountInPercentage 
     ) {
       notify({
         type: "error",
         message: "All fields are required.",
+      });
+      return;
+    }
+    if(!image){
+      notify({
+        type: "error",
+        message: "Image is required"
       });
       return;
     }
@@ -129,49 +195,60 @@ const PeakClimbingsController = () => {
     if (image) {
       fD.append("file", image);
     }
-    fD.append("destinationId", formData.destinationId);
-    fD.append("travelThemeId", formData.travelThemeId);
+
+    // Normalize hotel data to array of _id strings
+    const hotelIds = formData.hotels.map((hotel) =>
+      typeof hotel === "object" && hotel !== null ? hotel._id : hotel
+    );
+
+    // Normalize destinations data to array of _id strings
+    const destinationIds = formData.destinationIds.map(d => d._id);
+     // Normalize travel theme data to array of _id strings
+    const travelThemeIds = formData.travelThemeIds.map(d => d._id);
+
+    fD.append("destinationIds", JSON.stringify( isEditPeakClimbing ? destinationIds : formData.destinationIds));
+    fD.append("travelThemeIds", JSON.stringify(isEditPeakClimbing ? travelThemeIds : formData.travelThemeIds));
     fD.append("title", formData.title);
-    fD.append("duration", formData.duration);
+    fD.append("duration", parseInt(formData.duration));
     fD.append("overview", formData.overview);
-    fD.append("packageInclusions", formData.packageInclusions);
-    fD.append("itinerary", formData.itinerary);
+    fD.append("tripHighlights", JSON.stringify(formData.tripHighlights));
+    fD.append("itinerary", JSON.stringify(formData.itinerary));
     fD.append("inclusions", formData.inclusions);
     fD.append("exclusions", formData.exclusions);
-    fD.append("hotels", formData.hotels);
-    fD.append("packageRate", formData.packageRate);
-    fD.append("discount", formData.discount);
+    fD.append("packageRate", JSON.stringify(formData.packageRate));
+    fD.append("discountInPercentage", parseInt(formData.discountInPercentage));
+
     try {
       let responseMessage;
       let response;
       if (isEditPeakClimbing) {
-        response = await PeakClimbingRepository.updatePeakClimbingPackage(fD, idToUpdate);
+        response = await peakClimbingRepository.updatePeakClimbingPackage(fD, idToUpdate);
         setPeakClimbingList((prev) =>
           prev.map((item) =>
             item._id === idToUpdate
               ? {
                   ...item,
-                  destinationId: formData.destinationId,
-                  travelThemeId: formData.travelThemeId,
+                  destinationIds: formData.destinationIds,
+                  travelThemeIds: formData.travelThemeIds,
                   title: formData.title,
                   duration: formData.duration,
                   overview: formData.overview,
-                  packageInclusions: formData.packageInclusions,
+                  tripHighlights: formData.tripHighlights,
                   itinerary: formData.itinerary,
                   inclusions: formData.inclusions,
                   exclusions: formData.exclusions,
-                  hotels: formData.hotels,
                   packageRate: formData.packageRate,
-                  discount: formData.discount,
-                  image: image || item.image,
+                  discountInPercentage: formData.discountInPercentage,
+                  file: imagePreview || item.file,
                 }
               : item
           )
         );
       } else {
-        response = await PeakClimbingRepository.createPeakClimbingPackage(fD);
+        response = await peakClimbingRepository.createPeakClimbingPackage(fD);
         setPeakClimbingList((prev) => [...prev, response.data]);
       }
+
       responseMessage = response.message;
       setModalOpen(false);
       setImage(null);
@@ -197,20 +274,13 @@ const PeakClimbingsController = () => {
   };
 
   const columns = [
-    { label: "Destination", accessor: "destinationId" },
-    { label: "Travel Theme", accessor: "travelThemeId" },
+    { label: "Destination", accessor: "destinationIds" },
     { label: "Title", accessor: "title" },
     { label: "Duration", accessor: "duration" },
-    { label: "Overview", accessor: "overview" },
-    { label: "Package Inclusions", accessor: "packageInclusions" },
-    { label: "Itinerary", accessor: "itinerary" },
-    { label: "Inclusions", accessor: "inclusions" },
-    { label: "exclusions", accessor: "exclusions" },
-    { label: "Hotels", accessor: "hotels" },
-    { label: "Package Rate", accessor: "packageRate" },
-    { label: "Discount", accessor: "discount" },
+    { label: "Discount", accessor: "discountInPercentage" },
     { label: "Image", accessor: "image" },
   ];
+  console.log({peakClimbingList})
   return (
     <>
       <PeakClimbingsView
@@ -219,7 +289,7 @@ const PeakClimbingsController = () => {
           setModalOpen(false);
           setIsEditPeakClimbing(false);
           setPeakClimbing({});
-          // setImage(null);
+          setImage(null);
         }}
         columns={columns}
         peakClimbings={peakClimbingList}
@@ -227,15 +297,15 @@ const PeakClimbingsController = () => {
         onEditButtonClick={handleEditButtonClick}
         onDeleteButtonClick={onDeleteButtonClick}
         onViewButtonClick={handleViewButtonClick}
-        // destinationList={destinationList}
+        destinationList={destinationList}
+        travelThemeList={travelThemeList}
       />
-      {/* <peakClimbingViewModel
+      <PeakClimbingsViewModel
         openedView={openedView}
         onClose={() => setOpenedView(false)}
-        tour={tour}
-        destinationList={destinationList}
-      /> */}
-      <PeakClimbingsAddEditForm
+        peakClimbing={peakClimbing}
+      />
+      <PeakClimbingsAddEditModel
         opened={modalOpen}
         onClose={() => {
           setIsEditPeakClimbing(false);
@@ -247,7 +317,10 @@ const PeakClimbingsController = () => {
         handleImageSelect={handleImageSelect}
         isEditPeakClimbing={isEditPeakClimbing}
         peakClimbing={peakClimbing}
-        // destinationList={destinationList}
+        destinationList={destinationList}
+        travelThemeList={travelThemeList}
+        imagePreview={isEditPeakClimbing ? peakClimbing?.image : null}
+        
       />
       <CustomDialogModal
         opened={isDeletePeakClimbing}

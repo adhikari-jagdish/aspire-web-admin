@@ -203,12 +203,12 @@ const ExpeditionsController = () => {
     );
 
     // Normalize destinations data to array of _id strings
-    // const destinationIds = formData.destinationIds.map(d => d._id);
+    const destinationIds = formData.destinationIds.map(d => d._id);
      // Normalize travel theme data to array of _id strings
-    // const travelThemeIds = formData.travelThemeIds.map(d => d._id);
+    const travelThemeIds = formData.travelThemeIds.map(d => d._id);
 
-    fD.append("destinationIds", JSON.stringify(formData.destinationIds));
-    fD.append("travelThemeIds", JSON.stringify(formData.travelThemeIds));
+    fD.append("destinationIds", JSON.stringify(isEditExpedition ? destinationIds : formData.destinationIds));
+    fD.append("travelThemeIds", JSON.stringify(isEditExpedition ? travelThemeIds : formData.travelThemeIds));
     fD.append("title", formData.title);
     fD.append("duration", parseInt(formData.duration));
     fD.append("overview", formData.overview);
@@ -216,7 +216,6 @@ const ExpeditionsController = () => {
     fD.append("itinerary", JSON.stringify(formData.itinerary));
     fD.append("inclusions", formData.inclusions);
     fD.append("exclusions", formData.exclusions);
-    fD.append("hotels", JSON.stringify(hotelIds));
     fD.append("packageRate", JSON.stringify(formData.packageRate));
     fD.append("discountInPercentage", parseInt(formData.discountInPercentage));
 
@@ -239,7 +238,6 @@ const ExpeditionsController = () => {
                   itinerary: formData.itinerary,
                   inclusions: formData.inclusions,
                   exclusions: formData.exclusions,
-                  hotels: formData.hotels,
                   packageRate: formData.packageRate,
                   discountInPercentage: formData.discountInPercentage,
                   file: imagePreview || item.file,

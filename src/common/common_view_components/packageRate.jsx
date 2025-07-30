@@ -24,10 +24,10 @@ const currencyFields = [
   { label: "EUR", name: "rateInEUR" },
 ];
 
-const PackageRate = ({ name, value, onChange, isEditTour, isEditTrekking }) => {
+const PackageRate = ({ name, value, onChange, isEditTour, isEditTrekking, isEditExpedition, isEditPeakClimbing }) => {
   const [packageRates, setPackageRates] = useState([]);
   useEffect(() => {
-    if ((isEditTour || isEditTrekking) && Array.isArray(value)) {
+    if ((isEditTour || isEditTrekking || isEditExpedition || isEditPeakClimbing) && Array.isArray(value)) {
       const initialized = value?.map((v) => ({
         noOfPerson: v.noOfPerson || null,
         rateInNPR: v.rateInNPR || null,
@@ -38,7 +38,7 @@ const PackageRate = ({ name, value, onChange, isEditTour, isEditTrekking }) => {
 
       setPackageRates(initialized);
     }
-  }, [isEditTour, JSON.stringify(value)]);
+  }, [isEditTour, isEditExpedition,isEditPeakClimbing,isEditTrekking, JSON.stringify(value)]);
   const handleAdd = () => {
     const updated = [...packageRates, { ...initialRate }];
     setPackageRates(updated);

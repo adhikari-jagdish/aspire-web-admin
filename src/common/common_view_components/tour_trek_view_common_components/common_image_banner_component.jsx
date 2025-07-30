@@ -1,12 +1,12 @@
 import CommonDiscountBatchComponent from "./common_discount_batch_component";
 
-const CommonImageBannerComponent = ({  tour, expedition, trekking }) => {
-    const isValidImage = tour?.image || expedition?.image && tour?.image.trim() !== "" || expedition?.image.trim() !== "" ;
+const CommonImageBannerComponent = ({  tour, expedition, trekking, peakClimbing }) => {
+    const isValidImage = (tour?.image || expedition?.image || peakClimbing?.image) && (tour?.image.trim() !== "" || expedition?.image.trim() !== "" || peakClimbing?.image.trim()) ;
     return (
         <div className="w-full relative h-[40vh] rounded-md overflow-hidden bg-gray-400">
             {isValidImage ? (
                 <img
-                    src={(tour || trekking ||  expedition).image}
+                    src={(tour || trekking ||  expedition || peakClimbing).image}
                     alt="Banner"
                     className="w-full h-full object-cover"
                 />
@@ -17,7 +17,7 @@ const CommonImageBannerComponent = ({  tour, expedition, trekking }) => {
             )}
               {/*Renders The Discount Batch Shown on the top right */}
               <CommonDiscountBatchComponent
-                discountInPercentage={(tour || expedition || trekking).discountInPercentage }
+                discountInPercentage={(tour || expedition || trekking || peakClimbing).discountInPercentage }
               />
         </div>
     );

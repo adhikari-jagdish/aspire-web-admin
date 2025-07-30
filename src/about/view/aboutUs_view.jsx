@@ -1,11 +1,10 @@
 import { Title } from "@mantine/core";
 import CustomTable from "../../common/common_view_components/custom_table";
 import { IconPlus } from "@tabler/icons-react";
-import Overview from "../../common/common_view_components/overview";
 
-const AboutView = ({
+const AboutUsView = ({
   columns,
-  destinations,
+  allAboutUs,
   handleClick,
   onEditButtonClick,
   onDeleteButtonClick,
@@ -22,21 +21,20 @@ const AboutView = ({
       </button>
       <div style={{ padding: "16px" }}>
         <Title order={3} mt={20} mb={10} ta="left" c="dark">
-          About
+          About Us
         </Title>
-        {/* <CustomTable
+        <CustomTable
           columns={columns}
-          data={destinations}
+          data={allAboutUs}
           shouldShowDelete={true}
           shouldShowEdit={true}
           onEdit={(item) => onEditButtonClick(item)}
           onDelete={(item) => onDeleteButtonClick(item)}
           onView={item => onViewButtonClick(item)}
-        /> */}
-        <Overview parent="about"/>
+        />
       </div>
     </>
   );
 };
 
-export default AboutView;
+export default AboutUsView;

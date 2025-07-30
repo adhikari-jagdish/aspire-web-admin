@@ -43,18 +43,18 @@ const ExpeditionsView = ({
   );
 };
 
-// ToursView.propTypes = {
-//   columns: PropTypes.arrayOf(
-//     PropTypes.shape({
-//       key: PropTypes.string.isRequired,
-//       label: PropTypes.string.isRequired,
-//     })
-//   ).isRequired,
-//   tours: PropTypes.arrayOf(PropTypes.object).isRequired,
-//   onAddButtonClick: PropTypes.func.isRequired,
-//   onEditButtonClick: PropTypes.func.isRequired,
-//   onDeleteButtonClick: PropTypes.func.isRequired,
-//   onViewButtonClick: PropTypes.func.isRequired,
-// };
+ExpeditionsView.propTypes = {
+  columns: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  tours: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onAddButtonClick: PropTypes.func.isRequired,
+  onEditButtonClick: PropTypes.func.isRequired,
+  onDeleteButtonClick: PropTypes.func.isRequired,
+  onViewButtonClick: PropTypes.func.isRequired,
+};
 
 export default ExpeditionsView;

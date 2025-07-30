@@ -17,6 +17,7 @@ const CustomTable = ({
   shouldShowDelete = false,
   destinationList,
 }) => {
+
   console.log({data})
   const safeColumns = Array.isArray(columns) ? columns : [];
   return (
@@ -72,7 +73,7 @@ const CustomTable = ({
                       return (
                         <Table.Td key={col.accessor}>
                         
-                          {(col.accessor === "image" || col.accessor === "file" || col.accessor === "icon") ? (
+                          {(col.accessor === "image" || col.accessor === "file" || col.accessor === "icon" || col.accessor === "bannerImage") ? (
                             <img
                               src={item[col.accessor]}
                               alt={index + 1}

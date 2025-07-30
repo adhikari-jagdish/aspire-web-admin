@@ -11,6 +11,8 @@ const ImageDiscount = ({
   isEditTour,
   tour,
   isEditTrekking,
+  isEditPeakClimbing,
+  isEditExpedition,
   defaultImage
 }) => {
   const [image, setImage] = useState(null);
@@ -18,7 +20,7 @@ const ImageDiscount = ({
 
   
   useEffect(() => {
-    if (isEditTour || isEditTrekking) {
+    if (isEditTour || isEditTrekking || isEditExpedition || isEditPeakClimbing) {
       setDiscount(discountValue);
     }
   }, [isEditTour,isEditTrekking, discountValue]);

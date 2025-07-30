@@ -89,7 +89,7 @@ console.log({formData})
       <Modal
         opened={opened}
         onClose={onClose}
-        title={isEditExpedition ? "Edit expedition Packages" : "Add expedition Packages"}
+        title={isEditExpedition ? "Edit Expedition Packages" : "Add Expedition Packages"}
         size="xxl"
         centered
         padding="lg"
