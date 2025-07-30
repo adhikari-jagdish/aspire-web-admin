@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const navItems = [
   { name: "Home", icon: "🏠" },
   { name: "Destinations", icon: "🥾" },
-  {name: "TravelThemes", icon: "🌍"},
+  { name: "TravelThemes", icon: "🌍" },
   { name: "Tours", icon: "🗺️" },
   { name: "TripHighlights", icon: "✨" },
   { name: "Trekkings", icon: "🥾" },
@@ -15,9 +15,11 @@ const navItems = [
   { name: "Contact", icon: "📞" },
   { name: "Gallery", icon: "📸" },
   { name: "Hotels", icon: "🏨" },
-  {name: "Hotel Category", icon: "⭐"},
-  {name: "Carousels", icon: "🔁"},
+  { name: "Hotel Category", icon: "⭐" },
+  { name: "Carousels", icon: "🔁" },
   { name: "Vehicles", icon: "🚗" },
+  { name: "Reviews", icon: "⭐" },
+  { name: "Blogs", icon: "⭐" },
 ];
 
 const SideNav = () => {
@@ -39,8 +41,9 @@ const SideNav = () => {
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 bg-white text-white shadow-md transform ${isOpen ? "translate-x-0" : "-translate-x-full"
-          } md:translate-x-0 transition-transform duration-300 ease-in-out z-40`}
+        className={`fixed inset-y-0 left-0 bg-white text-white shadow-md transform ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
+        } md:translate-x-0 transition-transform duration-300 ease-in-out z-40`}
       >
         <div className="p-4">
           <img
@@ -51,7 +54,6 @@ const SideNav = () => {
         </div>
         <nav className="mt-4">
           {navItems.map((item) => (
-
             <Link
               key={item.name}
               to={`${item.name.toLowerCase()}`}
