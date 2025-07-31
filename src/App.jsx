@@ -16,6 +16,7 @@ import TrekkingsController from "./trekkings/controller/trekkings_controller";
 import ExpeditionsController from "./expeditions/controller/expeditions_controller";
 import PeakClimbingsController from "./peak climbings/controller/peakClimbings_controller";
 import AboutUsController from "./about/controller/aboutUs_controller";
+import MenusController from "./menu/controller/menus_controller";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="expeditions" element={<ExpeditionsController />} />
           <Route path="peakClimbings" element={<PeakClimbingsController />} />
           <Route path="adventures" element={<AdventuresView />} />
+          <Route path="menu" element={<MenusController />} />
 
           <Route path="/about" element={<AboutUsController />} />
           <Route path="/contact" element={<ContactView />} />
