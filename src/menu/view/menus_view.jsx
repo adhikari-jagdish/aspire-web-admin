@@ -14,7 +14,7 @@ const MenusView = ({
   console.log({ menus });
   return (
     <>
-      <div className="fixed bottom-15 right-6 flex items-center gap-2">
+      <div className="fixed bottom-15 right-6 flex items-center gap-2 ">
         <button
           onClick={() => handleClick("Menu Item")}
           className=" bg-blue-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-blue-800 hover:cursor-pointer transition-colors duration-200 z-50"
@@ -25,8 +25,8 @@ const MenusView = ({
         <span className="text-xl font-bold">Add Menu</span>
       </div>
 
-      <div style={{ padding: "16px" }}>
-        <Title order={3} mt={20} mb={10} ta="left" c="dark">
+      <div className="max-w-[900px] p-[16px]">
+        <Title order={4} mt={20} mb={10} ta="left" c="dark">
           Menu Items
         </Title>
         {/* <CustomTable
@@ -42,8 +42,8 @@ const MenusView = ({
           {menus?.map((menu, idx) => (
             <div className="flex flex-col border border-gray-400 rounded p-2 shadow-lg">
               <div>
-                <div className="flex gap-6 border-b-2 w-fit pb-2 border-blue-300 ">
-                  <h1 className="font-bold">
+                <div className="flex gap-6 border-b-2 w-fit pb-2 border-blue-300 text-sm">
+                  <h1 className="font-bold text-sm">
                     {idx + 1}. Menu: <span>{menu.title}</span>
                   </h1>
                   <button
@@ -63,7 +63,7 @@ const MenusView = ({
                   </Button>
                 </div>
               </div>
-              <div className="ml-4 mt-4 space-y-5">
+              <div className="ml-4 mt-4 space-y-5 text-[13px]">
                 <div className="flex gap-6">
                   <h2 className="font-semibold">Sub Menus</h2>
                 </div>
@@ -92,18 +92,7 @@ const MenusView = ({
                             </Button>
                         </div>
                         <div className="ml-8 mt-2">
-                          <div className="flex gap-4 items-center">
                             <h2 className="font-medium">Links</h2>
-                            <Button
-                              size="xs"
-                              color="red"
-                              variant="subtle"
-                              style={{ border: "1px solid #e03131" }}
-                              onClick={() => onDeleteButtonClick?.(subMenu)}
-                            >
-                              <IconTrash size={16} />
-                            </Button>
-                          </div>
                           <div className=" p-2 rounded w-fit bg-blue-50 shadow-lg mt-2 space-y-2">
                             {subMenu?.children.length > 0 ? (
                               subMenu?.children?.map((link, linkIdx) => (
