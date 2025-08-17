@@ -67,7 +67,6 @@ const HotelAndMealPlan = ({ onChange, value, parentName, isEditTour,isEditTrekki
       onChange({ mealPlan: selected });
     }
   };
-console.log({value})
   return (
     <div className="w-full space-y-4 flex flex-col gap-2">
       <div className="flex gap-4">

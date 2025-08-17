@@ -84,7 +84,7 @@ const ToursAddEditModel = ({
   const onSubmit = () => {
     handleSubmit(formData, formData.file, isEditTour, idToUpdate);
   };
-console.log({formData})
+
   return (
       <Modal
         opened={opened}

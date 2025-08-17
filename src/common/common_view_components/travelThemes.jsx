@@ -60,7 +60,7 @@ const TravelThemes = ({ name, value, onChange }) => {
                 id={inputId}
                 name="travelThemeId"
                 className="w-4 h-4 mr-1 cursor-pointer"
-                checked={purifiedTravelThemeIds?.includes(t?._id) || selectedTravelThemes.includes(t?._id)}
+                checked={purifiedTravelThemeIds?.includes(t?._id) || selectedTravelThemes.includes(t?._id)  || value.includes(t?._id)}
                 value={t?._id}
                 onChange={() => handleChange(t?._id)}
               />

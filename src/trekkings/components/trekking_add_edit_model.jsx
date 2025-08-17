@@ -46,6 +46,10 @@ const TrekkingsAddEditModel = ({
   useEffect(() => {
     setFormData();
     if (isEditTrekking && opened && trekking) {
+      // //normalized destination ids
+      // const destinationIds = trekking.destinationIds.map(d => d._id);
+      // //normalized travel theme ids
+      // const travelThemeIds = trekking.travelThemeIds.map(t => t._id);
       setFormData({
         destinationIds: trekking.destinationIds || "",
         travelThemeIds: trekking.travelThemeIds || "",
@@ -85,7 +89,6 @@ const TrekkingsAddEditModel = ({
   const onSubmit = () => {
     handleSubmit(formData, formData.file, isEditTrekking, idToUpdate);
   };
-console.log({formData})
   return (
       <Modal
         opened={opened}
@@ -112,6 +115,7 @@ console.log({formData})
               name="destinationIds"
               value={formData.destinationIds}
               onChange={handleChange}
+              isEditTrekking={isEditTrekking}
             />
             <TravelThemes
               name="travelThemeIds"

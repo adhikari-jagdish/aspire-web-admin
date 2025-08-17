@@ -81,7 +81,6 @@ const TrekkingsViewModel = ({ openedView, onClose, trekking }) => {
       block: "start",
     });
   };
-console.log({trekking})
   return (
     <Modal
       opened={openedView}

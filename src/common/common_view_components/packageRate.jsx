@@ -24,10 +24,10 @@ const currencyFields = [
   { label: "EUR", name: "rateInEUR" },
 ];
 
-const PackageRate = ({ name, value, onChange, isEditTour }) => {
+const PackageRate = ({ name, value, onChange, isEditTour, isEditTrekking }) => {
   const [packageRates, setPackageRates] = useState([]);
   useEffect(() => {
-    if (isEditTour && Array.isArray(value)) {
+    if ((isEditTour || isEditTrekking) && Array.isArray(value)) {
       const initialized = value?.map((v) => ({
         noOfPerson: v.noOfPerson || null,
         rateInNPR: v.rateInNPR || null,
