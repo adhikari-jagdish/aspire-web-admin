@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const navItems = [
   { name: "Home", icon: "🏠" },
   { name: "Destinations", icon: "🥾" },
-  {name: "TravelThemes", icon: "🌍"},
+  { name: "TravelThemes", icon: "🌍" },
   { name: "Tours", icon: "🗺️" },
   { name: "TripHighlights", icon: "✨" },
   { name: "Trekkings", icon: "🥾" },
@@ -15,13 +15,15 @@ const navItems = [
   { name: "Contact", icon: "📞" },
   { name: "Gallery", icon: "📸" },
   { name: "Hotels", icon: "🏨" },
-  {name: "Hotel Category", icon: "⭐"},
-  {name: "Carousels", icon: "🔁"},
+  { name: "Hotel Category", icon: "⭐" },
+  { name: "Carousels", icon: "🔁" },
   { name: "Vehicles", icon: "🚗" },
-  {name: "Menu", icon: "📋"},
-  {name: "FAQTitles", icon: "❓"},
-  {name: "Top-Rated-Packages", icon: "📦"}
-
+  { name: "Menu", icon: "📋" },
+  { name: "FAQTitles", icon: "❓" },
+  { name: "Top-Rated-Packages", icon: "📦" },
+  { name: "Reviews", icon: "⭐" },
+  { name: "Blogs", icon: "⭐" },
+  { name: "Faqs", icon: "⭐" },
 ];
 
 const SideNav = () => {
@@ -55,7 +57,6 @@ const SideNav = () => {
         </div>
         <nav className="mt-4">
           {navItems.map((item) => (
-
             <Link
               key={item.name}
               to={`${item.name.toLowerCase()}`}

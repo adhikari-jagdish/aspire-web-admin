@@ -18,7 +18,7 @@ const CustomTable = ({
   destinationList,
 }) => {
 
-  console.log({data})
+  console.log({ data })
 
   const safeColumns = Array.isArray(columns) ? columns : [];
   return (
@@ -66,15 +66,15 @@ const CustomTable = ({
               data?.map((item, index) => {
                 return (
                   <Table.Tr
-                    key={ index}
+                    key={index}
                     className="hover:bg-gray-50 transition-colors"
                   >
                     <Table.Td>{index + 1}</Table.Td>
                     {safeColumns.map((col) => {
                       return (
                         <Table.Td key={col.accessor}>
-                        
-                          {(col.accessor === "image" || col.accessor === "file" || col.accessor === "icon" || col.accessor === "bannerImage") ? (
+
+                          {(col.accessor === "image" || col.accessor === "file" || col.accessor === "icon" || col.accessor === "bannerImage" || col.accessor === "imageUrl") ? (
                             <img
                               src={item[col.accessor]}
                               alt={index + 1}
@@ -114,14 +114,13 @@ const CustomTable = ({
                                       ?.title || "N/A"
                                 )
                                 .join(", ") } */}
-                                {item[col.accessor].map(d => d.title || "N/A").join(", ")}
+                              {item[col.accessor].map(d => d.title || "N/A").join(", ")}
                             </span>
-                          ) : col.accessor === "description" ? 
-                            <SafeHtml html={item[col.accessor]}/>
-                          
-                          : (
+                          ) : col.accessor === "description" ? (
+                            <SafeHtml html={item[col.accessor]} />
+                          ) : (
                             <span className="line-clamp-3 overflow-hidden">
-                            {item[col.accessor]}
+                              {item[col.accessor]}
                             </span>
                           )}
                         </Table.Td>

@@ -19,6 +19,9 @@ import AboutUsController from "./about/controller/aboutUs_controller";
 import MenusController from "./menu/controller/menus_controller";
 import FaqTitlesController from "./faq titles/controller/faqTitles_controller";
 import TopRatedPackagesController from "./topRated_packages/controller/topRatedPackages_controller";
+import ReviewsController from "./reviews/controller/reviews_controller";
+import BlogsController from "./blogs/controller/blogs_controller";
+import FaqController from "./faq/controller/faq_controller";
 
 function App() {
   return (
@@ -42,10 +45,13 @@ function App() {
           <Route path="menu" element={<MenusController />} />
           <Route path="faqtitles" element={<FaqTitlesController />} />
           <Route path="top-Rated-Packages" element={<TopRatedPackagesController />} />
-
+          <Route path="reviews" element={<ReviewsController />} />
+          <Route path="blogs" element={<BlogsController />} />
+          <Route path="peakClimbings" element={<PeakClimbingsView />} />
+          <Route path="adventures" element={<AdventuresView />} />
+          <Route path="faqs" element={<FaqController />} />
           <Route path="/about" element={<AboutUsController />} />
           <Route path="/contact" element={<ContactView />} />
-
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>
