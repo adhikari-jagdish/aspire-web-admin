@@ -20,6 +20,7 @@ const navItems = [
   { name: "Vehicles", icon: "🚗" },
   { name: "Reviews", icon: "⭐" },
   { name: "Blogs", icon: "⭐" },
+  { name: "Faqs", icon: "⭐" },
 ];
 
 const SideNav = () => {
