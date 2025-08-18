@@ -47,7 +47,7 @@ function App() {
           <Route path="top-Rated-Packages" element={<TopRatedPackagesController />} />
           <Route path="reviews" element={<ReviewsController />} />
           <Route path="blogs" element={<BlogsController />} />
-          <Route path="peakClimbings" element={<PeakClimbingsView />} />
+          <Route path="peakClimbings" element={<PeakClimbingsController />} />
           <Route path="adventures" element={<AdventuresView />} />
           <Route path="faqs" element={<FaqController />} />
           <Route path="/about" element={<AboutUsController />} />
