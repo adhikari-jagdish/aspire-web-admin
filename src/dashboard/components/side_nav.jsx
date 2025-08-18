@@ -18,7 +18,10 @@ const navItems = [
   {name: "Hotel Category", icon: "⭐"},
   {name: "Carousels", icon: "🔁"},
   { name: "Vehicles", icon: "🚗" },
-  {name: "Menu", icon: "📋"}
+  {name: "Menu", icon: "📋"},
+  {name: "FAQTitles", icon: "❓"},
+  {name: "Top-Rated-Packages", icon: "📦"}
+
 ];
 
 const SideNav = () => {

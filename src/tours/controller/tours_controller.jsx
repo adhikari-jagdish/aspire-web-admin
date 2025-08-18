@@ -35,6 +35,7 @@ const ToursController = () => {
       try {
         showLoading();
         const tourResponse = await tourRepository.getTourPackages();
+        console.log(tourResponse.data)
         setTourList(tourResponse.data || []);
       } catch (err) {
         notify({

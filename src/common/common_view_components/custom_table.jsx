@@ -19,6 +19,7 @@ const CustomTable = ({
 }) => {
 
   console.log({data})
+
   const safeColumns = Array.isArray(columns) ? columns : [];
   return (
     <Box
@@ -65,7 +66,7 @@ const CustomTable = ({
               data?.map((item, index) => {
                 return (
                   <Table.Tr
-                    key={item._id || index}
+                    key={ index}
                     className="hover:bg-gray-50 transition-colors"
                   >
                     <Table.Td>{index + 1}</Table.Td>

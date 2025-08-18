@@ -162,7 +162,7 @@ const ToursAddEditModel = ({
             <Exclusions
               name="exclusions"
               value={formData.exclusions}
-              onChange={handleChange}
+        onChange={handleChange}
               isEditTour={isEditTour}
               // onChange={(value) =>
               // setFormData((prev) => ({ ...prev, exclusions: value }))}
