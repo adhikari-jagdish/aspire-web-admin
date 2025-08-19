@@ -6,11 +6,11 @@ class TopRatedPackageRepository {
   }
 
   //Function to add a new TopRatedPackage package
-  async createTopRatedPackage(packageIds) {
+  async createTopRatedPackage(packageId) {
     try {
       const response = await this.AxiosService.post(
         "/api/createTopRatedPackages",
-        {packageIds}
+        {packageId}
       );
 
       if (response.status >= 200 || response.status < 300) {

@@ -15,7 +15,6 @@ const CustomTable = ({
   onDelete,
   shouldShowEdit = false,
   shouldShowDelete = false,
-  destinationList,
 }) => {
 
   console.log({ data })

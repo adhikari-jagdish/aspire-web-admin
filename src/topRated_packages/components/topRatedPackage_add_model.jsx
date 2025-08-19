@@ -1,4 +1,4 @@
-import { Button, Modal, Group } from "@mantine/core";
+import { Button, Modal, Group, Select } from "@mantine/core";
 import { useEffect, useState } from "react";
 
 const TopRatedPackagesAddModel = ({
@@ -7,27 +7,34 @@ const TopRatedPackagesAddModel = ({
   handleSubmit,
   packageList = [],
 }) => {
-  const [selectedPackages, setSelectedPackages] = useState([]);
+  const [selectedPackage, setSelectedPackage] = useState('');
 
   useEffect(() => {
-    setSelectedPackages([]);
-  }, [onClose]);
+    if(!opened){
+      setSelectedPackage('');
+    }
+  }, [opened]);
 
   const onSubmit = () => {
-    handleSubmit(selectedPackages);
-  };
-
-  const handleSelect = (e) => {
-    const packageId = e.target.value;
-
-    if (!selectedPackages.includes(packageId)) {
-      setSelectedPackages((prev) => [...prev, e.target.value]);
+    if(selectedPackage){
+      handleSubmit(selectedPackage);
     }
   };
 
-  const showSelectedTitles = packageList.filter((t) =>
-    selectedPackages.find((sp) => t._id === sp)
-  );
+  const handleSelect = (value) => {
+
+    if (selectedPackage !== value) {
+      setSelectedPackage(value);
+    }
+  };
+console.log({selectedPackage})
+  const showSelectedTitle = packageList.filter((t) =>t._id === selectedPackage);
+
+  const packages = packageList.map(({_id, title}) => ({
+    value: _id,
+    label: title
+  }))
+
 
   return (
     <Modal
@@ -51,24 +58,33 @@ const TopRatedPackagesAddModel = ({
     >
       <div className="text-[15px]">
         <div className="flex items-center gap-10">
-          <select
-            className="border rounded p-2 w-100"
-            onChange={(e) => handleSelect(e)}
-          >
-            <option value="">Select Top Rated Packages</option>
-            {packageList.map(({ _id, title }) => (
-              <option value={_id}>{title}</option>
-            ))}
-          </select>
+          <Select
+          placeholder="Select Top Rated Package"
+            className="rounded p-2 w-100"
+            onChange={handleSelect}
+            data={packages}
+            searchable
+            nothingFoundMessage="No Match"
+            styles={{
+            input: {
+              height: "42px",
+              borderColor: "#4B5563",
+            },
+            dropdown: {
+              borderColor: "#4B5563",
+            },
+          }}
+
+          />
 
           <div className=" rounded p-2 bg-green-100 flex flex-col gap-2">
-            {selectedPackages.length > 0 ? (
+            {selectedPackage !== "" ? (
               <>
                 <h4 className="font-medium text-xl">
-                  Selected Top Rated Packages
+                  Selected Top Rated Package
                 </h4>
                 <ul className="pl-4">
-                  {showSelectedTitles.map(({ _id, title }) => (
+                  {showSelectedTitle.map(({ _id, title }) => (
                     <li key={_id} className="list-decimal">
                       {title}
                     </li>

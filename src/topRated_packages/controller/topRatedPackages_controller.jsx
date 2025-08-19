@@ -5,12 +5,8 @@ import { useNotification } from "../../common/hooks/useNotification";
 import CustomDialogModal from "../../common/common_view_components/custom_dialog_model";
 import TopRatedPackageRepository from "../repository/topRatedPackage_repository";
 import TopRatedPackagesView from "../view/topRatedPackages_view";
-import DestinationRepository from "../../destinations/repository/destination_repository";
 import TopRatedPackagesViewModel from "../components/TopRatedPackages_view_model";
 import TopRatedPackagesAddModel from "../components/topRatedPackage_add_model";
-import TravelThemeRepository from "../../travel_themes/repository/travelTheme_repository";
-import TripHighlightRepository from "../../trip highlights/repository/tripHighlight_repository";
-import { object } from "framer-motion/client";
 import TourRepository from "../../tours/repository/tour_repository";
 import TrekkingRepository from "../../trekkings/repository/trekking_repository";
 import ExpeditionRepository from "../../expeditions/repository/expedition_repository";
@@ -23,15 +19,11 @@ const TopRatedPackagesController = () => {
   const [topRatedPackageList, setTopRatedPackageList] = useState([]);
   const [topRatedPackage, setTopRatedPackage] = useState({});
   const { getToken } = useAuth();
-  const [image, setImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
-  const [isEditTopRatedPackage, setIsEditTopRatedPackage] = useState(false);
   const [isDeleteTopRatedPackage, setIsDeleteTopRatedPackage] = useState(false);
   const [idToDelete, setIdToDelete] = useState(null);
-  const [idToUpdate, setIdToUpdate] = useState(null);
 
   const topRatedPackageRepository = new TopRatedPackageRepository(getToken);
 
@@ -39,7 +31,8 @@ const TopRatedPackagesController = () => {
     const fetchTopRatedPackages = async () => {
       try {
         showLoading();
-        const topRatedPackageResponse = await topRatedPackageRepository.getAllTopRatedPackages();
+        const topRatedPackageResponse =
+          await topRatedPackageRepository.getAllTopRatedPackages();
         setTopRatedPackageList(topRatedPackageResponse.data || []);
       } catch (err) {
         notify({
@@ -53,106 +46,50 @@ const TopRatedPackagesController = () => {
     fetchTopRatedPackages();
   }, []);
 
-
-  const [destinationList, setDestinationList] = useState([]);
-  const destinationRepository = new DestinationRepository(getToken);
-
+  //fetch all top rated packages
+  const tourRepository = new TourRepository(getToken);
+  const trekkingRepository = new TrekkingRepository(getToken);
+  const expeditionRepository = new ExpeditionRepository(getToken);
+  const peakClimbingRepository = new PeakClimbingRepository(getToken);
   useEffect(() => {
-    const fetchDestinations = async () => {
+    const fetchAllPackages = async () => {
       try {
-        const destinationsResponse =
-          await destinationRepository.getDestinations();
-        setDestinationList(destinationsResponse.data);
-      } catch (err) {
-        notify({
-          type: "error",
-          message: err.message ?? "Something went wrong. Please try again.",
-        });
-      }
-    };
-    fetchDestinations();
-  }, []);
+        showLoading();
+        const [tours, trekkings, expeditions, peaks] = await Promise.all([
+          tourRepository.getTourPackages(),
+          trekkingRepository.getTrekkingPackages(),
+          expeditionRepository.getExpeditionPackages(),
+          peakClimbingRepository.getPeakClimbingPackages(),
+        ]);
 
-  const [travelThemeList, setTravelThemeList] = useState([]);
-  const travelThemeRepository = new TravelThemeRepository(getToken);
+        const allPackages = [
+          ...tours.data,
+          ...trekkings.data,
+          ...expeditions.data,
+          ...peaks.data,
+        ];
 
-  useEffect(() => {
-    const fetchTravelThemes = async () => {
-      try {
-        const travelThemesResponse =
-          await travelThemeRepository.getTravelThemes();
-        // setTravelThemeList(travelThemesResponse.data);
-      } catch (err) {
-        notify({
-          type: "error",
-          message: err.message ?? "Something went wrong. Please try again.",
-        });
-      }
-    };
-    fetchTravelThemes();  
-  }, []);
-
-  //get all trip highlights
-  const [tripHighlightList, setTripHighlightList] = useState([]);
-  const tripHighlightRepository = new TripHighlightRepository(getToken);
-
-  useEffect(() => {
-    const fetchTripHighlights = async () => {
-      try {
-        const tripHighlightResponse =
-          await tripHighlightRepository.getTripHighlights();
-        // setTripHighlightList(tripHighlightResponse.data);
+        const uniquePackages = Array.from(
+          new Map(
+            allPackages.map((pkg) => [
+              pkg._id,
+              { _id: pkg._id, title: pkg.title },
+            ])
+          ).values()
+        );
+        setPackageList(uniquePackages);
       } catch (error) {
         notify({
           type: "error",
           message: error.message ?? "Something went wrong. Please try again",
         });
+      } finally {
+        hideLoading();
       }
     };
-    fetchTripHighlights();
-  }, []);
 
- //fetch all top rated packages 
- const tourRepository = new TourRepository(getToken);
- const trekkingRepository = new TrekkingRepository(getToken);
- const expeditionRepository = new ExpeditionRepository(getToken);
- const peakClimbingRepository = new PeakClimbingRepository(getToken);
- useEffect(() => {
-  const fetchAllPackages = async () => {
-    try {
-      showLoading();
-      const [tours, trekkings, expeditions, peaks] = await Promise.all([
-          tourRepository.getTourPackages(),
-          trekkingRepository.getTrekkingPackages(),
-          expeditionRepository.getExpeditionPackages(),
-          peakClimbingRepository.getPeakClimbingPackages(),
-      ]);
-
-      const allPackages = [
-        ...tours.data,
-        ...trekkings.data,
-        ...expeditions.data,
-        ...peaks.data
-      ];
-
-      const uniquePackages = Array.from(
-        new Map(allPackages.map(pkg => [pkg._id,{_id: pkg._id, title:  pkg.title}])).values()
-      );
-      setPackageList(uniquePackages);
-    } catch (error) {
-      notify({
-        type: "error",
-        message: error.message ?? "Something went wrong. Please try again",
-      });
-    } finally {
-      hideLoading();
-    }
-  };
-
-  fetchAllPackages();
-}, [topRatedPackageList]);
-
-   
+    fetchAllPackages();
+  }, [topRatedPackageList]);
 
   const handleClick = () => {
     setModalOpen(true);
@@ -161,7 +98,6 @@ const TopRatedPackagesController = () => {
   };
 
   const handleEditButtonClick = (item) => {
-    setIsEditTopRatedPackage(true);
     setTopRatedPackage(item);
     setModalOpen(true);
     setIdToUpdate(item?._id);
@@ -179,7 +115,10 @@ const TopRatedPackagesController = () => {
     try {
       showLoading();
       await topRatedPackageRepository.deleteTopRatedPackage(idToDelete);
-      notify({ type: "success", message: "Top Rated Package deleted successfully." });
+      notify({
+        type: "success",
+        message: "Top Rated Package deleted successfully.",
+      });
     } catch (err) {
       setTopRatedPackageList(previousList);
       notify({
@@ -193,12 +132,11 @@ const TopRatedPackagesController = () => {
     }
   };
 
-
-  const handleSubmit = async (packageIds) => {
-    if (!packageIds || packageIds.length < 0) {
+  const handleSubmit = async (packageId) => {
+    if (!packageId || packageId.trim() == "") {
       notify({
         type: "error",
-        message: "Packages are required.",
+        message: "Package is required.",
       });
       return;
     }
@@ -207,8 +145,10 @@ const TopRatedPackagesController = () => {
     let responseMessage;
     try {
       let response;
-        response = await topRatedPackageRepository.createTopRatedPackage(packageIds);
-        setTopRatedPackageList(prev => [...prev, response.data])
+      response = await topRatedPackageRepository.createTopRatedPackage(
+        packageId
+      );
+      setTopRatedPackageList((prev) => [...prev, response.data]);
 
       responseMessage = response.message;
       setModalOpen(false);
@@ -218,7 +158,6 @@ const TopRatedPackagesController = () => {
         message: responseMessage,
       });
     } catch (err) {
-      
       notify({
         type: "error",
         message: err.message ?? "Something went wrong. Please try again.",
@@ -234,8 +173,6 @@ const TopRatedPackagesController = () => {
   };
 
 
-  console.log({topRatedPackageList})
-
   const columns = [
     { label: "Destination", accessor: "destinationIds" },
     { label: "Title", accessor: "title" },
@@ -243,25 +180,20 @@ const TopRatedPackagesController = () => {
     { label: "Discount", accessor: "discountInPercentage" },
     { label: "Image", accessor: "image" },
   ];
-  console.log({topRatedPackageList})
   return (
     <>
       <TopRatedPackagesView
         opened={modalOpen}
         onClose={() => {
           setModalOpen(false);
-          setIsEditTopRatedPackage(false);
           setTopRatedPackage({});
           setImage(null);
         }}
         columns={columns}
         topRatedPackages={topRatedPackageList}
         handleClick={handleClick}
-        onEditButtonClick={handleEditButtonClick}
         onDeleteButtonClick={onDeleteButtonClick}
         onViewButtonClick={handleViewButtonClick}
-        destinationList={destinationList}
-        travelThemeList={travelThemeList}
       />
       <TopRatedPackagesViewModel
         openedView={openedView}
@@ -276,7 +208,7 @@ const TopRatedPackagesController = () => {
           setImage(null);
         }}
         handleSubmit={handleSubmit}
-        packageList={packageList}        
+        packageList={packageList}
       />
       <CustomDialogModal
         opened={isDeleteTopRatedPackage}

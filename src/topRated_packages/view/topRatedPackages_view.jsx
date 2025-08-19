@@ -8,11 +8,8 @@ const TopRatedPackagesView = ({
   columns,
   topRatedPackages,
   handleClick,
-  onEditButtonClick,
   onDeleteButtonClick,
   onViewButtonClick,
-  destinationList,
-  travelThemeList
 }) => {
   return (
     <>
@@ -31,12 +28,8 @@ const TopRatedPackagesView = ({
           columns={columns}
           data={topRatedPackages}
           shouldShowDelete
-          // shouldShowEdit
-          // onEdit={onEditButtonClick}
           onDelete={onDeleteButtonClick}
           onView={onViewButtonClick}
-          destinationList={destinationList}
-          travelThemeList={travelThemeList}
         />
       </div>
     </>
