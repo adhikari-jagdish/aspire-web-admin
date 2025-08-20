@@ -21,6 +21,7 @@ const navItems = [
   { name: "Menu", icon: "📋" },
   { name: "FAQTitles", icon: "❓" },
   { name: "Top-Rated-Packages", icon: "📦" },
+  { name: "Trending-Packages", icon: "🔥" },
   { name: "Reviews", icon: "⭐" },
   { name: "Blogs", icon: "⭐" },
   { name: "Faqs", icon: "⭐" },

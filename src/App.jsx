@@ -22,6 +22,7 @@ import TopRatedPackagesController from "./topRated_packages/controller/topRatedP
 import ReviewsController from "./reviews/controller/reviews_controller";
 import BlogsController from "./blogs/controller/blogs_controller";
 import FaqController from "./faq/controller/faq_controller";
+import TrendingPackagesController from "./trending packages/controller/trendingPackages_controller";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
           <Route path="menu" element={<MenusController />} />
           <Route path="faqtitles" element={<FaqTitlesController />} />
           <Route path="top-Rated-Packages" element={<TopRatedPackagesController />} />
+          <Route path="trending-packages" element={<TrendingPackagesController />} />
           <Route path="reviews" element={<ReviewsController />} />
           <Route path="blogs" element={<BlogsController />} />
           <Route path="peakClimbings" element={<PeakClimbingsController />} />

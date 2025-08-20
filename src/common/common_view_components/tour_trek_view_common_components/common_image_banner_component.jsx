@@ -6,6 +6,7 @@ const CommonImageBannerComponent = ({
   trekking,
   peakClimbing,
   topRatedPackage,
+  trendingPackage
 }) => {
 
     const getImage = () => {
@@ -15,13 +16,14 @@ const CommonImageBannerComponent = ({
       peakClimbing?.image?.trim() ||
       trekking?.image?.trim()  ||
       topRatedPackage?.image?.trim() ||
+      trendingPackage?.image?.trim() ||
       ""
         )
     }
 const image = getImage();
 const isValidImage = image !== "";
 
-const primaryData = tour || expedition || trekking || peakClimbing || topRatedPackage;
+const primaryData = tour || expedition || trekking || peakClimbing || topRatedPackage || trendingPackage;
   return (
     <div className="w-full relative h-[40vh] rounded-md overflow-hidden bg-gray-400">
       {isValidImage ? (
