@@ -1,7 +1,7 @@
 import { Image, Modal, Stack, Text, Title } from "@mantine/core";
 
 const HotelViewModel = ({ openedView, onClose, hotel, destinationList }) => {
-  const destination = destinationList?.find(d => d._id === hotel.destinationId);
+  const destination =  hotel.destinationId;
   return (
     <Modal
       opened={openedView}

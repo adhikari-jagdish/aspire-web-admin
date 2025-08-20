@@ -48,7 +48,7 @@ const HotelAddEditModel = ({
   useEffect(() => {
     if (isEditHotel && opened) {
       setFormData({
-        destinationId: hotel.destinationId || "",
+        destinationId: hotel.destinationId._id || "",
         title: hotel.title || "",
         city: hotel.city || "",
         rating: hotel.rating || null,
@@ -57,7 +57,7 @@ const HotelAddEditModel = ({
         rate: hotel.rate || null,
         image: hotel.image || null
       });
-   setDestinationCategory(hotel.destinationId || "");
+   setDestinationCategory(hotel.destinationId._id || "");
 
     } else {
       // Clear form for new travel theme
@@ -123,7 +123,6 @@ const HotelAddEditModel = ({
     destinationId: selectedId,
   }));
 };
-
 
 
   return (

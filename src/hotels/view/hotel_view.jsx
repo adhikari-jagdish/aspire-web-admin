@@ -12,7 +12,7 @@ const HotelsView = ({
   onEditButtonClick,
   onDeleteButtonClick,
   onViewButtonClick,
-  destinationList
+  // destinationList
 }) => {
  
   return (
@@ -36,7 +36,7 @@ const HotelsView = ({
           onEdit={(item) => onEditButtonClick(item)}
           onDelete={(item) => onDeleteButtonClick(item)}
           onView={item => onViewButtonClick(item)}
-          destinationList={destinationList}
+          // destinationList={destinationList}
         />
       </div>
     </>

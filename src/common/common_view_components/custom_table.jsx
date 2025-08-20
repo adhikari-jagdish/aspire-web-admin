@@ -100,9 +100,7 @@ const CustomTable = ({
                             </div>
                           ) : col.accessor === "destinationId" ? (
                             <span className="w-[250px]">
-                              {destinationList?.find(
-                                (d) => d._id === item.destinationId
-                              )?.title || "N/A"}
+                             {item[col.accessor]?.title || "N/A"}
                             </span>
                           ) : col.accessor === "destinationIds" ? (
                             <span className="w-[250px]">
