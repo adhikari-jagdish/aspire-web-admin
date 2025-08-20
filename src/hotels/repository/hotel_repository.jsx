@@ -7,6 +7,7 @@ class HotelRepository {
 
   //Function to add a new travel Theme
   async createHotel(formData) {
+    console.log({formData})
     try {
       const response = await this.axiosService.post(
         "/api/createHotel",

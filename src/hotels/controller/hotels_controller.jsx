@@ -107,6 +107,7 @@ const HotelsController = () => {
   };
 
   const handleSubmit = async (formData) => {
+    console.log({formData})
     if (
       !formData.destinationId ||
       !formData.title ||
@@ -139,12 +140,13 @@ const HotelsController = () => {
       let response;
       if (isEditHotel) {
         response = await hotelRepository.updateHotel(fD, idToUpdate);
+        const destination = destinationList.find(d => d._id === formData.destinationId);
         setHotelList((prev) =>
           prev.map((item) =>
             item._id === idToUpdate
               ? {
                   ...item,
-                  destinationId: formData.destinationId,
+                  destinationId: destination,
                   title: formData.title,
                   city: formData.city,
                   rating: formData.rating,

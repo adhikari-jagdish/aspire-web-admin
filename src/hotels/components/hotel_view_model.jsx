@@ -1,6 +1,6 @@
 import { Image, Modal, Stack, Text, Title } from "@mantine/core";
 
-const HotelViewModel = ({ openedView, onClose, hotel, destinationList }) => {
+const HotelViewModel = ({ openedView, onClose, hotel }) => {
   const destination =  hotel.destinationId;
   return (
     <Modal

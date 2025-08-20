@@ -9,9 +9,7 @@ import {
   Menu,
 } from "@mantine/core";
 import ImagePicker from "../../common/common_view_components/image_picker";
-import { IconPlus, IconSearch, IconTrash } from "@tabler/icons-react";
-import DestinationRepository from "../../destinations/repository/destination_repository";
-import useAuth from "../../auth/components/use_auth";
+import { IconPlus, IconTrash } from "@tabler/icons-react";
 
 const HotelAddEditModel = ({
   opened,
@@ -44,11 +42,12 @@ const HotelAddEditModel = ({
     useState("");
 
 
+const destinaton = hotel.destinationId;
 
   useEffect(() => {
     if (isEditHotel && opened) {
       setFormData({
-        destinationId: hotel.destinationId._id || "",
+        destinationId: destinaton._id || "",
         title: hotel.title || "",
         city: hotel.city || "",
         rating: hotel.rating || null,
@@ -57,7 +56,7 @@ const HotelAddEditModel = ({
         rate: hotel.rate || null,
         image: hotel.image || null
       });
-   setDestinationCategory(hotel.destinationId._id || "");
+   setDestinationCategory(destinaton._id || "");
 
     } else {
       // Clear form for new travel theme
@@ -132,14 +131,6 @@ const HotelAddEditModel = ({
       title={isEditHotel ? "Edit Hotel" : "Add Hotel"}
       centered
     >
-      {/* <TextInput
-        label="Destination Id"
-        placeholder="Enter Destination Id"
-        name="destinationId"
-        value={formData.destinationId}
-        onChange={handleChange}
-        required
-      /> */}
       <div className="flex flex-col">
         <label htmlFor="destinations" className="font-medium text-[15px]">
           Destinations
@@ -197,14 +188,6 @@ const HotelAddEditModel = ({
         required
       />
 
-      {/* <TextInput
-        label="Hotel Category"
-        placeholder="Enter Hotel Category"
-        name="hotelCategory"
-        value={formData.hotelCategory}
-        onChange={handleChange}
-        required
-      /> */}
       <div className="flex flex-col">
         <label htmlFor="hotelCategory" className="font-medium text-[15px]">
           Hotel Category
@@ -229,14 +212,6 @@ const HotelAddEditModel = ({
         </select>
       </div>
 
-      {/* <TextInput
-        label="Rate"
-        placeholder="Enter Rate"
-        name="rate"
-        value={formData.rate}
-        onChange={handleChange}
-        required
-      /> */}
       <div style={{ marginTop: 5 }}>
         <h3 className="font-medium">Rate Info</h3>
 
