@@ -108,7 +108,7 @@ console.log({formData})
     >
       <TextInput
         label="Title"
-        placeholder="Enter Travel Theme"
+        placeholder="Enter Title..."
         name="title"
         value={formData.title}
         onChange={handleChange}

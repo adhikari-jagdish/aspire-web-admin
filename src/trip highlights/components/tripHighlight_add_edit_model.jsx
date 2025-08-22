@@ -37,7 +37,6 @@ const TripHighlightAddEditModel = ({
    }))
   }
 
-
   return (
     <Modal
       opened={opened}
@@ -64,7 +63,7 @@ const TripHighlightAddEditModel = ({
         required
       />
 
-      <FilePicker onFileSelect={handleFileSelect} allowSVGOnly={true} />
+      <FilePicker icon={tripHighlight.icon} onFileSelect={handleFileSelect} allowSVGOnly={true} />
 
       <Group position="right" mt="md">
         <Button variant="default" onClick={onClose}>

@@ -173,7 +173,7 @@ const ToursController = () => {
       !formData.duration ||
       !formData.overview ||
       !formData.tripHighlights ||
-      !formData.itinerary ||
+      !formData.itinerary  ||
       !formData.inclusions ||
       !formData.exclusions ||
       !formData.hotels ||
@@ -193,6 +193,16 @@ const ToursController = () => {
       });
       return;
     }
+
+    if(!formData.itinerary.length > 0){
+      notify({
+        type: "error",
+        message: "Please add itinerary!"
+      });
+      return;
+    }
+
+
     showLoading();
     const fD = new FormData();
     if (image) {
@@ -205,12 +215,12 @@ const ToursController = () => {
     );
 
     // Normalize destinations data to array of _id strings
-    const destinationIds = formData.destinationIds.map(d => d._id);
+    // const destinationIds = formData.destinationIds.map(d => d._id);
     //  // Normalize travel theme data to array of _id strings
-    const travelThemeIds = formData.travelThemeIds.map(d => d._id);
+    // const travelThemeIds = formData.travelThemeIds.map(d => d._id);
 
-    fD.append("destinationIds", JSON.stringify(destinationIds));
-    fD.append("travelThemeIds", JSON.stringify(travelThemeIds));
+    fD.append("destinationIds", JSON.stringify(formData.destinationIds));
+    fD.append("travelThemeIds", JSON.stringify(formData.travelThemeIds));
     fD.append("title", formData.title);
     fD.append("duration", parseInt(formData.duration));
     fD.append("overview", formData.overview);

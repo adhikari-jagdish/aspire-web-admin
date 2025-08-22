@@ -4,7 +4,7 @@ import { RichTextEditor } from "@mantine/tiptap";
 import Underline from "@tiptap/extension-underline";
 import Strike from "@tiptap/extension-strike";
 import { Button, Title } from "@mantine/core";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import TextStyle from "@tiptap/extension-text-style";
 import Color from "@tiptap/extension-color";
 import { IconColorPicker } from "@tabler/icons-react";
@@ -14,7 +14,7 @@ const Exclusions = ({ name, value, onChange, isEditTour }) => {
 
   //Inclusion editor
   const exclusionEditor = useEditor({
-    extensions: [StarterKit, Underline, Strike, TextStyle, Color, Image],
+    extensions: [StarterKit, Underline, Strike, TextStyle, Color],
     content: value || "",
     onUpdate({ editor }) {
       const html = editor.getHTML();
@@ -119,10 +119,6 @@ const Exclusions = ({ name, value, onChange, isEditTour }) => {
             </RichTextEditor.ControlsGroup>
 
             <RichTextEditor.UnsetColor />
-            <Button component="label" size="xs" variant="default">
-            Upload Image
-            <input type="file" accept="image/*" hidden onChange={handleImageUpload} />
-            </Button>
         </RichTextEditor.Toolbar>
 
         <RichTextEditor.Content  className="h-[200px] [&_ul]:list-disc [&_ol]:list-decimal overflow-y-scroll" />

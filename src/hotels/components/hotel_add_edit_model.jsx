@@ -10,6 +10,7 @@ import {
 } from "@mantine/core";
 import ImagePicker from "../../common/common_view_components/image_picker";
 import { IconPlus, IconTrash } from "@tabler/icons-react";
+import { NumbersOnlyValidator, TextOnlyValidator } from "../../common/hooks/common_inputField_validator";
 
 const HotelAddEditModel = ({
   opened,
@@ -18,7 +19,7 @@ const HotelAddEditModel = ({
   handleSubmit,
   handleImageSelect,
   hotel,
-  destinationList
+  destinationList,
 }) => {
   const [formData, setFormData] = useState({
     destinationId: "",
@@ -38,11 +39,9 @@ const HotelAddEditModel = ({
     image: null,
   });
 
-  const [DestinationCategory, setDestinationCategory] =
-    useState("");
+  const [DestinationCategory, setDestinationCategory] = useState("");
 
-
-const destinaton = hotel.destinationId;
+  const destinaton = hotel.destinationId;
 
   useEffect(() => {
     if (isEditHotel && opened) {
@@ -54,10 +53,9 @@ const destinaton = hotel.destinationId;
         overview: hotel.overview || "",
         hotelCategory: hotel.hotelCategory || "",
         rate: hotel.rate || null,
-        image: hotel.image || null
+        image: hotel.image || null,
       });
-   setDestinationCategory(destinaton._id || "");
-
+      setDestinationCategory(destinaton._id || "");
     } else {
       // Clear form for new travel theme
       setFormData({
@@ -77,7 +75,7 @@ const destinaton = hotel.destinationId;
         ],
         image: null,
       });
-          setDestinationCategory("");
+      setDestinationCategory("");
     }
   }, [isEditHotel, opened]);
 
@@ -113,16 +111,16 @@ const destinaton = hotel.destinationId;
     setFormData({ ...formData, rate: updatedRates });
   };
 
+  const handleDestinationSelect = (e) => {
+    const selectedId = e.target.value;
+    setDestinationCategory(selectedId);
+    setFormData((prev) => ({
+      ...prev,
+      destinationId: selectedId,
+    }));
+  };
 
- const handleDestinationSelect = (e) => {
-  const selectedId = e.target.value;
-  setDestinationCategory(selectedId);
-  setFormData(prev => ({
-    ...prev,
-    destinationId: selectedId,
-  }));
-};
-
+ 
 
   return (
     <Modal
@@ -147,7 +145,9 @@ const destinaton = hotel.destinationId;
           <option value=""> Select Destination </option>
 
           {destinationList.map((d) => (
-              <option key={d._id} value={d._id || ""}>{d?.title}</option>
+            <option key={d._id} value={d._id || ""}>
+              {d?.title}
+            </option>
           ))}
         </select>
       </div>
@@ -168,6 +168,7 @@ const destinaton = hotel.destinationId;
         value={formData.city}
         onChange={handleChange}
         required
+        onKeyDown={TextOnlyValidator}
       />
 
       <TextInput
@@ -177,6 +178,9 @@ const destinaton = hotel.destinationId;
         value={formData.rating}
         onChange={handleChange}
         required
+        type="number"
+        onKeyDown={NumbersOnlyValidator}
+        onWheel={(e) => e.target.blur()}
       />
 
       <TextInput
@@ -224,6 +228,8 @@ const destinaton = hotel.destinationId;
               <input
                 label="Room Category"
                 value={rateItem.roomCategory}
+                type="text"
+                onKeyDown={TextOnlyValidator}
                 onChange={(e) =>
                   handleRateChange(idx, "roomCategory", e.target.value)
                 }
@@ -244,6 +250,8 @@ const destinaton = hotel.destinationId;
                 placeholder="Enter Rate in NPR"
                 name="rateInNPR"
                 required
+                type="number"
+                onKeyDown={NumbersOnlyValidator}
                 labelProps={{ style: { fontSize: "13px", fontWeight: 500 } }}
               />
 
@@ -255,6 +263,7 @@ const destinaton = hotel.destinationId;
                 }
                 placeholder="Enter Rate in USD"
                 name="rateInUSD"
+                onKeyDown={NumbersOnlyValidator}
                 required
                 labelProps={{ style: { fontSize: "13px", fontWeight: 500 } }}
               />
@@ -262,6 +271,7 @@ const destinaton = hotel.destinationId;
               <TextInput
                 label="INR"
                 value={rateItem.rateInINR}
+                onKeyDown={NumbersOnlyValidator}
                 onChange={(e) =>
                   handleRateChange(idx, "rateInINR", e.target.value)
                 }

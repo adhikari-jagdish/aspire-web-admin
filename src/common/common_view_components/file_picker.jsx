@@ -16,7 +16,6 @@ const FilePicker = ({ onFileSelect, allowSVGOnly = false }) => {
       setFile(file);
       setError(null);
       onFileSelect?.(file);
-
       if(allowSVGOnly){
         const reader = new FileReader();
         reader.onload= () => {

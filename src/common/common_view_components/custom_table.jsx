@@ -86,7 +86,7 @@ const CustomTable = ({
                           ) : col.accessor === "rate" ? (
                             <div>
                               {item[col.accessor].map((rateItem, idx) => (
-                                <ul key={idx} className="w-[200px]">
+                                <ul key={idx} className="w-[200px] pl-2">
                                   <li className="list-disc font-medium">
                                     {rateItem.roomCategory}
                                   </li>

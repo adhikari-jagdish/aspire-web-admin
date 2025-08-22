@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Modal, TextInput, Button, Group, Textarea } from "@mantine/core";
 import ImagePicker from "../../common/common_view_components/image_picker";
-
+import { NumbersOnlyValidator } from "../../common/hooks/common_inputField_validator";
 const CarouselAddEditModel = ({
   opened,
   onClose,
@@ -70,6 +70,8 @@ const CarouselAddEditModel = ({
         value={formData.priority}
         onChange={handleChange}
         required
+        type="number"
+        onKeyDown={NumbersOnlyValidator}
       />
 
       <TextInput
@@ -79,6 +81,8 @@ const CarouselAddEditModel = ({
         value={formData.screenPlaceType}
         onChange={handleChange}
         required
+        type="number"
+        onKeyDown={NumbersOnlyValidator}
       />
 
       <ImagePicker

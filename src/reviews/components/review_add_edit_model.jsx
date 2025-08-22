@@ -5,6 +5,7 @@ import { RichTextEditor } from "@mantine/tiptap";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
+import { TextOnlyValidator } from "../../common/hooks/common_inputField_validator";
 
 const ReviewAddEditModel = ({
   opened,
@@ -84,6 +85,8 @@ const ReviewAddEditModel = ({
         value={formData.postedBy}
         onChange={handleChange}
         required
+        type="text"
+        onKeyDown={TextOnlyValidator}
       />
 
       <Title order={4} mt={20} mb={10} size="sm" ta="left" c="dark">

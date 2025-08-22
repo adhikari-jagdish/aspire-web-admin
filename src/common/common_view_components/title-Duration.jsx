@@ -1,4 +1,5 @@
 import { Select, Title } from "@mantine/core";
+import { useState } from "react";
 
 const TitleDuration = ({
   titleName,
@@ -7,11 +8,15 @@ const TitleDuration = ({
   durationValue,
   onChange,
 }) => {
+
   //duration days
   let durationDays = Array.from({ length: 100 }, (_, i) => ({
     value: String(i + 1),
     label: `${i + 1} ${i + 1 === 1 ? "Day" : "Days"}`,
   }));
+
+ 
+  
 
   return (
     <div className="flex items-center justify-center gap-30">
@@ -44,7 +49,9 @@ const TitleDuration = ({
           data={durationDays}
           searchable
           nothingFound="No match"
+          se nothingFoundMessage="Nothing found..."
           className="ml-1"
+          allowDeselect
           styles={{
             input: {
               height: "42px",

@@ -29,6 +29,7 @@ const ReviewsController = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
+        showLoading();
         const reviewsResponse = await reviewRepository.getAllReviews();
         const formattedData = reviewsResponse.data.map((item) => ({
           ...item,
@@ -40,6 +41,8 @@ const ReviewsController = () => {
           type: "error",
           message: err.message ?? "Something went wrong. Please try again.",
         });
+      } finally{
+        hideLoading();
       }
     };
     fetchReviews();

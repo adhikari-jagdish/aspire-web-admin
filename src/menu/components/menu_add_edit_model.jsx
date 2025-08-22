@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { Modal, TextInput, Button, Group } from "@mantine/core";
+import { NumbersOnlyValidator } from "../../common/hooks/common_inputField_validator";
+
 
 const MenuAddEditModel = ({
   opened,
@@ -27,7 +29,6 @@ const MenuAddEditModel = ({
   const handleChange = e => {
     setFormData(prev=> ({...prev, [e.target.name] : e.target.value}))
   }
-  console.log({formData})
   return (
     <Modal
       opened={opened}
@@ -56,6 +57,7 @@ const MenuAddEditModel = ({
       <TextInput
         label="Order"
         type="number"
+        onKeyDown={NumbersOnlyValidator}
         name="order"
         value={formData?.duration}
         onChange={handleChange}
