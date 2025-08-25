@@ -7,6 +7,7 @@ import CarouselRepository from "../repository/carousel_repository";
 import CarouselsView from "../view/carousels_view";
 import CarouselViewModel from "../components/carousel_view_model";
 import CarouselAddEditModel from "../components/carousel_add_edit_model";
+import { CarouselValidator } from "../validations/CarouselValidator";
 
 const CarouselsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -83,6 +84,16 @@ const CarouselsController = () => {
     setImage(file);
   };
   const handleSubmit = async (formData) => {
+    console.log({formData})
+    const result = CarouselValidator(formData, image);
+
+    if(!result.valid){
+      notify({
+        type: "error",
+        message: result.message
+      })
+      return;
+    }
     showLoading();
     const fD = new FormData();
     fD.append("file", image);

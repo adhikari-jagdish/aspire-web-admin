@@ -10,6 +10,7 @@ import TrekkingsViewModel from "../components/trekking_view_model";
 import TrekkingsAddEditModel from "../components/trekking_add_edit_model";
 import TravelThemeRepository from "../../travel_themes/repository/travelTheme_repository";
 import TripHighlightRepository from "../../trip highlights/repository/tripHighlight_repository";
+import { FieldValidator } from "../../common/common_view_components/validations/common_tour_trek_validator";
 
 const TrekkingsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -162,34 +163,15 @@ const TrekkingsController = () => {
   },[imagePreview])
 
   const handleSubmit = async (formData) => {
-    console.log({formData})
-    if (
-      !formData.destinationIds ||
-      !formData.travelThemeIds ||
-      !formData.title ||
-      !formData.duration ||
-      !formData.overview ||
-      !formData.tripHighlights ||
-      !formData.itinerary ||
-      !formData.inclusions ||
-      !formData.exclusions ||
-      !formData.hotels ||
-      !formData.packageRate ||
-      !formData.discountInPercentage 
-    ) {
-      notify({
-        type: "error",
-        message: "All fields are required.",
-      });
-      return;
-    }
-    if(!image && !formData.file){
-      notify({
-        type: "error",
-        message: "Image is required"
-      });
-      return;
-    }
+    const result = FieldValidator(formData, image);
+    
+        if (!result.valid) {
+          notify({
+            type: "error",
+            message: result.message,
+          });
+          return;
+        }
     showLoading();
     const fD = new FormData();
     if (image) {

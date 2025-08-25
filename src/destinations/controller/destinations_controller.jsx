@@ -108,6 +108,19 @@ const DestinationsController = () => {
       })
       return;
     }
+    if(formData.title.trim().length > 25) {
+      notify({
+        type: "errror",
+        message: "Title must be 25 characters or fewer."
+      })
+      return;
+    }
+    if(formData.description.trim().length > 500) {
+      notify({
+        type: "errror",
+        message: "Description must be 500 characters or fewer."
+      })
+    }
     if(!image) {
       notify({
         type: "error",

@@ -1,0 +1,81 @@
+export const FieldValidator = (formData, image) => {
+  console.log(formData);
+  if (
+    !formData.destinationIds ||
+    !formData.travelThemeIds ||
+    !formData.title ||
+    !formData.duration ||
+    !formData.overview ||
+    !formData.tripHighlights ||
+    !formData.itinerary ||
+    !formData.inclusions ||
+    !formData.exclusions ||
+    !formData.hotels ||
+    !formData.packageRate ||
+    !formData.discountInPercentage
+  ) {
+    return { valid: false, message: "All fields are required." };
+  }
+  if (formData.title.trim().length > 25) {
+    return { valid: false, message: "Title must be 25 characters or fewer." };
+  }
+  if (formData.overview.trim().length > 500) {
+    return {
+      valid: false,
+      message: "Overview must be 500 characters or fewer.",
+    };
+  }
+
+  if (formData.inclusions.trim().length > 500) {
+    return {
+      valid: false,
+      message: "Inclusions must be 500 characters or fewer.",
+    };
+  }
+  if (formData.exclusions.trim().length > 500) {
+    return {
+      valid: false,
+      message: "Exclusions must be 500 characters or fewer.",
+    };
+  }
+  if (!image) {
+    return { valid: false, message: "Image is required" };
+  }
+
+  for (let item of formData.tripHighlights) {
+    if (item.description.trim().length > 500) {
+      return {
+        valid: false,
+        message: "Trip highlights description must be 500 characters or fewer.",
+      };
+    }
+  }
+
+  if (!formData.itinerary.length > 0) {
+  
+      return { valid: false, message: "Please add itinerary!"}
+ 
+  }
+
+  for (let item of formData.itinerary) {
+     if (item.dayAndTitle.trim().length > 60) {
+      
+       return { valid: false,  message: "Itineray title must be 60 characters or fewer."}
+    
+    }
+
+   for(let fact of item.itineraryFactors) {
+    if(fact.details.trim().length > 20) {
+      return { valid: false, message: "Itinerary facts details must be 20 characters or fewer."}
+    }
+   }
+    if (item.details.trim().length > 500) {
+      
+       return { valid: false,  message: "Itinerary details must be 500 characters or fewer."}
+    
+    }
+  }
+
+
+  return { valid: true}
+};

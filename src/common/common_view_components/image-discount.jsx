@@ -13,17 +13,21 @@ const ImageDiscount = ({
   isEditTrekking,
   isEditPeakClimbing,
   isEditExpedition,
-  defaultImage
+  defaultImage,
 }) => {
   const [image, setImage] = useState(null);
   const [discount, setDiscount] = useState("");
 
-  
   useEffect(() => {
-    if (isEditTour || isEditTrekking || isEditExpedition || isEditPeakClimbing) {
+    if (
+      isEditTour ||
+      isEditTrekking ||
+      isEditExpedition ||
+      isEditPeakClimbing
+    ) {
       setDiscount(discountValue);
     }
-  }, [isEditTour,isEditTrekking, discountValue]);
+  }, [isEditTour, isEditTrekking, discountValue]);
   const handleImageSelect = (image) => {
     setImage(image);
     onChange({ target: { name: imageName, value: image } });
@@ -41,7 +45,10 @@ const ImageDiscount = ({
           Image
         </Title>
         <div>
-          <ImagePicker onImageSelect={handleImageSelect} defaultImage={defaultImage} />
+          <ImagePicker
+            onImageSelect={handleImageSelect}
+            defaultImage={defaultImage}
+          />
         </div>
       </div>
 
@@ -54,10 +61,15 @@ const ImageDiscount = ({
           name={discountName}
           placeholder="10"
           value={discount || ""}
-          onChange={(e) => handleDiscountChange(e.target.value)}
+          onChange={(e) => {
+            const value = e.target.value;
+            if (/^\d{0,2}$/.test(value)) {
+              handleDiscountChange(e.target.value);
+            }
+          }}
           className=" border border-gray-400 rounded p-2 h-[50px] outline-0 w-[120px] no-spinner"
           min={1}
-          onWheel={e => e.target.blur()}
+          onWheel={(e) => e.target.blur()}
         />
       </div>
     </div>

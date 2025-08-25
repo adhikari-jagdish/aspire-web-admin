@@ -34,7 +34,24 @@ const CarouselAddEditModel = ({
   }, [isEditCarousel, opened]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name == "priority") {
+      const isValid = /^\d$/.test(value);
+      const num = Number(value);
+
+      if (value === "" || (isValid && num > 0 && num < 6)) {
+        setFormData({ ...formData, [name]: value });
+      }
+    } else if (name == "screenPlaceType") {
+      const isValid = /^\d$/.test(value);
+      const num = Number(value);
+
+      if (value === "" || (isValid && num > 0 && num < 6)) {
+        setFormData({ ...formData, [name]: value });
+      }
+    } else {
+      setFormData({ ...formData, [name]: value});
+    }
   };
 
   return (
@@ -62,7 +79,7 @@ const CarouselAddEditModel = ({
         required
         mt="md"
       />
-      
+
       <TextInput
         label="Priority"
         placeholder="Enter Priority"
@@ -72,6 +89,8 @@ const CarouselAddEditModel = ({
         required
         type="number"
         onKeyDown={NumbersOnlyValidator}
+        min={0}
+        maxLength={1}
       />
 
       <TextInput
@@ -83,6 +102,7 @@ const CarouselAddEditModel = ({
         required
         type="number"
         onKeyDown={NumbersOnlyValidator}
+        min={0}
       />
 
       <ImagePicker

@@ -98,7 +98,6 @@ const AboutUsController = () => {
       });
       return;
     }
-    console.log({formData})
     if (!formData.title  || !formData.description) {
       notify({
         type: "error",
@@ -106,6 +105,23 @@ const AboutUsController = () => {
       });
       return;
     }
+
+     if (formData.title.trim().length > 25){
+      notify({
+        type: "error",
+        message: "Title must be 25 characters or fewer.",
+      });
+      return;
+    }
+
+    if (formData.description.trim().length > 500){
+      notify({
+        type: "error",
+        message: "Description must be 500 characters or fewer.",
+      });
+      return;
+    }
+
     showLoading();
     const fD = new FormData();
     if (image) {

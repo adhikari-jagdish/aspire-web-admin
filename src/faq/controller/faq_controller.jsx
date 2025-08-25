@@ -98,6 +98,12 @@ const FaqController = () => {
         message: "Title must be at least 10 characters.",
       });
       return;
+    }else if (formData.title.length > 40) {
+      notify({
+        type: "error",
+        message: "Title must be at least 40 characters.",
+      });
+      return;
     }
 
     showLoading();
@@ -131,6 +137,12 @@ const FaqController = () => {
       return;
     } else if (!formData.description) {
       notify({ type: "error", message: "Description is required." });
+      return;
+    }  else if (formData.subtitle.trim().length > 40) {
+      notify({ type: "error", message: "Subtitle must be 40 characters or fewer." });
+      return;
+    } else if (formData.description.trim().length > 500) {
+      notify({ type: "error", message: "Description  must be 500 characters or fewer." });
       return;
     }
 

@@ -91,10 +91,17 @@ const TravelThemesController = () => {
   };
 
   const handleSubmit = async (formData) => {
-    if (!formData.title || (!image )) {
+    if (!formData.title.trim() || (!image )) {
       notify({
         type: "error",
-        message: "Title and image are required.",
+        message: "All fields are required.",
+      });
+      return;
+    }
+      if (formData.title.trim().length > 25) {
+      notify({
+        type: "error",
+        message: "Title must be 25 characters or fewer.",
       });
       return;
     }

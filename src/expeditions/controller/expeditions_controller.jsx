@@ -10,6 +10,7 @@ import TripHighlightRepository from "../../trip highlights/repository/tripHighli
 import ExpeditionsView from "../view/expeditions_view";
 import ExpeditionsViewModel from "../components/expeditions_view_model";
 import ExpeditionsAddEditModel from "../components/expedition_add_edit_model";
+import { FieldValidator } from "../../common/common_view_components/validations/common_tour_trek_validator";
 
 const ExpeditionsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -33,7 +34,8 @@ const ExpeditionsController = () => {
     const fetchExpeditions = async () => {
       try {
         showLoading();
-        const expeditionResponse = await expeditionRepository.getExpeditionPackages();
+        const expeditionResponse =
+          await expeditionRepository.getExpeditionPackages();
         setExpeditionList(expeditionResponse.data || []);
       } catch (err) {
         notify({
@@ -82,7 +84,7 @@ const ExpeditionsController = () => {
         });
       }
     };
-    fetchTravelThemes();  
+    fetchTravelThemes();
   }, []);
 
   //get all trip highlights
@@ -144,8 +146,7 @@ const ExpeditionsController = () => {
   };
 
   const handleImageSelect = (image) => {
-
-    if(image){
+    if (image) {
       const objectUrl = URL.createObjectURL(image);
       setImagePreview(objectUrl);
       setImage(image);
@@ -157,37 +158,18 @@ const ExpeditionsController = () => {
 
   //avoids memory leaks when switching or removing pages
   useEffect(() => {
-    if(imagePreview) {
+    if (imagePreview) {
       URL.revokeObjectURL(imagePreview);
     }
-  },[imagePreview])
+  }, [imagePreview]);
 
   const handleSubmit = async (formData) => {
-    console.log({formData})
-    if (
-      !formData.destinationIds ||
-      !formData.travelThemeIds ||
-      !formData.title ||
-      !formData.duration ||
-      !formData.overview ||
-      !formData.tripHighlights ||
-      !formData.itinerary ||
-      !formData.inclusions ||
-      !formData.exclusions ||
-      !formData.hotels ||
-      !formData.packageRate ||
-      !formData.discountInPercentage 
-    ) {
+    const result = FieldValidator(formData, image);
+
+    if (!result.valid) {
       notify({
         type: "error",
-        message: "All fields are required.",
-      });
-      return;
-    }
-    if(!image){
-      notify({
-        type: "error",
-        message: "Image is required"
+        message: result.message,
       });
       return;
     }
@@ -203,12 +185,22 @@ const ExpeditionsController = () => {
     );
 
     // Normalize destinations data to array of _id strings
-    const destinationIds = formData.destinationIds.map(d => d._id);
-     // Normalize travel theme data to array of _id strings
-    const travelThemeIds = formData.travelThemeIds.map(d => d._id);
+    const destinationIds = formData.destinationIds.map((d) => d._id);
+    // Normalize travel theme data to array of _id strings
+    const travelThemeIds = formData.travelThemeIds.map((d) => d._id);
 
-    fD.append("destinationIds", JSON.stringify(isEditExpedition ? destinationIds : formData.destinationIds));
-    fD.append("travelThemeIds", JSON.stringify(isEditExpedition ? travelThemeIds : formData.travelThemeIds));
+    fD.append(
+      "destinationIds",
+      JSON.stringify(
+        isEditExpedition ? destinationIds : formData.destinationIds
+      )
+    );
+    fD.append(
+      "travelThemeIds",
+      JSON.stringify(
+        isEditExpedition ? travelThemeIds : formData.travelThemeIds
+      )
+    );
     fD.append("title", formData.title);
     fD.append("duration", parseInt(formData.duration));
     fD.append("overview", formData.overview);
@@ -223,7 +215,10 @@ const ExpeditionsController = () => {
       let responseMessage;
       let response;
       if (isEditExpedition) {
-        response = await expeditionRepository.updateExpeditionPackage(fD, idToUpdate);
+        response = await expeditionRepository.updateExpeditionPackage(
+          fD,
+          idToUpdate
+        );
         setExpeditionList((prev) =>
           prev.map((item) =>
             item._id === idToUpdate
@@ -320,7 +315,6 @@ const ExpeditionsController = () => {
         destinationList={destinationList}
         travelThemeList={travelThemeList}
         imagePreview={isEditExpedition ? expedition?.image : null}
-        
       />
       <CustomDialogModal
         opened={isDeleteExpedition}

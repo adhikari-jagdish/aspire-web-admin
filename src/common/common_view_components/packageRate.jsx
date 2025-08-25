@@ -129,15 +129,19 @@ const PackageRate = ({ name, value, onChange, isEditTour, isEditTrekking, isEdit
                       min={0}
                       key={name}
                       label={label}
+                      inputMode="numeric"
+                      maxLength={5}
                       type="number"
                       value={p[name] === 0 ? "" : p[name] || ""}
                       onChange={(e) => {
                         const value = e.target.value;
-                        handleUpdate(
+                       if(/^\d{0,5}$/.test(value)){
+                         handleUpdate(
                           idx,
                           name,
                           value === "" ? "" : Number(value)
                         );
+                       }
                       }}
                       placeholder={`Enter Rate in ${label}`}
                       name={name}
@@ -152,6 +156,7 @@ const PackageRate = ({ name, value, onChange, isEditTour, isEditTrekking, isEdit
                           e.preventDefault();
                         }
                       }}
+                      max={5}
                     />
                   ))}
 

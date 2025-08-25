@@ -10,6 +10,7 @@ import TripHighlightRepository from "../../trip highlights/repository/tripHighli
 import PeakClimbingsView from "../view/peakClimbings_view";
 import PeakClimbingsViewModel from "../components/peakClimbings_view_model";
 import PeakClimbingsAddEditModel from "../components/peakClimbing_add_edit_model";
+import { FieldValidator } from "../../common/common_view_components/validations/common_tour_trek_validator";
 
 const PeakClimbingsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -33,7 +34,8 @@ const PeakClimbingsController = () => {
     const fetchpeakClimbings = async () => {
       try {
         showLoading();
-        const peakClimbingResponse = await peakClimbingRepository.getPeakClimbingPackages();
+        const peakClimbingResponse =
+          await peakClimbingRepository.getPeakClimbingPackages();
         setPeakClimbingList(peakClimbingResponse.data || []);
       } catch (err) {
         notify({
@@ -82,7 +84,7 @@ const PeakClimbingsController = () => {
         });
       }
     };
-    fetchTravelThemes();  
+    fetchTravelThemes();
   }, []);
 
   //get all trip highlights
@@ -129,7 +131,10 @@ const PeakClimbingsController = () => {
     try {
       showLoading();
       await peakClimbingRepository.deletePeakClimbingPackage(idToDelete);
-      notify({ type: "success", message: "PeakClimbing deleted successfully." });
+      notify({
+        type: "success",
+        message: "PeakClimbing deleted successfully.",
+      });
     } catch (err) {
       setPeakClimbingList(previousList);
       notify({
@@ -144,8 +149,7 @@ const PeakClimbingsController = () => {
   };
 
   const handleImageSelect = (image) => {
-
-    if(image){
+    if (image) {
       const objectUrl = URL.createObjectURL(image);
       setImagePreview(objectUrl);
       setImage(image);
@@ -157,36 +161,18 @@ const PeakClimbingsController = () => {
 
   //avoids memory leaks when switching or removing pages
   useEffect(() => {
-    if(imagePreview) {
+    if (imagePreview) {
       URL.revokeObjectURL(imagePreview);
     }
-  },[imagePreview])
+  }, [imagePreview]);
 
   const handleSubmit = async (formData) => {
-    console.log({formData})
-    if (
-      !formData.destinationIds ||
-      !formData.travelThemeIds ||
-      !formData.title ||
-      !formData.duration ||
-      !formData.overview ||
-      !formData.tripHighlights ||
-      !formData.itinerary ||
-      !formData.inclusions ||
-      !formData.exclusions ||
-      !formData.packageRate ||
-      !formData.discountInPercentage 
-    ) {
+    const result = FieldValidator(formData, image);
+
+    if (!result.valid) {
       notify({
         type: "error",
-        message: "All fields are required.",
-      });
-      return;
-    }
-    if(!image){
-      notify({
-        type: "error",
-        message: "Image is required"
+        message: result.message,
       });
       return;
     }
@@ -202,12 +188,22 @@ const PeakClimbingsController = () => {
     );
 
     // Normalize destinations data to array of _id strings
-    const destinationIds = formData.destinationIds.map(d => d._id);
-     // Normalize travel theme data to array of _id strings
-    const travelThemeIds = formData.travelThemeIds.map(d => d._id);
+    const destinationIds = formData.destinationIds.map((d) => d._id);
+    // Normalize travel theme data to array of _id strings
+    const travelThemeIds = formData.travelThemeIds.map((d) => d._id);
 
-    fD.append("destinationIds", JSON.stringify( isEditPeakClimbing ? destinationIds : formData.destinationIds));
-    fD.append("travelThemeIds", JSON.stringify(isEditPeakClimbing ? travelThemeIds : formData.travelThemeIds));
+    fD.append(
+      "destinationIds",
+      JSON.stringify(
+        isEditPeakClimbing ? destinationIds : formData.destinationIds
+      )
+    );
+    fD.append(
+      "travelThemeIds",
+      JSON.stringify(
+        isEditPeakClimbing ? travelThemeIds : formData.travelThemeIds
+      )
+    );
     fD.append("title", formData.title);
     fD.append("duration", parseInt(formData.duration));
     fD.append("overview", formData.overview);
@@ -222,7 +218,10 @@ const PeakClimbingsController = () => {
       let responseMessage;
       let response;
       if (isEditPeakClimbing) {
-        response = await peakClimbingRepository.updatePeakClimbingPackage(fD, idToUpdate);
+        response = await peakClimbingRepository.updatePeakClimbingPackage(
+          fD,
+          idToUpdate
+        );
         setPeakClimbingList((prev) =>
           prev.map((item) =>
             item._id === idToUpdate
@@ -280,7 +279,7 @@ const PeakClimbingsController = () => {
     { label: "Discount", accessor: "discountInPercentage" },
     { label: "Image", accessor: "image" },
   ];
-  console.log({peakClimbingList})
+  console.log({ peakClimbingList });
   return (
     <>
       <PeakClimbingsView
@@ -320,7 +319,6 @@ const PeakClimbingsController = () => {
         destinationList={destinationList}
         travelThemeList={travelThemeList}
         imagePreview={isEditPeakClimbing ? peakClimbing?.image : null}
-        
       />
       <CustomDialogModal
         opened={isDeletePeakClimbing}

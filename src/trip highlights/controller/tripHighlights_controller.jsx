@@ -77,6 +77,29 @@ const TripHighLightsController = () => {
   };
 
   const handleSubmit = async (formData) => {
+    if(formData.title || formData.icon){
+      notify({
+        type: "error",
+        message: "All fields are required!"
+      })
+      return;
+    }
+    if(formData.title.trim().length > 25){
+      notify({
+        type: "error",
+        message: "Title must be 25 characters or fewer."
+      });
+      return;
+    }
+
+      if(!formData.icon){
+      notify({
+        type: "error",
+        message: "Icon is required!"
+      });
+      return;
+    }
+    
     showLoading();
     const fD = new FormData();
     fD.append("file", formData.icon);

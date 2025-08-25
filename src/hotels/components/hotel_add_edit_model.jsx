@@ -80,7 +80,18 @@ const HotelAddEditModel = ({
   }, [isEditHotel, opened]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const {name, value} = e.target;
+
+    if(name === "rating"){
+      const isValid = /^\d{0,1}(\.\d{0,1})?$/.test(value);
+      const num = Number(value);
+      if(isValid && num < 10){
+        setFormData({...formData, [name]: value})
+      }
+    } else {
+
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
   };
 
   const handleRateChange = (idx, field, value) => {
@@ -245,7 +256,12 @@ const HotelAddEditModel = ({
                 label="NPR"
                 value={rateItem.rateInNPR}
                 onChange={(e) =>
-                  handleRateChange(idx, "rateInNPR", e.target.value)
+                    {
+                    const value = e.target.value;
+                    if(/^\d{0,5}$/.test(value)){
+                      handleRateChange(idx, "rateInNPR", value)
+                    }
+                  }
                 }
                 placeholder="Enter Rate in NPR"
                 name="rateInNPR"
@@ -259,7 +275,12 @@ const HotelAddEditModel = ({
                 label="USD"
                 value={rateItem.rateInUSD}
                 onChange={(e) =>
-                  handleRateChange(idx, "rateInUSD", e.target.value)
+                  {
+                    const value = e.target.value;
+                    if(/^\d{0,5}$/.test(value)){
+                      handleRateChange(idx, "rateInUSD", value)
+                    }
+                  }
                 }
                 placeholder="Enter Rate in USD"
                 name="rateInUSD"
@@ -273,7 +294,12 @@ const HotelAddEditModel = ({
                 value={rateItem.rateInINR}
                 onKeyDown={NumbersOnlyValidator}
                 onChange={(e) =>
-                  handleRateChange(idx, "rateInINR", e.target.value)
+                    {
+                    const value = e.target.value;
+                    if(/^\d{0,5}$/.test(value)){
+                      handleRateChange(idx, "rateInINR", value)
+                    }
+                  }
                 }
                 placeholder="Enter Rate in INR"
                 name="rateInINR"

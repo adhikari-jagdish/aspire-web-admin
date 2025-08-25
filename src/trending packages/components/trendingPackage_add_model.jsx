@@ -16,9 +16,7 @@ const TrendingPackagesAddModel = ({
   }, [opened]);
 
   const onSubmit = () => {
-    if(selectedPackage){
       handleSubmit(selectedPackage);
-    }
   };
 
   const handleSelect = (value) => {

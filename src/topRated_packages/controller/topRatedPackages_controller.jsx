@@ -94,7 +94,6 @@ const TopRatedPackagesController = () => {
   const handleClick = () => {
     setModalOpen(true);
     setTopRatedPackage({});
-    setImage(null);
   };
 
   const handleEditButtonClick = (item) => {
@@ -133,6 +132,7 @@ const TopRatedPackagesController = () => {
   };
 
   const handleSubmit = async (packageId) => {
+    console.log(packageId)
     if (!packageId || packageId.trim() == "") {
       notify({
         type: "error",

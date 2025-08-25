@@ -7,6 +7,7 @@ import useLoadingOverlay from "../../common/hooks/useLoadingOverlay";
 import BlogRepository from "../repository/blog_repository";
 import useAuth from "../../auth/components/use_auth";
 import CustomDialogModal from "../../common/common_view_components/custom_dialog_model";
+import { CommonReviewBlogValidator } from "../../common/common_view_components/review_blog_validator/common_review_blog_validator";
 
 const BlogsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -98,17 +99,16 @@ const BlogsController = () => {
   const handleSubmit = async (formData) => {
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = formData.description;
-
-    if (
-      formData.postedBy.trim().length === 0 ||
-      tempDiv.textContent.trim().length === 0
-    ) {
-      notify({
-        type: "error",
-        message: "All fields are required!",
-      });
-      return;
-    }
+console.log({formData})
+    const result = CommonReviewBlogValidator(formData, tempDiv, image);
+    
+        if (!result.valid) {
+          notify({
+            type: "error",
+            message: result.message
+          })
+          return;
+        }
 
     showLoading();
     const fD = new FormData();

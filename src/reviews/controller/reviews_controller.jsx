@@ -7,6 +7,7 @@ import useLoadingOverlay from "../../common/hooks/useLoadingOverlay";
 import ReviewRepository from "../repository/review_repository";
 import CustomDialogModal from "../../common/common_view_components/custom_dialog_model";
 import useAuth from "../../auth/components/use_auth";
+import { CommonReviewBlogValidator } from "../../common/common_view_components/review_blog_validator/common_review_blog_validator";
 
 const ReviewsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -41,7 +42,7 @@ const ReviewsController = () => {
           type: "error",
           message: err.message ?? "Something went wrong. Please try again.",
         });
-      } finally{
+      } finally {
         hideLoading();
       }
     };
@@ -104,18 +105,17 @@ const ReviewsController = () => {
   const handleSubmit = async (formData) => {
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = formData.description;
-    console.log(formData);
 
-    if (
-      formData.postedBy.trim().length === 0 ||
-      tempDiv.textContent.trim().length === 0
-    ) {
+    const result = CommonReviewBlogValidator(formData, tempDiv, image);
+
+    if (!result.valid) {
       notify({
         type: "error",
-        message: "All fields are required!",
-      });
+        message: result.message
+      })
       return;
     }
+  
     showLoading();
     const fD = new FormData();
     fD.append("file", image);

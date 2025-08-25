@@ -16,9 +16,7 @@ const TopRatedPackagesAddModel = ({
   }, [opened]);
 
   const onSubmit = () => {
-    if(selectedPackage){
       handleSubmit(selectedPackage);
-    }
   };
 
   const handleSelect = (value) => {

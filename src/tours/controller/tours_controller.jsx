@@ -11,6 +11,7 @@ import ToursAddEditModel from "../components/tour_add_edit_model";
 import TravelThemeRepository from "../../travel_themes/repository/travelTheme_repository";
 import TripHighlightRepository from "../../trip highlights/repository/tripHighlight_repository";
 import { object } from "framer-motion/client";
+import { FieldValidator } from "../../common/common_view_components/validations/common_tour_trek_validator";
 
 const ToursController = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -35,7 +36,7 @@ const ToursController = () => {
       try {
         showLoading();
         const tourResponse = await tourRepository.getTourPackages();
-        console.log(tourResponse.data)
+        console.log(tourResponse.data);
         setTourList(tourResponse.data || []);
       } catch (err) {
         notify({
@@ -84,7 +85,7 @@ const ToursController = () => {
         });
       }
     };
-    fetchTravelThemes();  
+    fetchTravelThemes();
   }, []);
 
   //get all trip highlights
@@ -146,8 +147,7 @@ const ToursController = () => {
   };
 
   const handleImageSelect = (image) => {
-
-    if(image){
+    if (image) {
       const objectUrl = URL.createObjectURL(image);
       setImagePreview(objectUrl);
       setImage(image);
@@ -159,50 +159,21 @@ const ToursController = () => {
 
   //avoids memory leaks when switching or removing pages
   useEffect(() => {
-    if(imagePreview) {
+    if (imagePreview) {
       URL.revokeObjectURL(imagePreview);
     }
-  },[imagePreview])
+  }, [imagePreview]);
 
   const handleSubmit = async (formData) => {
-    console.log({formData})
-    if (
-      !formData.destinationIds ||
-      !formData.travelThemeIds ||
-      !formData.title ||
-      !formData.duration ||
-      !formData.overview ||
-      !formData.tripHighlights ||
-      !formData.itinerary  ||
-      !formData.inclusions ||
-      !formData.exclusions ||
-      !formData.hotels ||
-      !formData.packageRate ||
-      !formData.discountInPercentage 
-    ) {
+     const result =  FieldValidator(formData, image);
+
+     if(!result.valid){
       notify({
         type: "error",
-        message: "All fields are required.",
+        message: result.message
       });
       return;
-    }
-    if(!image){
-      notify({
-        type: "error",
-        message: "Image is required"
-      });
-      return;
-    }
-
-    if(!formData.itinerary.length > 0){
-      notify({
-        type: "error",
-        message: "Please add itinerary!"
-      });
-      return;
-    }
-
-
+     }
     showLoading();
     const fD = new FormData();
     if (image) {
@@ -334,7 +305,6 @@ const ToursController = () => {
         destinationList={destinationList}
         travelThemeList={travelThemeList}
         imagePreview={isEditTour ? tour?.image : null}
-        
       />
       <CustomDialogModal
         opened={isDeleteTour}

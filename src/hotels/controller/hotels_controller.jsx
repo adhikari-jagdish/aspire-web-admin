@@ -8,6 +8,7 @@ import HotelViewModel from "../components/hotel_view_model";
 import HotelAddEditModel from "../components/hotel_add_edit_model";
 import CustomDialogModal from "../../common/common_view_components/custom_dialog_model";
 import DestinationRepository from "../../destinations/repository/destination_repository";
+import { HotelValidator } from "../validations/hotel_validation";
 
 const HotelsController = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -107,22 +108,15 @@ const HotelsController = () => {
   };
 
   const handleSubmit = async (formData) => {
-    console.log({formData})
-    if (
-      !formData.destinationId ||
-      !formData.title ||
-      !formData.city ||
-      !formData.rating ||
-      !formData.overview ||
-      !formData.hotelCategory ||
-      (!formData.rate && !isEditHotel)
-    ) {
+    const result = HotelValidator(formData, image);
+    if(!result.valid){
       notify({
         type: "error",
-        message: "All fields are required.",
+        message: result.message
       });
       return;
     }
+
     showLoading();
     const fD = new FormData();
     if (image) {

@@ -7,6 +7,7 @@ import CustomDialogModal from "../../common/common_view_components/custom_dialog
 import MenusView from "../view/menus_view";
 import MenuRepository from "../repository/menu_repository";
 import MenuViewModel from "../components/menu_view_model";
+import { MenuValidator } from "../validation/MenuValidator";
 
 const MenusController = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -85,7 +86,15 @@ const MenusController = () => {
 
 
   const handleSubmit = async (formData) => {
-    
+    const result = MenuValidator(formData);
+
+    if(!result.valid){
+      notify({
+        type: "error",
+        message: result.message
+      })
+      return;
+    }
     showLoading();
     // const fD = new FormData();
     // fD.append("title", formData.title);
