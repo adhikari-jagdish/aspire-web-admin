@@ -28,17 +28,18 @@ const AboutUsAddEditModel = ({
   handleImageSelect,
   aboutUs,
 }) => {
+  console.log(aboutUs)
   const [formData, setFormData] = useState({
     title: "",
     description:""
   });
-  console.log({aboutUs})
   useEffect(() => {
     if (isEditAboutUs && opened) {
       setFormData({
         title: aboutUs.title || "",
         description: aboutUs.description || "",
       });
+      handleImageSelect(aboutUs.bannerImage)
     } else {
       // Clear form for new travel theme
       setFormData({
@@ -82,7 +83,6 @@ const AboutUsAddEditModel = ({
 
     const reader = new FileReader();
     reader.onloadend = () => {
-        console.log('Image base64:', reader.result);
       descriptionEditor?.chain().focus().setImage({src: reader.result, width: '30', height: '30'}).run();
     }
     reader.readAsDataURL(file);

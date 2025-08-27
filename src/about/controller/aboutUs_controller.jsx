@@ -113,15 +113,14 @@ const AboutUsController = () => {
       });
       return;
     }
-
-    if (formData.description.trim().length > 500){
+    const descContent = formData.description.textContent;
+    if (descContent?.trim().length > 500){
       notify({
         type: "error",
         message: "Description must be 500 characters or fewer.",
       });
       return;
     }
-
     showLoading();
     const fD = new FormData();
     if (image) {
@@ -140,7 +139,7 @@ const AboutUsController = () => {
         setAboutUsList((prev) =>
           prev.map((item) =>
             item._id === idToUpdate
-              ? { ...item, title: formData.title, description: formData.description, image: image || item.image }
+              ? { ...item, title: formData.title, description: formData.description, image: image || item.bannerImage }
               : item
           )
         );

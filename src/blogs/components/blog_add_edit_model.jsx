@@ -14,7 +14,6 @@ const BlogAddEditModel = ({
   handleSubmit,
   handleImageSelect,
   blog,
-  imagePreview,
 }) => {
   const [formData, setFormData] = useState({
     title: "",
@@ -31,6 +30,7 @@ const BlogAddEditModel = ({
         postDate: blog.postDate ? new Date(blog.postDate) : null,
         description: blog.description || "",
       });
+      handleImageSelect(blog.image)
     } else {
       setFormData({
         title: "",
@@ -142,12 +142,12 @@ const BlogAddEditModel = ({
             <RichTextEditor.OrderedList />
           </RichTextEditor.ControlsGroup>
         </RichTextEditor.Toolbar>
-        <RichTextEditor.Content className="h-[250px] [&_ul]:list-disc [&_ol]:list-decimal" />
+        <RichTextEditor.Content className="h-[250px] [&_ul]:list-disc [&_ol]:list-decimal overflow-y-scroll" />
       </RichTextEditor>
 
       <ImagePicker
         onImageSelect={handleImageSelect}
-        defaultImage={isEditBlog && (blog?.imageUrl || imagePreview)}
+        defaultImage={blog.image}
       />
 
       <Group position="right" mt="md">
