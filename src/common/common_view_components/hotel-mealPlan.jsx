@@ -62,7 +62,7 @@ const HotelAndMealPlan = ({ onChange, value, parentName, isEditTour,isEditTrekki
   };
   return (
     <div className="w-full space-y-4 flex flex-col gap-2">
-      <div className="flex gap-4">
+      <div className="flex gap-8">
         <div className="flex items-center  w-[50%] gap-5">
           {/* <Title
           order={4}
