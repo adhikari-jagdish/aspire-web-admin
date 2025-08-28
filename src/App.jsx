@@ -20,6 +20,7 @@ import ReviewsController from "./reviews/controller/reviews_controller";
 import BlogsController from "./blogs/controller/blogs_controller";
 import FaqController from "./faq/controller/faq_controller";
 import VehiclesController from "./vehicle/controller/vehicles_controller";
+import VehicleBookingsController from "./vehicle_booking/controller/vehicle_bookings_controller";
 
 function App() {
   return (
@@ -41,6 +42,10 @@ function App() {
           <Route path="reviews" element={<ReviewsController />} />
           <Route path="blogs" element={<BlogsController />} />
           <Route path="vehicles" element={<VehiclesController />} />
+          <Route
+            path="vehiclebookings"
+            element={<VehicleBookingsController />}
+          />
           <Route path="peakClimbings" element={<PeakClimbingsView />} />
           <Route path="adventures" element={<AdventuresView />} />
           <Route path="faqs" element={<FaqController />} />

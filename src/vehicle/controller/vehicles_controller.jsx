@@ -44,6 +44,7 @@ const VehiclesController = () => {
   }, []);
 
   const handleClick = () => {
+    setVehicle([]);
     setModalOpen(true);
   };
 
