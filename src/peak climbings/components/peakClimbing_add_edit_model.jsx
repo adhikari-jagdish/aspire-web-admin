@@ -36,9 +36,11 @@ const PeakClimbingsAddEditModel = ({
   isEditPeakClimbing,
   handleSubmit,
   handleImageSelect,
+  handleMapImageSelect,
   peakClimbing = {},
   idToUpdate,
   imagePreview,
+  mapImagePreview,
 }) => {
   const [formData, setFormData] = useState(initialFormState);
   // Initialize form data
@@ -54,13 +56,18 @@ const PeakClimbingsAddEditModel = ({
         tripHighlights: Array.isArray(peakClimbing.tripHighlights)
           ? peakClimbing.tripHighlights
           : [],
-        itinerary: Array.isArray(peakClimbing.itinerary) ? peakClimbing.itinerary : [],
+        itinerary: Array.isArray(peakClimbing.itinerary)
+          ? peakClimbing.itinerary
+          : [],
         inclusions: peakClimbing.inclusions || "",
         exclusions: peakClimbing.exclusions || "",
         hotels: Array.isArray(peakClimbing.hotels) ? peakClimbing.hotels : [],
-        packageRate: Array.isArray(peakClimbing.packageRate) ? peakClimbing.packageRate : [],
+        packageRate: Array.isArray(peakClimbing.packageRate)
+          ? peakClimbing.packageRate
+          : [],
         discountInPercentage: peakClimbing.discountInPercentage ?? 0,
-        file: imagePreview || null,
+        file: imagePreview || peakClimbing.image || null,
+        mapFile: mapImagePreview || peakClimbing.mapImage || null,
       });
     } else {
       setFormData(initialFormState);
@@ -81,121 +88,144 @@ const PeakClimbingsAddEditModel = ({
     }
   };
 
+  const onMapImageChange = (mapImage) => {
+    setFormData((prev) => ({ ...prev, mapImage }));
+    if (handleMapImageSelect) {
+      handleMapImageSelect(mapImage);
+    }
+  };
+
   const onSubmit = () => {
     handleSubmit(formData, formData.file, isEditPeakClimbing, idToUpdate);
   };
   return (
-      <Modal
-        opened={opened}
-        onClose={onClose}
-        title={isEditPeakClimbing ? "Edit PeakClimbing Packages" : "Add PeakClimbing Packages"}
-        size="xxl"
-        centered
-        padding="lg"
-        radius="md"
-        styles={{
-          title: {
-            fontSize: "34px",
-            color: "#0890cf",
-            fontWeight: 700,
-          },
-          content: {
-            scrollbarWidth: "none",
-          },
-        }}
-      >
-        <div className="text-[15px]">
-          <div className="space-y-8">
-            <Destinations
-              name="destinationIds"
-              value={formData.destinationIds}
-              onChange={handleChange}
-            />
-            <TravelThemes
-              name="travelThemeIds"
-              value={formData.travelThemeIds}
-              onChange={handleChange}
-            />
-            <TitleDuration
-              titleName="title"
-              durationName="duration"
-              titleValue={formData.title}
-              durationValue={formData.duration}
-              onChange={handleChange}
-            />
-            <Overview
-              name="overview"
-              value={formData.overview}
-              onChange={handleChange}
-            />
-            <TripHighlights
-              name="tripHighlights"
-              value={formData.tripHighlights}
-              onChange={handleChange}
-              isEditPeakClimbing={isEditPeakClimbing}
-            />
-            <Itinerary
-              name="itinerary"
-              parentName="peakClimbings"
-              value={formData.itinerary}
-              onChange={handleChange}
-              isEditPeakClimbing={isEditPeakClimbing}
-              durationLimit={formData.duration || "0"}
-            />
-            <PackageRate
-              name="packageRate"
-              value={formData.packageRate}
-              onChange={handleChange}
-              isEditPeakClimbing={isEditPeakClimbing}
-            />
-            <Inclusions
-              name="inclusions"
-              value={formData.inclusions}
-              // onChange={handleChange}
-              onChange={(value) =>
-                setFormData((prev) => ({ ...prev, inclusions: value }))
-              }
-              isEditPeakClimbing={isEditPeakClimbing}
-            />
-            <Exclusions
-              name="exclusions"
-              value={formData.exclusions}
-              onChange={handleChange}
-              isEditPeakClimbing={isEditPeakClimbing}
-              // onChange={(value) =>
-              // setFormData((prev) => ({ ...prev, exclusions: value }))}
-            />
+    <Modal
+      opened={opened}
+      onClose={onClose}
+      title={
+        isEditPeakClimbing
+          ? "Edit PeakClimbing Packages"
+          : "Add PeakClimbing Packages"
+      }
+      size="xxl"
+      centered
+      padding="lg"
+      radius="md"
+      styles={{
+        title: {
+          fontSize: "34px",
+          color: "#0890cf",
+          fontWeight: 700,
+        },
+        content: {
+          scrollbarWidth: "none",
+        },
+      }}
+    >
+      <div className="text-[15px]">
+        <div className="space-y-8">
+          <Destinations
+            name="destinationIds"
+            value={formData.destinationIds}
+            onChange={handleChange}
+          />
+          <TravelThemes
+            name="travelThemeIds"
+            value={formData.travelThemeIds}
+            onChange={handleChange}
+          />
+          <TitleDuration
+            titleName="title"
+            durationName="duration"
+            titleValue={formData.title}
+            durationValue={formData.duration}
+            onChange={handleChange}
+          />
+          <Overview
+            name="overview"
+            value={formData.overview}
+            onChange={handleChange}
+          />
+          <TripHighlights
+            name="tripHighlights"
+            value={formData.tripHighlights}
+            onChange={handleChange}
+            isEditPeakClimbing={isEditPeakClimbing}
+          />
+          <Itinerary
+            name="itinerary"
+            parentName="peakClimbings"
+            value={formData.itinerary}
+            onChange={handleChange}
+            isEditPeakClimbing={isEditPeakClimbing}
+            durationLimit={formData.duration || "0"}
+          />
+          <PackageRate
+            name="packageRate"
+            value={formData.packageRate}
+            onChange={handleChange}
+            isEditPeakClimbing={isEditPeakClimbing}
+          />
+          <Inclusions
+            name="inclusions"
+            value={formData.inclusions}
+            // onChange={handleChange}
+            onChange={(value) =>
+              setFormData((prev) => ({ ...prev, inclusions: value }))
+            }
+            isEditPeakClimbing={isEditPeakClimbing}
+          />
+          <Exclusions
+            name="exclusions"
+            value={formData.exclusions}
+            onChange={handleChange}
+            isEditPeakClimbing={isEditPeakClimbing}
+            // onChange={(value) =>
+            // setFormData((prev) => ({ ...prev, exclusions: value }))}
+          />
 
-            <ImageDiscount
-              imageName="file"
-              discountName="discountInPercentage"
-              discountValue={formData.discountInPercentage}
-              onChange={handleChange}
-              onImageChange={onImageChange}
-              isEditPeakClimbing={isEditPeakClimbing}
-              peakClimbing={peakClimbing}
-              defaultImage={isEditPeakClimbing && (peakClimbing?.image || imagePreview)}
-            />
-          </div>
-          {/* Sticky Button inside Modal */}
-          <div className="sticky bottom-2  z-[90] flex justify-end  pb-2 bg-white">
-            <button onClick={() => {
-              const modalBody = document.querySelector('.mantine-Modal-content');
-              if(modalBody){
-                modalBody.scrollTo({top: 0, behavior: "smooth"})
-              }
-            }} className="bg-blue-600 rounded-full p-2 shadow-md cursor-pointer hover:bg-blue-700">
-              <FaAngleUp size={25} color="white" />
-            </button>
-          </div>
-          <Group position="right" mt="md" pr={10} pb={4} spacing="sm">
-            <Button variant="default" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button onClick={onSubmit}>Submit</Button>
-          </Group>
+          <ImageDiscount
+            imageName="file"
+            discountName="discountInPercentage"
+            discountValue={formData.discountInPercentage}
+            onChange={handleChange}
+            onImageChange={onImageChange}
+            onMapImageChange={onMapImageChange}
+            isEditPeakClimbing={isEditPeakClimbing}
+            peakClimbing={peakClimbing}
+            defaultImage={
+              isEditPeakClimbing && (peakClimbing?.image || imagePreview)
+            }
+            isPeakClimbing={true}
+            defaultMapImage={
+              isEditPeakClimbing && (peakClimbing?.mapImage || mapImagePreview)
+            }
+          />
         </div>
-      </Modal>
+        {/* Sticky Button inside Modal */}
+        <div className="sticky bottom-2  z-[90] flex justify-end  pb-2 bg-white">
+          <button
+            onClick={() => {
+              const modalBody = document.querySelector(
+                ".mantine-Modal-content"
+              );
+              if (modalBody) {
+                modalBody.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }}
+            className="bg-blue-600 rounded-full p-2 shadow-md cursor-pointer hover:bg-blue-700"
+          >
+            <FaAngleUp size={25} color="white" />
+          </button>
+        </div>
+        <Group position="right" mt="md" pr={10} pb={4} spacing="sm">
+          <Button variant="default" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button onClick={onSubmit}>Submit</Button>
+        </Group>
+      </div>
+    </Modal>
   );
 };
 

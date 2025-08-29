@@ -121,7 +121,7 @@ const DestinationsController = () => {
         message: "Description must be 500 characters or fewer."
       })
     }
-    if(!image) {
+    if(!image && !formData.image) {
       notify({
         type: "error",
         message: "Image is required!"

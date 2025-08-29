@@ -12,11 +12,13 @@ const TravelThemeAddEditModel = ({
 }) => {
   const [formData, setFormData] = useState({
     title: "",
+    image: null
   });
   useEffect(() => {
     if (isEditTravelTheme && opened) {
       setFormData({
         title: travelTheme.title || "",
+        image: travelTheme.image || null
       });
     } else {
       // Clear form for new travel theme

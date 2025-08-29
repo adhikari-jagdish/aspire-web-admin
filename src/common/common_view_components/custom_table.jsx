@@ -83,6 +83,17 @@ const CustomTable = ({
                                 objectFit: "contain",
                               }}
                             />
+                          ):
+                          ((col.accessor == "mapImage" || col.accessor == "mapFile") ) ? (
+                            <img
+                              src={item[col.accessor]}
+                              alt={index + 1}
+                              style={{
+                                width: "80px",
+                                height: "60px",
+                                objectFit: "contain",
+                              }}
+                            />
                           ) : col.accessor === "rate" ? (
                             <div>
                               {item[col.accessor].map((rateItem, idx) => (

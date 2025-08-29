@@ -80,12 +80,13 @@ const BlogsController = () => {
   const handleImageSelect = (file) => {
     if (file) {
       const objectUrl = URL.createObjectURL(file);
-      setImagePreview(objectUrl);
-      setImage(file);
-    } else {
-      setImage(null);
-      setImagePreview(null);
+    //   setImagePreview(objectUrl);
+      setImage(objectUrl);
     }
+    // } else {
+    //   setImage(null);
+    //   setImagePreview(null);
+    // }
   };
 
   useEffect(() => {
@@ -173,7 +174,7 @@ console.log({formData})
     { label: "Description", accessor: "description" },
     { label: "Image", accessor: "image" },
   ];
-
+console.log({image})
   return (
     <>
       <BlogsView

@@ -91,7 +91,7 @@ const TravelThemesController = () => {
   };
 
   const handleSubmit = async (formData) => {
-    if (!formData.title.trim() || (!image )) {
+    if (!formData.title.trim() || (!image && !formData.image )) {
       notify({
         type: "error",
         message: "All fields are required.",

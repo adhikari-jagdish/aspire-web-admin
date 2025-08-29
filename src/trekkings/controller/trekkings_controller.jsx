@@ -19,7 +19,9 @@ const TrekkingsController = () => {
   const [trekking, setTrekking] = useState({});
   const { getToken } = useAuth();
   const [image, setImage] = useState(null);
+  const [mapImage, setMapImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [mapImagePreview, setMapImagePreview] = useState(null);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
@@ -108,6 +110,7 @@ const TrekkingsController = () => {
     setModalOpen(true);
     setTrekking({});
     setImage(null);
+    setMapImage(null);
   };
 
   const handleEditButtonClick = (item) => {
@@ -116,6 +119,7 @@ const TrekkingsController = () => {
     setModalOpen(true);
     setIdToUpdate(item?._id);
     setImage(null);
+    setMapImage(null);
   };
 
   const onDeleteButtonClick = (item) => {
@@ -155,15 +159,35 @@ const TrekkingsController = () => {
     }
   };
 
+    const handleMapImageSelect = (mapImage) => {
+
+    if(mapImage){
+      const objectUrl = URL.createObjectURL(mapImage);
+      setMapImagePreview(objectUrl);
+      setMapImage(mapImage);
+    } else {
+      setMapImage(null);
+      setMapImagePreview(null);
+    }
+  };
+
+  
+
   //avoids memory leaks when switching or removing pages
   useEffect(() => {
     if(imagePreview) {
       URL.revokeObjectURL(imagePreview);
     }
-  },[imagePreview])
+
+     if(mapImagePreview) {
+      URL.revokeObjectURL(mapImagePreview);
+    }
+  },[imagePreview, mapImagePreview])
 
   const handleSubmit = async (formData) => {
-    const result = FieldValidator(formData, image);
+    console.log({image})
+    console.log({mapImage})
+    const result = FieldValidator(formData, image,mapImage);
     
         if (!result.valid) {
           notify({
@@ -174,6 +198,9 @@ const TrekkingsController = () => {
         }
     showLoading();
     const fD = new FormData();
+    if(mapImage){
+      fD.append("mapFile", mapImage)
+    }
     if (image) {
       fD.append("file", image);
     }
@@ -184,12 +211,12 @@ const TrekkingsController = () => {
     );
 
     // // Normalize destinations data to array of _id strings
-    // const destinationIds = formData.destinationIds.map(d => d._id);
+    const destinationIds = formData.destinationIds.map(d => d._id);
     //  // Normalize travel theme data to array of _id strings
-    // const travelThemeIds = formData.travelThemeIds.map(d => d._id);
+    const travelThemeIds = formData.travelThemeIds.map(d => d._id);
 
-    fD.append("destinationIds", JSON.stringify(formData.destinationIds));
-    fD.append("travelThemeIds", JSON.stringify(formData.travelThemeIds));
+    fD.append("destinationIds", JSON.stringify(isEditTrekking ? destinationIds : formData.destinationIds));
+    fD.append("travelThemeIds", JSON.stringify( isEditTrekking ? travelThemeIds : formData.travelThemeIds));
     fD.append("title", formData.title);
     fD.append("duration", parseInt(formData.duration));
     fD.append("overview", formData.overview);
@@ -223,7 +250,8 @@ const TrekkingsController = () => {
                   hotels: formData.hotels,
                   packageRate: formData.packageRate,
                   discountInPercentage: formData.discountInPercentage,
-                  file: imagePreview || item.file,
+                  image: imagePreview || item.image,
+                  mapImage: mapImagePreview || item.mapImage,
                 }
               : item
           )
@@ -236,6 +264,7 @@ const TrekkingsController = () => {
       responseMessage = response.message;
       setModalOpen(false);
       setImage(null);
+      setMapImage(null);
       setIsEditTrekking(false);
       setTrekking({});
       notify({
@@ -263,7 +292,9 @@ const TrekkingsController = () => {
     { label: "Duration", accessor: "duration" },
     { label: "Discount", accessor: "discountInPercentage" },
     { label: "Image", accessor: "image" },
+    { label: "Map", accessor: "mapImage" },
   ];
+  
   return (
     <>
       <TrekkingsView
@@ -273,6 +304,7 @@ const TrekkingsController = () => {
           setIsEditTrekking(false);
           setTrekking({});
           setImage(null);
+          setMapImage(null);
         }}
         columns={columns}
         trekkings={trekkingList}
@@ -295,14 +327,17 @@ const TrekkingsController = () => {
           setModalOpen(false);
           setTrekking({});
           setImage(null);
+          setMapImage(null);
         }}
         handleSubmit={handleSubmit}
         handleImageSelect={handleImageSelect}
+        handleMapImageSelect={handleMapImageSelect}
         isEditTrekking={isEditTrekking}
         trekking={trekking}
         destinationList={destinationList}
         travelThemeList={travelThemeList}
         imagePreview={isEditTrekking ? trekking?.image : null}
+        mapImagePreview={isEditTrekking ? trekking?.mapImage : null}
         
       />
       <CustomDialogModal

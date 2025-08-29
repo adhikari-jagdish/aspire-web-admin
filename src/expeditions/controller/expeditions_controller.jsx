@@ -19,7 +19,9 @@ const ExpeditionsController = () => {
   const [expedition, setExpedition] = useState({});
   const { getToken } = useAuth();
   const [image, setImage] = useState(null);
+  const [mapImage, setMapImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [mapImagePreview, setMapImagePreview] = useState(null);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
@@ -110,6 +112,7 @@ const ExpeditionsController = () => {
     setModalOpen(true);
     setExpedition({});
     setImage(null);
+    setMapImage(null);
   };
 
   const handleEditButtonClick = (item) => {
@@ -118,6 +121,7 @@ const ExpeditionsController = () => {
     setModalOpen(true);
     setIdToUpdate(item?._id);
     setImage(null);
+    setImagePreview(null);
   };
 
   const onDeleteButtonClick = (item) => {
@@ -156,12 +160,28 @@ const ExpeditionsController = () => {
     }
   };
 
+  
+    const handleMapImageSelect = (mapImage) => {
+
+    if(mapImage){
+      const objectUrl = URL.createObjectURL(mapImage);
+      setMapImagePreview(objectUrl);
+      setMapImage(mapImage);
+    } else {
+      setMapImage(null);
+      setMapImagePreview(null);
+    }
+  };
+
   //avoids memory leaks when switching or removing pages
   useEffect(() => {
     if (imagePreview) {
       URL.revokeObjectURL(imagePreview);
     }
-  }, [imagePreview]);
+     if(mapImagePreview) {
+      URL.revokeObjectURL(mapImagePreview);
+    }
+  }, [imagePreview, mapImagePreview]);
 
   const handleSubmit = async (formData) => {
     const result = FieldValidator(formData, image);
@@ -175,6 +195,9 @@ const ExpeditionsController = () => {
     }
     showLoading();
     const fD = new FormData();
+     if(mapImage){
+      fD.append("mapFile", mapImage)
+    }
     if (image) {
       fD.append("file", image);
     }
@@ -236,6 +259,7 @@ const ExpeditionsController = () => {
                   packageRate: formData.packageRate,
                   discountInPercentage: formData.discountInPercentage,
                   file: imagePreview || item.file,
+                  mapFile: mapImagePreview || item.mapFile,
                 }
               : item
           )
@@ -248,6 +272,7 @@ const ExpeditionsController = () => {
       responseMessage = response.message;
       setModalOpen(false);
       setImage(null);
+      setMapImage(null);
       setIsEditExpedition(false);
       setExpedition({});
       notify({
@@ -275,6 +300,8 @@ const ExpeditionsController = () => {
     { label: "Duration", accessor: "duration" },
     { label: "Discount", accessor: "discountInPercentage" },
     { label: "Image", accessor: "image" },
+    { label: "Map", accessor: "mapImage" },
+
   ];
   return (
     <>
@@ -285,6 +312,7 @@ const ExpeditionsController = () => {
           setIsEditExpedition(false);
           setExpedition({});
           setImage(null);
+          setMapImage(null);
         }}
         columns={columns}
         expeditions={expeditionList}
@@ -307,9 +335,11 @@ const ExpeditionsController = () => {
           setModalOpen(false);
           setExpedition({});
           setImage(null);
+          setMapImage(null);
         }}
         handleSubmit={handleSubmit}
         handleImageSelect={handleImageSelect}
+        handleMapImageSelect={handleMapImageSelect}
         isEditExpedition={isEditExpedition}
         expedition={expedition}
         destinationList={destinationList}

@@ -87,6 +87,7 @@ const AboutUsController = () => {
   };
 
   const handleImageSelect = (file) => {
+    console.log({file})
     setImage(file);
   };
 

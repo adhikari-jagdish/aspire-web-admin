@@ -29,6 +29,8 @@ const initialFormState = {
   packageRate: "",
   discountInPercentage: 0,
   file: null,
+  mapFile: null
+
 };
 const ExpeditionsAddEditModel = ({
   opened,
@@ -36,9 +38,11 @@ const ExpeditionsAddEditModel = ({
   isEditExpedition,
   handleSubmit,
   handleImageSelect,
+  handleMapImageSelect,
   expedition = {},
   idToUpdate,
   imagePreview,
+  mapImagePreview
 }) => {
   const [formData, setFormData] = useState(initialFormState);
   // Initialize form data
@@ -61,6 +65,8 @@ const ExpeditionsAddEditModel = ({
         packageRate: Array.isArray(expedition.packageRate) ? expedition.packageRate : [],
         discountInPercentage: expedition.discountInPercentage ?? 0,
         file: imagePreview || null,
+        mapFile :mapImagePreview || null
+
       });
     } else {
       setFormData(initialFormState);
@@ -81,10 +87,16 @@ const ExpeditionsAddEditModel = ({
     }
   };
 
+     const onMapImageChange = (mapImage) => {
+    setFormData((prev) => ({ ...prev, mapImage }));
+    if (handleMapImageSelect) {
+      handleMapImageSelect(mapImage);
+    }
+  };
+
   const onSubmit = () => {
     handleSubmit(formData, formData.file, isEditExpedition, idToUpdate);
   };
-console.log({formData})
   return (
       <Modal
         opened={opened}
@@ -173,9 +185,13 @@ console.log({formData})
               discountValue={formData.discountInPercentage}
               onChange={handleChange}
               onImageChange={onImageChange}
+              onMapImageChange={onMapImageChange}
               isEditExpedition={isEditExpedition}
               expedition={expedition}
               defaultImage={isEditExpedition && (expedition?.image || imagePreview)}
+              defaultMapImage={isEditExpedition && (expedition?.mapImage || mapImagePreview)}
+
+              isExpedition={true}
             />
           </div>
           {/* Sticky Button inside Modal */}
