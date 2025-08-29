@@ -263,8 +263,8 @@ const PeakClimbingsController = () => {
                   exclusions: formData.exclusions,
                   packageRate: formData.packageRate,
                   discountInPercentage: formData.discountInPercentage,
-                  file: imagePreview || item.file,
-                  mapFile: mapImagePreview || item.mapFile,
+                  image: imagePreview || item.image,
+                  mapImage: mapImagePreview || item.mapImage,
                 }
               : item
           )

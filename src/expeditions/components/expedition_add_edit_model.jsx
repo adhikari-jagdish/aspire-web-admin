@@ -28,8 +28,8 @@ const initialFormState = {
   hotels: [],
   packageRate: "",
   discountInPercentage: 0,
-  file: null,
-  mapFile: null
+  image: null,
+  mapImage: null
 
 };
 const ExpeditionsAddEditModel = ({
@@ -64,8 +64,8 @@ const ExpeditionsAddEditModel = ({
         hotels: Array.isArray(expedition.hotels) ? expedition.hotels : [],
         packageRate: Array.isArray(expedition.packageRate) ? expedition.packageRate : [],
         discountInPercentage: expedition.discountInPercentage ?? 0,
-        file: imagePreview || null,
-        mapFile :mapImagePreview || null
+        image: imagePreview || expedition.image || null,
+        mapImage :mapImagePreview || expedition.mapImage || null
 
       });
     } else {

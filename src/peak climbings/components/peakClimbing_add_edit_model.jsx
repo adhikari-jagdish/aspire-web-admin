@@ -28,7 +28,8 @@ const initialFormState = {
   hotels: [],
   packageRate: "",
   discountInPercentage: 0,
-  file: null,
+  image: null,
+  mapImage: null
 };
 const PeakClimbingsAddEditModel = ({
   opened,
@@ -66,8 +67,8 @@ const PeakClimbingsAddEditModel = ({
           ? peakClimbing.packageRate
           : [],
         discountInPercentage: peakClimbing.discountInPercentage ?? 0,
-        file: imagePreview || peakClimbing.image || null,
-        mapFile: mapImagePreview || peakClimbing.mapImage || null,
+        image: imagePreview || peakClimbing.image || null,
+        mapImage: mapImagePreview || peakClimbing.mapImage || null,
       });
     } else {
       setFormData(initialFormState);

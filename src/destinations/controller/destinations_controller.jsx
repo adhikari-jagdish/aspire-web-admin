@@ -130,7 +130,9 @@ const DestinationsController = () => {
     }
     showLoading();
     const fD = new FormData();
-    fD.append("file", image);
+    if(image){
+      fD.append("file", image);
+    }
     fD.append("title", formData.title);
     fD.append("description", formData.description);
     try {

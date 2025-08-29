@@ -185,8 +185,7 @@ const TrekkingsController = () => {
   },[imagePreview, mapImagePreview])
 
   const handleSubmit = async (formData) => {
-    console.log({image})
-    console.log({mapImage})
+ 
     const result = FieldValidator(formData, image,mapImage);
     
         if (!result.valid) {

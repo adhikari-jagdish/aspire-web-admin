@@ -121,7 +121,7 @@ const ExpeditionsController = () => {
     setModalOpen(true);
     setIdToUpdate(item?._id);
     setImage(null);
-    setImagePreview(null);
+    setMapImage(null);
   };
 
   const onDeleteButtonClick = (item) => {
@@ -184,7 +184,7 @@ const ExpeditionsController = () => {
   }, [imagePreview, mapImagePreview]);
 
   const handleSubmit = async (formData) => {
-    const result = FieldValidator(formData, image);
+    const result = FieldValidator(formData, image, mapImage);
 
     if (!result.valid) {
       notify({
@@ -258,8 +258,8 @@ const ExpeditionsController = () => {
                   exclusions: formData.exclusions,
                   packageRate: formData.packageRate,
                   discountInPercentage: formData.discountInPercentage,
-                  file: imagePreview || item.file,
-                  mapFile: mapImagePreview || item.mapFile,
+                  image: imagePreview || item.image,
+                  mapImage: mapImagePreview || item.mapImage,
                 }
               : item
           )

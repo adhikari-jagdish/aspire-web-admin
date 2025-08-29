@@ -9,6 +9,7 @@ const TravelThemeAddEditModel = ({
   handleSubmit,
   handleImageSelect,
   travelTheme,
+  imagePreview
 }) => {
   const [formData, setFormData] = useState({
     title: "",
@@ -18,12 +19,13 @@ const TravelThemeAddEditModel = ({
     if (isEditTravelTheme && opened) {
       setFormData({
         title: travelTheme.title || "",
-        image: travelTheme.image || null
+        image: imagePreview || travelTheme.image || null
       });
     } else {
       // Clear form for new travel theme
       setFormData({
         title: "",
+        image: null,
       });
     }
   }, [isEditTravelTheme, opened]);
@@ -60,7 +62,7 @@ const TravelThemeAddEditModel = ({
 
       <ImagePicker
         onImageSelect={handleImageSelect}
-        defaultImage={travelTheme.image}
+        defaultImage={ isEditTravelTheme && (travelTheme?.image || imagePreview)}
       />
 
       <Group position="right" mt="md">
