@@ -43,7 +43,7 @@ const DestinationsController = () => {
     fetchDestinations();
   }, []);
 
-  const handleClick = (item) => {
+  const handleClick = () => {
     setModalOpen(true);
   };
 

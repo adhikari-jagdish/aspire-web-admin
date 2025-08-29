@@ -29,7 +29,7 @@ const initialFormState = {
   hotels: [],
   packageRate: "",
   discountInPercentage: 0,
-  file: null,
+  image: null,
 };
 const ToursAddEditModel = ({
   opened,
@@ -37,8 +37,7 @@ const ToursAddEditModel = ({
   isEditTour,
   handleSubmit,
   handleImageSelect,
-  tour = {},
-  idToUpdate,
+  tour,
   imagePreview,
 }) => {
   const [formData, setFormData] = useState(initialFormState);
@@ -61,7 +60,7 @@ const ToursAddEditModel = ({
         hotels: Array.isArray(tour.hotels) ? tour.hotels : [],
         packageRate: Array.isArray(tour.packageRate) ? tour.packageRate : [],
         discountInPercentage: tour.discountInPercentage ?? 0,
-        file: imagePreview || null,
+        image: imagePreview || tour.image || null,
       });
     } else {
       setFormData(initialFormState);
@@ -75,18 +74,10 @@ const ToursAddEditModel = ({
       [name]: value,
     }));
   };
-  const onImageChange = (image) => {
-    setFormData((prev) => ({ ...prev, image }));
-    if (handleImageSelect) {
-      handleImageSelect(image);
-    }
-  };
 
-  const onSubmit = () => {
-    handleSubmit(formData, formData.file, isEditTour, idToUpdate);
-  };
+   
 
-  
+  console.log({formData})
   return (
       <Modal
         opened={opened}
@@ -169,11 +160,11 @@ const ToursAddEditModel = ({
             />
 
             <ImageDiscount
-              imageName="file"
+              imageName="image"
               discountName="discountInPercentage"
               discountValue={formData.discountInPercentage}
               onChange={handleChange}
-              onImageChange={onImageChange}
+              onImageChange={handleImageSelect}
               isEditTour={isEditTour}
               tour={tour}
               defaultImage={isEditTour && (tour?.image || imagePreview)}
@@ -194,7 +185,7 @@ const ToursAddEditModel = ({
             <Button variant="default" onClick={onClose}>
               Cancel
             </Button>
-            <Button onClick={onSubmit}>Submit</Button>
+            <Button onClick={() =>  handleSubmit(formData)}>Submit</Button>
           </Group>
         </div>
       </Modal>

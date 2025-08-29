@@ -47,8 +47,6 @@ const TravelThemesController = () => {
 
   const handleClick = () => {
     setModalOpen(true);
-    setTravelTheme({});
-    setImage(null);
   };
 
   const handleEditButtonClick = (item) => {
@@ -108,7 +106,6 @@ const TravelThemesController = () => {
 }, [imagePreview]);
 
   const handleSubmit = async (formData) => {
-    console.log({image})
     if (!formData.title.trim() || (!image && !formData.image )) {
       notify({
         type: "error",
@@ -150,9 +147,6 @@ const TravelThemesController = () => {
       }
       responseMessage = response.message;
       setModalOpen(false);
-      setImage(null);
-      setIsEditTravelTheme(false);
-      setTravelTheme({});
       notify({
         type: "success",
         message: responseMessage,
@@ -176,7 +170,7 @@ const TravelThemesController = () => {
     { label: "Title", accessor: "title" },
     { label: "Image", accessor: "image" },
   ];
-
+console.log({image})
   return (
     <>
       <TravelThemesView

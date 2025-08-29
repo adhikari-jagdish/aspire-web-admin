@@ -4,7 +4,6 @@ import {
   TextInput,
   Button,
   Group,
-  Textarea,
   Title,
 } from "@mantine/core";
 import ImagePicker from "../../common/common_view_components/image_picker";

@@ -14,7 +14,6 @@ const TripHighLightsController = () => {
   const [tripHighlightList, setTripHighlightList] = useState([]);
   const [tripHighlight, setTripHighlight] = useState({});
   const { getToken } = useAuth();
-  const [file, setFile] = useState(null);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
@@ -71,13 +70,9 @@ const TripHighLightsController = () => {
     }
   };
 
-  ///This is called when user selects an file
-  const handleFileSelect = (file) => {
-    setFile(file);
-  };
 
   const handleSubmit = async (formData) => {
-    if(formData.title || formData.icon){
+    if(!formData.title || !formData.icon){
       notify({
         type: "error",
         message: "All fields are required!"
@@ -109,7 +104,7 @@ const TripHighLightsController = () => {
       let response;
      if(isEditTripHighlight){
        response = await tripHighlightRepository.updateTripHighlight(fD,idToUpdate);
-       setTripHighlightList(prev => prev.map(item => item._id === idToUpdate ? {...item, title: formData.title, file: file || item.icon} : item));
+       setTripHighlightList(prev => prev.map(item => item._id === idToUpdate ? {...item, title: formData.title, icon: file || item.icon} : item));
      } else {
         response = await tripHighlightRepository.addTripHighlight(fD);
         setTripHighlightList(prev => [...prev, response.data])
@@ -167,7 +162,6 @@ const TripHighLightsController = () => {
           setModalOpen(false);
         }}
         handleSubmit={handleSubmit}
-        handleFileSelect={handleFileSelect}
         isEditTripHighlight={isEditTripHighlight}
         tripHighlight={tripHighlight}
       />

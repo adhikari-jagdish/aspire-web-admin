@@ -1,6 +1,5 @@
 import { Table, ScrollArea, Box, Button, Group } from "@mantine/core";
 import {
-  IconCircleLetterG,
   IconEye,
   IconPencil,
   IconTrash,
@@ -70,10 +69,13 @@ const CustomTable = ({
                   >
                     <Table.Td>{index + 1}</Table.Td>
                     {safeColumns.map((col) => {
+                      if(col.accessor == "image"){
+                        console.log(item[col.accessor])
+                      }
                       return (
                         <Table.Td key={col.accessor}>
 
-                          {(col.accessor === "image" || col.accessor === "file" || col.accessor === "icon" || col.accessor === "bannerImage" || col.accessor === "imageUrl") ? (
+                          {(col.accessor == "image" || col.accessor == "file" || col.accessor == "icon" || col.accessor == "bannerImage" || col.accessor == "imageUrl") ? (
                             <img
                               src={item[col.accessor]}
                               alt={index + 1}

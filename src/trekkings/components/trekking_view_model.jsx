@@ -20,6 +20,7 @@ import CommonItineraryViewComponent from "../../common/common_view_components/to
 import CommonPackageRateViewComponent from "../../common/common_view_components/tour_trek_view_common_components/common_package_rate_view_component";
 import CommonHotelsViewComponent from "../../common/common_view_components/tour_trek_view_common_components/common_hotels_view_component";
 import CommonViewModelTabsComponent from "../../common/common_view_components/tour_trek_view_common_components/common_view_model_tabs_component";
+import CommonMapImageComponent from "../../common/common_view_components/tour_trek_view_common_components/common_mapImage_component";
 
 const buttons = [
   { name: "Overview", icon: GrOverview },
@@ -191,15 +192,9 @@ const TrekkingsViewModel = ({ openedView, onClose, trekking }) => {
                 title={"Exclusions"}
                 data={trekking?.exclusions}
               />
+              <CommonTitleComponent title={"Map"} />
 
-              {/*Hotels Section Title */}
-              {/* <CommonTitleComponent title={"Hotels"} /> */}
-
-              {/*Renders the Hotels Section */}
-              {/* <CommonHotelsViewComponent
-                sectionsRef={sectionsRef["hotels"]}
-                hotelList={trekking?.hotels}
-              /> */}
+              <CommonMapImageComponent trekking={trekking} />
             </Stack>
           </>
         ) : (

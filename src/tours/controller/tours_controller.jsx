@@ -10,7 +10,6 @@ import ToursViewModel from "../components/tours_view_model";
 import ToursAddEditModel from "../components/tour_add_edit_model";
 import TravelThemeRepository from "../../travel_themes/repository/travelTheme_repository";
 import TripHighlightRepository from "../../trip highlights/repository/tripHighlight_repository";
-import { object } from "framer-motion/client";
 import { FieldValidator } from "../../common/common_view_components/validations/common_tour_trek_validator";
 
 const ToursController = () => {
@@ -109,8 +108,6 @@ const ToursController = () => {
   }, []);
   const handleClick = () => {
     setModalOpen(true);
-    setTour({});
-    setImage(null);
   };
 
   const handleEditButtonClick = (item) => {
@@ -118,7 +115,6 @@ const ToursController = () => {
     setTour(item);
     setModalOpen(true);
     setIdToUpdate(item?._id);
-    setImage(null);
   };
 
   const onDeleteButtonClick = (item) => {
@@ -146,15 +142,16 @@ const ToursController = () => {
     }
   };
 
-  const handleImageSelect = (image) => {
-    if (image) {
-      const objectUrl = URL.createObjectURL(image);
+  const handleImageSelect = (file) => {
+    if (file) {
+      const objectUrl = URL.createObjectURL(file);
       setImagePreview(objectUrl);
-      setImage(image);
+      setImage(file);
     } else {
       setImage(null);
       setImagePreview(null);
     }
+
   };
 
   //avoids memory leaks when switching or removing pages
@@ -163,9 +160,10 @@ const ToursController = () => {
       URL.revokeObjectURL(imagePreview);
     }
   }, [imagePreview]);
-
+  
+  let isMapImage=false;
   const handleSubmit = async (formData) => {
-     const result =  FieldValidator(formData, image);
+     const result =  FieldValidator(formData, image, isMapImage);
 
      if(!result.valid){
       notify({
@@ -186,12 +184,12 @@ const ToursController = () => {
     );
 
     // Normalize destinations data to array of _id strings
-    // const destinationIds = formData.destinationIds.map(d => d._id);
+    const destinationIds = formData.destinationIds.map(d => d._id);
     //  // Normalize travel theme data to array of _id strings
-    // const travelThemeIds = formData.travelThemeIds.map(d => d._id);
+    const travelThemeIds = formData.travelThemeIds.map(d => d._id);
 
-    fD.append("destinationIds", JSON.stringify(formData.destinationIds));
-    fD.append("travelThemeIds", JSON.stringify(formData.travelThemeIds));
+    fD.append("destinationIds", JSON.stringify(isEditTour ? destinationIds :formData.destinationIds));
+    fD.append("travelThemeIds", JSON.stringify(isEditTour ? travelThemeIds : formData.travelThemeIds  ));
     fD.append("title", formData.title);
     fD.append("duration", parseInt(formData.duration));
     fD.append("overview", formData.overview);
@@ -225,7 +223,7 @@ const ToursController = () => {
                   hotels: formData.hotels,
                   packageRate: formData.packageRate,
                   discountInPercentage: formData.discountInPercentage,
-                  file: imagePreview || item.file,
+                  image: imagePreview || item.image,
                 }
               : item
           )
@@ -237,9 +235,6 @@ const ToursController = () => {
 
       responseMessage = response.message;
       setModalOpen(false);
-      setImage(null);
-      setIsEditTour(false);
-      setTour({});
       notify({
         type: "success",
         message: responseMessage,
@@ -272,9 +267,6 @@ const ToursController = () => {
         opened={modalOpen}
         onClose={() => {
           setModalOpen(false);
-          setIsEditTour(false);
-          setTour({});
-          setImage(null);
         }}
         columns={columns}
         tours={tourList}
@@ -295,8 +287,6 @@ const ToursController = () => {
         onClose={() => {
           setIsEditTour(false);
           setModalOpen(false);
-          setTour({});
-          setImage(null);
         }}
         handleSubmit={handleSubmit}
         handleImageSelect={handleImageSelect}
@@ -304,7 +294,7 @@ const ToursController = () => {
         tour={tour}
         destinationList={destinationList}
         travelThemeList={travelThemeList}
-        imagePreview={isEditTour ? tour?.image : null}
+        imagePreview={imagePreview ?? (isEditTour ? tour?.image : null)}
       />
       <CustomDialogModal
         opened={isDeleteTour}

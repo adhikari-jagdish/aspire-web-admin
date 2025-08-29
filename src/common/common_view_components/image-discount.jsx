@@ -20,8 +20,6 @@ const ImageDiscount = ({
   isPeakClimbing,
   defaultMapImage
 }) => {
-  const [image, setImage] = useState(null);
-  const [mapImage, setMapImage] = useState(null);
   const [discount, setDiscount] = useState("");
 
   useEffect(() => {
@@ -35,13 +33,11 @@ const ImageDiscount = ({
     }
   }, [isEditTour, isEditTrekking, discountValue]);
   const handleImageSelect = (image) => {
-    setImage(image);
     onChange({ target: { name: imageName, value: image } });
     onImageChange?.(image);
   };
 
    const handleMapImageSelect = (mapImage) => {
-    setMapImage(mapImage);
     onChange({ target: { name: mapImageName, value: mapImage } });
     onMapImageChange?.(mapImage);
   };

@@ -1,14 +1,33 @@
-import { useState } from "react";
-import { Group, Text } from "@mantine/core";
+import { useEffect, useState } from "react";
+import { Button, Group, Text } from "@mantine/core";
 import { Dropzone } from "@mantine/dropzone";
 import { IconUpload, IconFileText, IconX } from "@tabler/icons-react";
 
-const FilePicker = ({ onFileSelect, allowSVGOnly = false }) => {
+const FilePicker = ({ icon, onFileSelect, allowSVGOnly = false }) => {
   const [file, setFile] = useState(null);
   const [error, setError] = useState(null);
   const [svgContent, setSvgContent] = useState(null);
 
-  const allowedTypes = allowSVGOnly ? ["image/svg+xml"]: ["application/pdf"];
+  useEffect(() => {
+    const loadIcon = async () => {
+      if (icon) {
+        try {
+          const res = await fetch(icon);
+          const text = await res.text();
+          setSvgContent(text);
+          setFile({ name: "icon.svg", size: text.length }); // Mock file object
+        } catch (err) {
+          setError("Failed to load SVG");
+        }
+      } else if (icon) {
+        setFile(icon);
+      }
+    };
+
+    loadIcon();
+  }, [icon]);
+
+  const allowedTypes = allowSVGOnly ? ["image/svg+xml"] : ["application/pdf"];
 
   const handleDrop = (files) => {
     const file = files[0];
@@ -16,9 +35,9 @@ const FilePicker = ({ onFileSelect, allowSVGOnly = false }) => {
       setFile(file);
       setError(null);
       onFileSelect?.(file);
-      if(allowSVGOnly){
+      if (allowSVGOnly) {
         const reader = new FileReader();
-        reader.onload= () => {
+        reader.onload = () => {
           setSvgContent(reader.result);
         };
         reader.readAsText(file);
@@ -29,6 +48,11 @@ const FilePicker = ({ onFileSelect, allowSVGOnly = false }) => {
       setError(`Only ${allowSVGOnly ? "SVG" : "PDF"}  files are allowed.`);
     }
   };
+  const handleRemoveIcon = () => {
+    setFile(null);
+    setSvgContent(null);
+    onFileSelect?.(null);
+  };
   return (
     <div className="w-full max-w-md mx-auto p-4">
       {!file ? (
@@ -38,7 +62,12 @@ const FilePicker = ({ onFileSelect, allowSVGOnly = false }) => {
           maxFiles={1}
           className="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-blue-500 cursor-pointer"
         >
-          <Group justify="center" gap="xl" mih={60} style={{ pointerEvents: "none" }}>
+          <Group
+            justify="center"
+            gap="xl"
+            mih={60}
+            style={{ pointerEvents: "none" }}
+          >
             <Dropzone.Accept>
               <IconUpload size={52} color="var(--mantine-color-blue-6)" />
             </Dropzone.Accept>
@@ -48,25 +77,42 @@ const FilePicker = ({ onFileSelect, allowSVGOnly = false }) => {
             <Dropzone.Idle>
               <IconFileText size={52} color="var(--mantine-color-dimmed)" />
             </Dropzone.Idle>
-            <Text size="xl">Select a {allowSVGOnly ? "SVG(Icon)" : "PDF"} file</Text>
+            <Text size="xl">
+              Select a {allowSVGOnly ? "SVG(Icon)" : "PDF"} file
+            </Text>
           </Group>
         </Dropzone>
       ) : (
         <div className="mt-4 flex items-center gap-3 border border-dashed p-4 rounded-lg">
-        {allowSVGOnly && svgContent ? (
-          <div dangerouslySetInnerHTML={{__html: svgContent}}
-          className="w-16 h-16 mx-auto overflow-hidden [&>svg]:w-full [&>svg]:h-full" />
-        ): 
-          <div className="flex items-center gap-3">
-            <IconFileText size={40} className="text-gray-600" />
-          <div>
-          
-            <p className="font-medium">{file.name}</p>
-            <p className="text-xs text-gray-500">{(file.size / 1024).toFixed(1)} KB</p>
-          </div>
-          </div>
-          }
+          {allowSVGOnly && svgContent ? (
+            <div
+              dangerouslySetInnerHTML={{ __html: svgContent }}
+              className="w-16 h-16 mx-auto overflow-hidden [&>svg]:w-full [&>svg]:h-full"
+            />
+          ) : (
+            <div className="flex items-center gap-3">
+              <IconFileText size={40} className="text-gray-600" />
+              <div>
+                <p className="font-medium">{file.name}</p>
+                <p className="text-xs text-gray-500">
+                  {(file.size / 1024).toFixed(1)} KB
+                </p>
+              </div>
+            </div>
+          )}
         </div>
+      )}
+      {file && svgContent && (
+        <Button
+          onClick={handleRemoveIcon}
+          size="xs"
+          w="100%"
+          color="red"
+          variant="outline"
+          mt={10}
+        >
+          Remove
+        </Button>
       )}
       {error && <p className="text-red-600 mt-2 text-sm">{error}</p>}
     </div>

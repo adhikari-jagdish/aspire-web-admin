@@ -1,5 +1,4 @@
-export const FieldValidator = (formData, image, mapImage) => {
-  console.log(formData)
+export const FieldValidator = (formData, image, mapImage, isMapImage) => {
   if (
     !formData.destinationIds ||
     !formData.travelThemeIds ||
@@ -41,7 +40,7 @@ export const FieldValidator = (formData, image, mapImage) => {
   if (!image && !formData.image) {
     return { valid: false, message: "Image is required" };
   }
- if (!mapImage && !formData.mapImage) {
+ if (!mapImage && ( isMapImage && !formData.mapImage)) {
     return { valid: false, message: "Map image is required" };
   }
   for (let item of formData.tripHighlights) {
