@@ -45,6 +45,7 @@ const VehiclesController = () => {
   }, []);
 
   const handleClick = () => {
+    setVehicle([]);
     setModalOpen(true);
   };
 
@@ -102,16 +103,15 @@ const VehiclesController = () => {
   }, [imagePreview]);
 
   const handleSubmit = async (formData) => {
-   const result = VehicleValidator(formData, image, isEditVehicle);
+    const result = VehicleValidator(formData, image, isEditVehicle);
 
-   if(!result.valid){
-     notify({
-      type: "error",
-      message: result.message
-    })
-    return;
-   }
-
+    if (!result.valid) {
+      notify({
+        type: "error",
+        message: result.message,
+      });
+      return;
+    }
 
     const fd = new FormData();
 

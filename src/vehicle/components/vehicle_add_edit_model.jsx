@@ -42,16 +42,15 @@ const VehicleAddEditModal = ({
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if(name === "priceFrom") {
+    if (name === "priceFrom") {
       const isValid = /^\d{0,5}$/;
 
-      if(isValid.test(value)){
-        setFormData({...formData, [name]: value})
+      if (isValid.test(value)) {
+        setFormData({ ...formData, [name]: value });
       }
     } else {
-      setFormData({...formData, [name]: value})
+      setFormData({ ...formData, [name]: value });
     }
-  
   };
 
   return (

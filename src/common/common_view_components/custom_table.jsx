@@ -126,6 +126,10 @@ const CustomTable = ({
                                 .join(", ") } */}
                               {item[col.accessor].map(d => d.title || "N/A").join(", ")}
                             </span>
+                          ) : col.accessor === "vehicle" ? (
+                            <span className="w-[250px]">
+                              {item[col.accessor]?.title || "N/A"}
+                            </span>
                           ) : col.accessor === "description" ? (
                             <SafeHtml html={item[col.accessor]} />
                           ) : (

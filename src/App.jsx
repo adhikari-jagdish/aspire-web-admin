@@ -24,6 +24,7 @@ import BlogsController from "./blogs/controller/blogs_controller";
 import FaqController from "./faq/controller/faq_controller";
 import TrendingPackagesController from "./trending packages/controller/trendingPackages_controller";
 import VehicleController from "./vehicle/controller/vehicles_controller";
+import VehicleBookingsController from "./vehicle_booking/controller/vehicle_bookings_controller";
 
 function App() {
   return (
@@ -46,11 +47,22 @@ function App() {
           <Route path="adventures" element={<AdventuresView />} />
           <Route path="menu" element={<MenusController />} />
           <Route path="faqtitles" element={<FaqTitlesController />} />
-          <Route path="top-Rated-Packages" element={<TopRatedPackagesController />} />
-          <Route path="trending-packages" element={<TrendingPackagesController />} />
+          <Route
+            path="top-Rated-Packages"
+            element={<TopRatedPackagesController />}
+          />
+          <Route
+            path="trending-packages"
+            element={<TrendingPackagesController />}
+          />
           <Route path="reviews" element={<ReviewsController />} />
           <Route path="blogs" element={<BlogsController />} />
           <Route path="peakClimbings" element={<PeakClimbingsController />} />
+          <Route
+            path="vehiclebookings"
+            element={<VehicleBookingsController />}
+          />
+          <Route path="peakClimbings" element={<PeakClimbingsView />} />
           <Route path="adventures" element={<AdventuresView />} />
           <Route path="faqs" element={<FaqController />} />
           <Route path="/about" element={<AboutUsController />} />
