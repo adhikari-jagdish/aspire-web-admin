@@ -123,6 +123,7 @@ const CustomTable = ({
                                 .join(", ") } */}
                               {item[col.accessor].map(d => d.title || "N/A").join(", ")}
                             </span>
+<<<<<<< Updated upstream
 <<<<<<< HEAD
                           ) : (col.accessor === "description" || col.accessor === "details") ? (
 =======
@@ -132,6 +133,9 @@ const CustomTable = ({
                             </span>
                           ) : col.accessor === "description" ? (
 >>>>>>> 338e90d88aebcbee0ff4fbb4def8a94595200073
+=======
+                          ) : col.accessor === "description" ? (
+>>>>>>> Stashed changes
                             <SafeHtml html={item[col.accessor]} />
                           ) : (
                             <span className="line-clamp-3 overflow-hidden">

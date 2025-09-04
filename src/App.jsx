@@ -24,11 +24,14 @@ import BlogsController from "./blogs/controller/blogs_controller";
 import FaqController from "./faq/controller/faq_controller";
 import TrendingPackagesController from "./trending packages/controller/trendingPackages_controller";
 import VehicleController from "./vehicle/controller/vehicles_controller";
+<<<<<<< Updated upstream
 <<<<<<< HEAD
 import ServiceReviewsController from "./service review/controller/serviceReviews_controller";
 =======
 import VehicleBookingsController from "./vehicle_booking/controller/vehicle_bookings_controller";
 >>>>>>> 338e90d88aebcbee0ff4fbb4def8a94595200073
+=======
+>>>>>>> Stashed changes
 
 function App() {
   return (
