@@ -25,7 +25,6 @@ const navItems = [
   { name: "Reviews", icon: "⭐" },
   { name: "Blogs", icon: "⭐" },
   { name: "Faqs", icon: "⭐" },
-<<<<<<< Updated upstream
 <<<<<<< HEAD
   { name: "Service-Review", icon: "⭐" },
 =======
