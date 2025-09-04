@@ -151,7 +151,6 @@ const ToursController = () => {
       setImage(null);
       setImagePreview(null);
     }
-
   };
 
   //avoids memory leaks when switching or removing pages
@@ -160,18 +159,18 @@ const ToursController = () => {
       URL.revokeObjectURL(imagePreview);
     }
   }, [imagePreview]);
-  
-  let isMapImage=false;
-  const handleSubmit = async (formData) => {
-     const result =  FieldValidator(formData, image, isMapImage);
 
-     if(!result.valid){
+  let isMapImage = false;
+  const handleSubmit = async (formData) => {
+    const result = FieldValidator(formData, image, isMapImage);
+
+    if (!result.valid) {
       notify({
         type: "error",
-        message: result.message
+        message: result.message,
       });
       return;
-     }
+    }
     showLoading();
     const fD = new FormData();
     if (image) {
@@ -184,12 +183,18 @@ const ToursController = () => {
     );
 
     // Normalize destinations data to array of _id strings
-    const destinationIds = formData.destinationIds.map(d => d._id);
+    const destinationIds = formData.destinationIds.map((d) => d._id);
     //  // Normalize travel theme data to array of _id strings
-    const travelThemeIds = formData.travelThemeIds.map(d => d._id);
+    const travelThemeIds = formData.travelThemeIds.map((d) => d._id);
 
-    fD.append("destinationIds", JSON.stringify(isEditTour ? destinationIds :formData.destinationIds));
-    fD.append("travelThemeIds", JSON.stringify(isEditTour ? travelThemeIds : formData.travelThemeIds  ));
+    fD.append(
+      "destinationIds",
+      JSON.stringify(isEditTour ? destinationIds : formData.destinationIds)
+    );
+    fD.append(
+      "travelThemeIds",
+      JSON.stringify(isEditTour ? travelThemeIds : formData.travelThemeIds)
+    );
     fD.append("title", formData.title);
     fD.append("duration", parseInt(formData.duration));
     fD.append("overview", formData.overview);
@@ -206,6 +211,8 @@ const ToursController = () => {
       let response;
       if (isEditTour) {
         response = await tourRepository.updateTourPackage(fD, idToUpdate);
+        const objectUrl = URL.createObjectURL(image);
+
         setTourList((prev) =>
           prev.map((item) =>
             item._id === idToUpdate
@@ -223,7 +230,7 @@ const ToursController = () => {
                   hotels: formData.hotels,
                   packageRate: formData.packageRate,
                   discountInPercentage: formData.discountInPercentage,
-                  image: imagePreview || item.image,
+                  image: objectUrl || imagePreview || item.image,
                 }
               : item
           )

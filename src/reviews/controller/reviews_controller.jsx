@@ -111,11 +111,11 @@ const ReviewsController = () => {
     if (!result.valid) {
       notify({
         type: "error",
-        message: result.message
-      })
+        message: result.message,
+      });
       return;
     }
-  
+
     showLoading();
     const fD = new FormData();
     fD.append("file", image);
@@ -130,6 +130,8 @@ const ReviewsController = () => {
       let responseMessage;
       let response;
       if (isEditReview) {
+        const imageUrl = URL.createObjectURL(image);
+
         response = await reviewRepository.updateReview(fD, idToUpdate);
         setReviewList((prev) =>
           prev.map((item) =>
@@ -139,7 +141,7 @@ const ReviewsController = () => {
                   postedBy: formData.postedBy,
                   postDate: formData.postDate.toLocaleDateString("en-CA"),
                   description: formData.description,
-                  file: imagePreview || item.file,
+                  imageUrl: imageUrl || imagePreview || item.file,
                 }
               : item
           )

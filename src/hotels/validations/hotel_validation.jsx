@@ -24,7 +24,7 @@ export const HotelValidator = (formData, image) => {
       return { valid: false, message: "City must be 35 characters or fewer."}
   }
 
-  if (formData.rating.trim().length > 2) {
+  if (formData.rating.length > 2) {
       return { valid: false, message: "Rating must 1 digits or decimal."}
   }
 

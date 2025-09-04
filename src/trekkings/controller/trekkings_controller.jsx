@@ -231,6 +231,9 @@ const TrekkingsController = () => {
       let responseMessage;
       let response;
       if (isEditTrekking) {
+            const imageUrl = URL.createObjectURL(image);
+            const mapImageUrl = URL.createObjectURL(mapImage);
+
         response = await trekkingRepository.updateTrekkingPackage(fD, idToUpdate);
         setTrekkingList((prev) =>
           prev.map((item) =>
@@ -249,8 +252,8 @@ const TrekkingsController = () => {
                   hotels: formData.hotels,
                   packageRate: formData.packageRate,
                   discountInPercentage: formData.discountInPercentage,
-                  image: imagePreview || item.image,
-                  mapImage: mapImagePreview || item.mapImage,
+                  image: imageUrl || imagePreview || item.image,
+                  mapImage: mapImageUrl || mapImagePreview || item.mapImage,
                 }
               : item
           )

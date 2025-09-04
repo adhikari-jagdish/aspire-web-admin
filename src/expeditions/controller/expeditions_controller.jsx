@@ -238,6 +238,8 @@ const ExpeditionsController = () => {
       let responseMessage;
       let response;
       if (isEditExpedition) {
+        const imageUrl = URL.createObjectURL(image);
+            const mapImageUrl = URL.createObjectURL(mapImage);
         response = await expeditionRepository.updateExpeditionPackage(
           fD,
           idToUpdate
@@ -258,8 +260,8 @@ const ExpeditionsController = () => {
                   exclusions: formData.exclusions,
                   packageRate: formData.packageRate,
                   discountInPercentage: formData.discountInPercentage,
-                  image: imagePreview || item.image,
-                  mapImage: mapImagePreview || item.mapImage,
+                  image: imageUrl || imagePreview || item.image,
+                  mapImage: mapImageUrl || mapImagePreview || item.mapImage,
                 }
               : item
           )

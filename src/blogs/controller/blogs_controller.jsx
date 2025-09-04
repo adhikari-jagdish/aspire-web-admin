@@ -126,6 +126,8 @@ console.log({formData})
       let responseMessage;
       let response;
       if (isEditBlog) {
+        // const imageUrl = URL.createObjectURL(image);
+
         response = await blogRepository.updateBlog(fD, idToUpdate);
         setBlogList((prev) =>
           prev.map((item) =>
@@ -135,7 +137,7 @@ console.log({formData})
                   postedBy: formData.postedBy,
                   postDate: formData.postDate.toLocaleDateString("en-CA"),
                   description: formData.description,
-                  image: imagePreview || item.image,
+                  image:  imagePreview || item.image,
                 }
               : item
           )

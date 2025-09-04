@@ -80,6 +80,7 @@ const HotelAddEditModel = ({
   }, [isEditHotel, opened]);
 
   const handleChange = (e) => {
+    NumbersOnlyValidator(e);
     const {name, value} = e.target;
 
     if(name === "rating"){
@@ -138,6 +139,16 @@ const HotelAddEditModel = ({
       opened={opened}
       onClose={onClose}
       title={isEditHotel ? "Edit Hotel" : "Add Hotel"}
+       styles={{
+          title: {
+            fontSize: "34px",
+            color: "#0890cf",
+            fontWeight: 700,
+          },
+          content: {
+            scrollbarWidth: "none",
+          },
+        }}
       centered
     >
       <div className="flex flex-col">
@@ -189,7 +200,6 @@ const HotelAddEditModel = ({
         value={formData.rating}
         onChange={handleChange}
         required
-        type="number"
         onKeyDown={NumbersOnlyValidator}
         onWheel={(e) => e.target.blur()}
       />

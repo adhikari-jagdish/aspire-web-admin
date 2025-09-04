@@ -24,6 +24,7 @@ import BlogsController from "./blogs/controller/blogs_controller";
 import FaqController from "./faq/controller/faq_controller";
 import TrendingPackagesController from "./trending packages/controller/trendingPackages_controller";
 import VehicleController from "./vehicle/controller/vehicles_controller";
+import ServiceReviewsController from "./service review/controller/serviceReviews_controller";
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
           <Route path="/about" element={<AboutUsController />} />
           <Route path="/vehicles" element={<VehicleController />} />
           <Route path="/contact" element={<ContactView />} />
+          <Route path="/service-review" element={<ServiceReviewsController />} />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>

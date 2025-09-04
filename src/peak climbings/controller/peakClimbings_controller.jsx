@@ -243,6 +243,8 @@ const PeakClimbingsController = () => {
       let responseMessage;
       let response;
       if (isEditPeakClimbing) {
+        const imageUrl = URL.createObjectURL(image);
+            const mapImageUrl = URL.createObjectURL(mapImage);
         response = await peakClimbingRepository.updatePeakClimbingPackage(
           fD,
           idToUpdate
@@ -263,8 +265,8 @@ const PeakClimbingsController = () => {
                   exclusions: formData.exclusions,
                   packageRate: formData.packageRate,
                   discountInPercentage: formData.discountInPercentage,
-                  image: imagePreview || item.image,
-                  mapImage: mapImagePreview || item.mapImage,
+                  image: imageUrl || imagePreview || item.image,
+                  mapImage: mapImageUrl || mapImagePreview || item.mapImage,
                 }
               : item
           )

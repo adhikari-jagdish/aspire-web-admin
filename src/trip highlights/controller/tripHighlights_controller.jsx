@@ -103,8 +103,10 @@ const TripHighLightsController = () => {
       let responseMessage;
       let response;
      if(isEditTripHighlight){
+            const objectUrl = URL.createObjectURL(formData.icon);
+      
        response = await tripHighlightRepository.updateTripHighlight(fD,idToUpdate);
-       setTripHighlightList(prev => prev.map(item => item._id === idToUpdate ? {...item, title: formData.title, icon: file || item.icon} : item));
+       setTripHighlightList(prev => prev.map(item => item._id === idToUpdate ? {...item, title: formData.title, icon: objectUrl ||   item.icon} : item));
      } else {
         response = await tripHighlightRepository.addTripHighlight(fD);
         setTripHighlightList(prev => [...prev, response.data])

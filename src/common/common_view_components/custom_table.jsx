@@ -69,9 +69,6 @@ const CustomTable = ({
                   >
                     <Table.Td>{index + 1}</Table.Td>
                     {safeColumns.map((col) => {
-                      if(col.accessor == "image"){
-                        console.log(item[col.accessor])
-                      }
                       return (
                         <Table.Td key={col.accessor}>
 
@@ -126,7 +123,7 @@ const CustomTable = ({
                                 .join(", ") } */}
                               {item[col.accessor].map(d => d.title || "N/A").join(", ")}
                             </span>
-                          ) : col.accessor === "description" ? (
+                          ) : (col.accessor === "description" || col.accessor === "details") ? (
                             <SafeHtml html={item[col.accessor]} />
                           ) : (
                             <span className="line-clamp-3 overflow-hidden">
