@@ -8,7 +8,7 @@ import DestinationsController from "./destinations/controller/destinations_contr
 import TravelThemesController from "./travel_themes/controller/travelThemes_controller";
 import HotelsController from "./hotels/controller/hotels_controller";
 import CarouselsController from "./Carousels/controller/carousels_controller";
-import AdventuresView from "./adventures/view/adventures_view";
+import AdventuresController from "./adventures/controller/adventures_controller";
 import ContactView from "./contact/view/contact_view";
 import ToursController from "./tours/controller/tours_controller";
 import TripHighLightsController from "./trip highlights/controller/tripHighlights_controller";
@@ -24,14 +24,8 @@ import BlogsController from "./blogs/controller/blogs_controller";
 import FaqController from "./faq/controller/faq_controller";
 import TrendingPackagesController from "./trending packages/controller/trendingPackages_controller";
 import VehicleController from "./vehicle/controller/vehicles_controller";
-<<<<<<< Updated upstream
-<<<<<<< HEAD
 import ServiceReviewsController from "./service review/controller/serviceReviews_controller";
-=======
 import VehicleBookingsController from "./vehicle_booking/controller/vehicle_bookings_controller";
->>>>>>> 338e90d88aebcbee0ff4fbb4def8a94595200073
-=======
->>>>>>> Stashed changes
 
 function App() {
   return (
@@ -50,8 +44,6 @@ function App() {
           <Route path="triphighlights" element={<TripHighLightsController />} />
           <Route path="trekkings" element={<TrekkingsController />} />
           <Route path="expeditions" element={<ExpeditionsController />} />
-          <Route path="peakClimbings" element={<PeakClimbingsController />} />
-          <Route path="adventures" element={<AdventuresView />} />
           <Route path="menu" element={<MenusController />} />
           <Route path="faqtitles" element={<FaqTitlesController />} />
           <Route
@@ -69,13 +61,15 @@ function App() {
             path="vehiclebookings"
             element={<VehicleBookingsController />}
           />
-          <Route path="peakClimbings" element={<PeakClimbingsView />} />
-          <Route path="adventures" element={<AdventuresView />} />
+          <Route path="adventures" element={<AdventuresController />} />
           <Route path="faqs" element={<FaqController />} />
           <Route path="/about" element={<AboutUsController />} />
           <Route path="/vehicles" element={<VehicleController />} />
           <Route path="/contact" element={<ContactView />} />
-          <Route path="/service-review" element={<ServiceReviewsController />} />
+          <Route
+            path="/service-review"
+            element={<ServiceReviewsController />}
+          />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>

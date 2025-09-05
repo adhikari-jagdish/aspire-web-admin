@@ -1,5 +1,6 @@
 import { Table, ScrollArea, Box, Button, Group } from "@mantine/core";
 import {
+  IconCircleLetterG,
   IconEye,
   IconPencil,
   IconTrash,
@@ -14,10 +15,9 @@ const CustomTable = ({
   onDelete,
   shouldShowEdit = false,
   shouldShowDelete = false,
+  destinationList,
 }) => {
-
-  console.log({ data })
-
+  console.log({ data });
   const safeColumns = Array.isArray(columns) ? columns : [];
   return (
     <Box
@@ -64,26 +64,17 @@ const CustomTable = ({
               data?.map((item, index) => {
                 return (
                   <Table.Tr
-                    key={index}
+                    key={item._id || index}
                     className="hover:bg-gray-50 transition-colors"
                   >
                     <Table.Td>{index + 1}</Table.Td>
                     {safeColumns.map((col) => {
                       return (
                         <Table.Td key={col.accessor}>
-
-                          {(col.accessor == "image" || col.accessor == "file" || col.accessor == "icon" || col.accessor == "bannerImage" || col.accessor == "imageUrl") ? (
-                            <img
-                              src={item[col.accessor]}
-                              alt={index + 1}
-                              style={{
-                                width: "80px",
-                                height: "60px",
-                                objectFit: "contain",
-                              }}
-                            />
-                          ):
-                          ((col.accessor == "mapImage" || col.accessor == "mapFile") ) ? (
+                          {col.accessor === "image" ||
+                          col.accessor === "file" ||
+                          col.accessor === "icon" ||
+                          col.accessor === "imageUrl" ? (
                             <img
                               src={item[col.accessor]}
                               alt={index + 1}
@@ -96,7 +87,7 @@ const CustomTable = ({
                           ) : col.accessor === "rate" ? (
                             <div>
                               {item[col.accessor].map((rateItem, idx) => (
-                                <ul key={idx} className="w-[200px] pl-2">
+                                <ul key={idx} className="w-[200px]">
                                   <li className="list-disc font-medium">
                                     {rateItem.roomCategory}
                                   </li>
@@ -110,7 +101,9 @@ const CustomTable = ({
                             </div>
                           ) : col.accessor === "destinationId" ? (
                             <span className="w-[250px]">
-                             {item[col.accessor]?.title || "N/A"}
+                              {destinationList?.find(
+                                (d) => d._id === item.destinationId
+                              )?.title || "N/A"}
                             </span>
                           ) : col.accessor === "destinationIds" ? (
                             <span className="w-[250px]">
@@ -121,21 +114,15 @@ const CustomTable = ({
                                       ?.title || "N/A"
                                 )
                                 .join(", ") } */}
-                              {item[col.accessor].map(d => d.title || "N/A").join(", ")}
+                              {item[col.accessor]
+                                .map((d) => d.title || "N/A")
+                                .join(", ")}
                             </span>
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-                          ) : (col.accessor === "description" || col.accessor === "details") ? (
-=======
                           ) : col.accessor === "vehicle" ? (
                             <span className="w-[250px]">
                               {item[col.accessor]?.title || "N/A"}
                             </span>
                           ) : col.accessor === "description" ? (
->>>>>>> 338e90d88aebcbee0ff4fbb4def8a94595200073
-=======
-                          ) : col.accessor === "description" ? (
->>>>>>> Stashed changes
                             <SafeHtml html={item[col.accessor]} />
                           ) : (
                             <span className="line-clamp-3 overflow-hidden">

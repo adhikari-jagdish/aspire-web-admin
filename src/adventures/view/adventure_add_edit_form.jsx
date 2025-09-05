@@ -4,7 +4,6 @@ import Overview from "../../common/common_view_components/overview";
 import Itinerary from "../../common/common_view_components/itinerary";
 import Inclusions from "../../common/common_view_components/inclusions";
 import Exclusions from "../../common/common_view_components/exclusions";
-import Hotels from "../../common/common_view_components/hotels";
 import ImageDiscount from "../../common/common_view_components/image-discount";
 import { useEffect, useState } from "react";
 import Destinations from "../../common/common_view_components/destinations";
@@ -142,10 +141,6 @@ const AdventuresAddEditForm = ({
             value={formData.exclusions}
             onChange={handleChange}
           />
-
-          {/* Hotels */}
-
-          <Hotels name="hotels" onChange={handleChange} />
 
           {/*  Image & Discount  */}
           <ImageDiscount
