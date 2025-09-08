@@ -15,8 +15,8 @@ const ReviewsController = () => {
   const [reviewList, setReviewList] = useState([]);
   const [review, setReview] = useState({});
   const { getToken } = useAuth();
-  const [image, setImage] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [images, setImages] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState(["", "", ""]);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
@@ -51,14 +51,20 @@ const ReviewsController = () => {
 
   const handleClick = () => {
     setModalOpen(true);
+    setIsEditReview(false);
+    setReview({});
+    setImages([]);
+    setImagePreviews(["", "", ""]);s
+    setModalOpen(true);
   };
 
-  // Function to trigger when edit button is clicked
   const handleEditButtonClick = (item) => {
     setIsEditReview(true);
     setReview(item);
     setModalOpen(true);
     setIdToUpdate(item?._id);
+    setImages([]);
+    setImagePreviews(item?.imageUrl || ["", "", ""]);
   };
 
   const onDeleteButtonClick = (item) => {
@@ -81,82 +87,92 @@ const ReviewsController = () => {
     }
   };
 
-  // This is called when user selects an image
-  const handleImageSelect = (file) => {
+  // Handle multiple image selection
+  const handleImageSelect = (file, index, addNew = false) => {
+    if (addNew) {
+      if (imagePreviews.length < 5) {
+        setImagePreviews((prev) => [...prev, ""]);
+      }
+      return;
+    }
+
+    const newPreviews = [...imagePreviews];
+    const newImages = [...images];
+
     if (file) {
       const objectUrl = URL.createObjectURL(file);
-      setImagePreview(objectUrl);
-      setImage(file);
+      newPreviews[index] = objectUrl;
+      newImages[index] = file;
     } else {
-      setImage(null);
-      setImagePreview(null);
+      newPreviews[index] = "";
+      newImages[index] = null;
     }
+
+    setImagePreviews(newPreviews);
+    setImages(newImages);
   };
 
   // Avoids memory leaks when switching or removing pages
   useEffect(() => {
     return () => {
-      if (imagePreview) {
-        URL.revokeObjectURL(imagePreview);
-      }
+      imagePreviews.forEach((preview) => {
+        if (preview) URL.revokeObjectURL(preview);
+      });
     };
-  }, [imagePreview]);
+  }, [imagePreviews]);
 
   const handleSubmit = async (formData) => {
     const tempDiv = document.createElement("div");
     tempDiv.innerHTML = formData.description;
 
-    const result = CommonReviewBlogValidator(formData, tempDiv, image);
+    const existingUrls = imagePreviews.filter(
+      (p) => typeof p === "string" && p.startsWith("http")
+    );
+    const newFiles = images.filter(Boolean);
+    const totalImages = existingUrls.length + newFiles.length;
 
+    const result = CommonReviewBlogValidator(formData, tempDiv, images);
     if (!result.valid) {
-      notify({
-        type: "error",
-        message: result.message,
-      });
+      notify({ type: "error", message: result.message });
+      return;
+    }
+
+    if (totalImages < 3) {
+      notify({ type: "error", message: "At least 3 images are required." });
       return;
     }
 
     showLoading();
     const fD = new FormData();
-    fD.append("file", image);
-    fD.append("postedBy", formData.postedBy);
-    const formattedDate = formData.postDate
-      ? formData.postDate.toLocaleDateString("en-CA")
-      : "";
 
-    fD.append("postDate", formattedDate);
+    existingUrls.forEach((url) => {
+      fD.append("existingImages", url);
+    });
+
+    newFiles.forEach((img) => {
+      fD.append("files", img);
+    });
+
+    fD.append("postedBy", formData.postedBy);
+    fD.append(
+      "postDate",
+      formData.postDate ? formData.postDate.toLocaleDateString("en-CA") : ""
+    );
     fD.append("description", formData.description);
+
     try {
-      let responseMessage;
       let response;
       if (isEditReview) {
-        const imageUrl = URL.createObjectURL(image);
-
         response = await reviewRepository.updateReview(fD, idToUpdate);
         setReviewList((prev) =>
-          prev.map((item) =>
-            item._id === idToUpdate
-              ? {
-                  ...item,
-                  postedBy: formData.postedBy,
-                  postDate: formData.postDate.toLocaleDateString("en-CA"),
-                  description: formData.description,
-                  imageUrl: imageUrl || imagePreview || item.file,
-                }
-              : item
-          )
+          prev.map((item) => (item._id === idToUpdate ? response.data : item))
         );
       } else {
         response = await reviewRepository.addReview(fD);
         setReviewList((prev) => [...prev, response.data]);
       }
-      responseMessage = response.message;
-
       setModalOpen(false);
-      notify({
-        type: "success",
-        message: responseMessage,
-      });
+      notify({ type: "success", message: "Review saved successfully" });
     } catch (err) {
       notify({
         type: "error",
@@ -176,7 +192,7 @@ const ReviewsController = () => {
     { label: "Posted By", accessor: "postedBy" },
     { label: "Post Date", accessor: "postDate" },
     { label: "Description", accessor: "description" },
-    { label: "Image", accessor: "imageUrl" },
+    // { label: "Images", accessor: "images" },
   ];
 
   return (
@@ -194,22 +210,23 @@ const ReviewsController = () => {
 
       <ReviewViewModel
         openedView={openedView}
-        onClose={() => {
-          setOpenedView(false);
-        }}
+        onClose={() => setOpenedView(false)}
         review={review}
       />
+
       <ReviewAddEditModel
         opened={modalOpen}
         onClose={() => {
           setIsEditReview(false);
           setModalOpen(false);
+          setImages([]);
+          setImagePreviews(["", "", ""]);
         }}
         handleSubmit={handleSubmit}
         handleImageSelect={handleImageSelect}
         isEditReview={isEditReview}
         review={review}
-        imagePreview={isEditReview ? review?.imageUrl : null}
+        imagePreviews={imagePreviews}
       />
 
       <CustomDialogModal
