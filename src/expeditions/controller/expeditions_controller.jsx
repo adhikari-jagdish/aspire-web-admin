@@ -160,10 +160,8 @@ const ExpeditionsController = () => {
     }
   };
 
-  
-    const handleMapImageSelect = (mapImage) => {
-
-    if(mapImage){
+  const handleMapImageSelect = (mapImage) => {
+    if (mapImage) {
       const objectUrl = URL.createObjectURL(mapImage);
       setMapImagePreview(objectUrl);
       setMapImage(mapImage);
@@ -178,7 +176,7 @@ const ExpeditionsController = () => {
     if (imagePreview) {
       URL.revokeObjectURL(imagePreview);
     }
-     if(mapImagePreview) {
+    if (mapImagePreview) {
       URL.revokeObjectURL(mapImagePreview);
     }
   }, [imagePreview, mapImagePreview]);
@@ -195,8 +193,8 @@ const ExpeditionsController = () => {
     }
     showLoading();
     const fD = new FormData();
-     if(mapImage){
-      fD.append("mapFile", mapImage)
+    if (mapImage) {
+      fD.append("mapFile", mapImage);
     }
     if (image) {
       fD.append("file", image);
@@ -238,8 +236,10 @@ const ExpeditionsController = () => {
       let responseMessage;
       let response;
       if (isEditExpedition) {
-        const imageUrl = URL.createObjectURL(image);
-            const mapImageUrl = URL.createObjectURL(mapImage);
+        const imageUrl =
+          image instanceof Blob ? URL.createObjectURL(image) : null;
+        const mapImageUrl =
+          mapImage instanceof Blob ? URL.createObjectURL(mapImage) : null;
         response = await expeditionRepository.updateExpeditionPackage(
           fD,
           idToUpdate
@@ -303,7 +303,6 @@ const ExpeditionsController = () => {
     { label: "Discount", accessor: "discountInPercentage" },
     { label: "Image", accessor: "image" },
     { label: "Map", accessor: "mapImage" },
-
   ];
   return (
     <>

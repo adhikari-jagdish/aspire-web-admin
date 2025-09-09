@@ -122,7 +122,6 @@ const PeakClimbingsController = () => {
     setIdToUpdate(item?._id);
     setImage(null);
     setMapImage(null);
-
   };
 
   const onDeleteButtonClick = (item) => {
@@ -164,9 +163,8 @@ const PeakClimbingsController = () => {
     }
   };
 
-    const handleMapImageSelect = (mapImage) => {
-
-    if(mapImage){
+  const handleMapImageSelect = (mapImage) => {
+    if (mapImage) {
       const objectUrl = URL.createObjectURL(mapImage);
       setMapImagePreview(objectUrl);
       setMapImage(mapImage);
@@ -182,8 +180,7 @@ const PeakClimbingsController = () => {
       URL.revokeObjectURL(imagePreview);
     }
 
-    
-     if(mapImagePreview) {
+    if (mapImagePreview) {
       URL.revokeObjectURL(mapImagePreview);
     }
   }, [imagePreview, mapImagePreview]);
@@ -200,8 +197,8 @@ const PeakClimbingsController = () => {
     }
     showLoading();
     const fD = new FormData();
-     if(mapImage){
-      fD.append("mapFile", mapImage)
+    if (mapImage) {
+      fD.append("mapFile", mapImage);
     }
     if (image) {
       fD.append("file", image);
@@ -243,8 +240,10 @@ const PeakClimbingsController = () => {
       let responseMessage;
       let response;
       if (isEditPeakClimbing) {
-        const imageUrl = URL.createObjectURL(image);
-            const mapImageUrl = URL.createObjectURL(mapImage);
+        const imageUrl =
+          image instanceof Blob ? URL.createObjectURL(image) : null;
+        const mapImageUrl =
+          mapImage instanceof Blob ? URL.createObjectURL(mapImage) : null;
         response = await peakClimbingRepository.updatePeakClimbingPackage(
           fD,
           idToUpdate
@@ -307,7 +306,6 @@ const PeakClimbingsController = () => {
     { label: "Discount", accessor: "discountInPercentage" },
     { label: "Image", accessor: "image" },
     { label: "Map", accessor: "mapImage" },
-
   ];
   console.log({ peakClimbingList });
   return (
@@ -320,7 +318,6 @@ const PeakClimbingsController = () => {
           setPeakClimbing({});
           setImage(null);
           setMapImage(null);
-
         }}
         columns={columns}
         peakClimbings={peakClimbingList}
@@ -354,7 +351,6 @@ const PeakClimbingsController = () => {
         travelThemeList={travelThemeList}
         imagePreview={isEditPeakClimbing ? peakClimbing?.image : null}
         mapImagePreview={isEditPeakClimbing ? peakClimbing?.mapImage : null}
-
       />
       <CustomDialogModal
         opened={isDeletePeakClimbing}

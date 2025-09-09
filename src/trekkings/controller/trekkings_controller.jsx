@@ -231,8 +231,8 @@ const TrekkingsController = () => {
       let responseMessage;
       let response;
       if (isEditTrekking) {
-            const imageUrl = URL.createObjectURL(image);
-            const mapImageUrl = URL.createObjectURL(mapImage);
+           const imageUrl = image instanceof Blob ? URL.createObjectURL(image): null  ;
+        const mapImageUrl = mapImage instanceof Blob ? URL.createObjectURL(mapImage): null;
 
         response = await trekkingRepository.updateTrekkingPackage(fD, idToUpdate);
         setTrekkingList((prev) =>

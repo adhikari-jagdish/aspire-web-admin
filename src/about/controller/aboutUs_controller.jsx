@@ -133,7 +133,7 @@ const AboutUsController = () => {
       let responseMessage;
       let response;
       if (isEditAboutUs) {
-        const imageUrl = URL.createObjectURL(image);
+        const imageUrl = image instanceof Blob ? URL.createObjectURL(image) : null;
         response = await aboutUsRepository.updateAboutUs(
           fD,
           idToUpdate

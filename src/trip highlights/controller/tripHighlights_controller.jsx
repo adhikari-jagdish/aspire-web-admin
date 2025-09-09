@@ -24,7 +24,6 @@ const TripHighLightsController = () => {
 
   const tripHighlightRepository = new TripHighlightRepository(getToken);
 
-
   useEffect(() => {
     const fetchTripHighLights = async () => {
       try {
@@ -70,31 +69,30 @@ const TripHighLightsController = () => {
     }
   };
 
-
   const handleSubmit = async (formData) => {
-    if(!formData.title || !formData.icon){
+    if (!formData.title || !formData.icon) {
       notify({
         type: "error",
-        message: "All fields are required!"
-      })
+        message: "All fields are required!",
+      });
       return;
     }
-    if(formData.title.trim().length > 25){
+    if (formData.title.trim().length > 25) {
       notify({
         type: "error",
-        message: "Title must be 25 characters or fewer."
+        message: "Title must be 25 characters or fewer.",
       });
       return;
     }
 
-      if(!formData.icon){
+    if (!formData.icon) {
       notify({
         type: "error",
-        message: "Icon is required!"
+        message: "Icon is required!",
       });
       return;
     }
-    
+
     showLoading();
     const fD = new FormData();
     fD.append("file", formData.icon);
@@ -102,16 +100,28 @@ const TripHighLightsController = () => {
     try {
       let responseMessage;
       let response;
-     if(isEditTripHighlight){
-            const objectUrl = URL.createObjectURL(formData.icon);
-      
-       response = await tripHighlightRepository.updateTripHighlight(fD,idToUpdate);
-       setTripHighlightList(prev => prev.map(item => item._id === idToUpdate ? {...item, title: formData.title, icon: objectUrl ||   item.icon} : item));
-     } else {
+      if (isEditTripHighlight) {
+        const objectUrl =
+          formData.icon instanceof Blob
+            ? URL.createObjectURL(formData.icon)
+            : null;
+
+        response = await tripHighlightRepository.updateTripHighlight(
+          fD,
+          idToUpdate
+        );
+        setTripHighlightList((prev) =>
+          prev.map((item) =>
+            item._id === idToUpdate
+              ? { ...item, title: formData.title, icon: objectUrl || item.icon }
+              : item
+          )
+        );
+      } else {
         response = await tripHighlightRepository.addTripHighlight(fD);
-        setTripHighlightList(prev => [...prev, response.data])
-     }
-       responseMessage = response.message;
+        setTripHighlightList((prev) => [...prev, response.data]);
+      }
+      responseMessage = response.message;
 
       setModalOpen(false);
       notify({
@@ -126,7 +136,6 @@ const TripHighLightsController = () => {
     } finally {
       hideLoading();
     }
-
   };
   const handleViewButtonClick = (item) => {
     setOpenedView(true);
