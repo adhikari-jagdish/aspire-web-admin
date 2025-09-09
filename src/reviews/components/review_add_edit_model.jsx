@@ -14,7 +14,7 @@ const ReviewAddEditModel = ({
   handleSubmit,
   handleImageSelect,
   review,
-  imagePreview,
+  imagePreviews,
 }) => {
   const [formData, setFormData] = useState({
     postedBy: "",
@@ -105,14 +105,7 @@ const ReviewAddEditModel = ({
         className="p-2 rounded w-full border border-gray-300 focus:border-gray-500"
       />
 
-      <Title
-        order={4}
-        mt={20}
-        mb={10}
-        ta="left"
-        c="dark"
-        className="flex flex-col"
-      >
+      <Title order={4} mt={20} mb={10} ta="left" c="dark">
         Description
       </Title>
 
@@ -141,10 +134,27 @@ const ReviewAddEditModel = ({
         <RichTextEditor.Content className="h-[250px] [&_ul]:list-disc [&_ol]:list-decimal" />
       </RichTextEditor>
 
-      <ImagePicker
-        onImageSelect={handleImageSelect}
-        defaultImage={isEditReview && (review?.imageUrl || imagePreview)}
-      />
+      <Title order={4} mt={20} mb={10} ta="left" c="dark">
+        Images (Min 3, Max 5)
+      </Title>
+
+      {imagePreviews.map((preview, idx) => (
+        <ImagePicker
+          key={idx}
+          onImageSelect={(file) => handleImageSelect(file, idx)}
+          defaultImage={preview}
+        />
+      ))}
+
+      {imagePreviews.length < 5 && (
+        <Button
+          variant="light"
+          mt="sm"
+          onClick={() => handleImageSelect(null, imagePreviews.length, true)}
+        >
+          + Add Another Image
+        </Button>
+      )}
 
       <Group position="right" mt="md">
         <Button variant="default" onClick={onClose}>
