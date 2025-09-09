@@ -7,7 +7,6 @@ class MenuRepository {
 
   //Function to add a new Menu
   async addMenu(formData) {
-    console.log({formData})
     try {
       const response = await this.axiosService.post(
         "/api/addMenuItem",

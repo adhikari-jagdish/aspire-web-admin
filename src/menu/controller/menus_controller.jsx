@@ -47,8 +47,8 @@ const MenusController = () => {
     };
     fetchMenus();
   }, []);
+  console.log({menuList})
   const handleClick = (modalTitle, parent) => {
-    console.log({parent})
     setModalTitle(modalTitle)
     setModalOpen(true);
     console.log({parent})

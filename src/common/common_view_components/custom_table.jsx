@@ -74,7 +74,9 @@ const CustomTable = ({
                           {col.accessor === "image" ||
                           col.accessor === "file" ||
                           col.accessor === "icon" ||
-                          col.accessor === "imageUrl" ? (
+                          col.accessor === "imageUrl" ||
+                          col.accessor === "mapImage" ||
+                          col.accessor === "bannerImage" ? (
                             <img
                               src={item[col.accessor]}
                               alt={index + 1}
