@@ -1,4 +1,4 @@
-import { Modal, Stack, Text, Title, Image } from "@mantine/core";
+import { Modal, Stack, Text, Title, Image, SimpleGrid } from "@mantine/core";
 import SafeHtml from "../../common/common_view_components/safeHtml";
 
 const ReviewViewModel = ({ openedView, onClose, review }) => {
@@ -13,13 +13,9 @@ const ReviewViewModel = ({ openedView, onClose, review }) => {
       const v = n % 100;
       return s[(v - 20) % 10] || s[v] || s[0];
     };
-
-    const dayWithOrdinal = `${day}${getOrdinal(day)}`;
-
-    const month = date.toLocaleString("en-US", { month: "long" });
-    const year = date.getFullYear();
-
-    return `${dayWithOrdinal} ${month} ${year}`;
+    return `${day}${getOrdinal(day)} ${date.toLocaleString("en-US", {
+      month: "long",
+    })} ${date.getFullYear()}`;
   };
 
   return (
@@ -59,17 +55,22 @@ const ReviewViewModel = ({ openedView, onClose, review }) => {
             <SafeHtml html={review?.description} />
           </Text>
 
-          {review?.imageUrl && (
+          {review?.imageUrl?.length > 0 && (
             <>
               <Title style={{ fontWeight: "500", fontSize: "15px" }} order={4}>
-                Image
+                Images
               </Title>
-              <Image
-                src={review.imageUrl}
-                alt="Review Image"
-                radius="md"
-                withPlaceholder
-              />
+              <SimpleGrid cols={3} spacing="sm">
+                {review.imageUrl.map((img, idx) => (
+                  <Image
+                    key={idx}
+                    src={img}
+                    alt={`Review Image ${idx + 1}`}
+                    radius="md"
+                    withPlaceholder
+                  />
+                ))}
+              </SimpleGrid>
             </>
           )}
         </Stack>

@@ -30,7 +30,6 @@ const BlogAddEditModel = ({
         postDate: blog.postDate ? new Date(blog.postDate) : null,
         description: blog.description || "",
       });
-      handleImageSelect(blog.image)
     } else {
       setFormData({
         title: "",

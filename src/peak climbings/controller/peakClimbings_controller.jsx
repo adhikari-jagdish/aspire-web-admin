@@ -19,7 +19,9 @@ const PeakClimbingsController = () => {
   const [peakClimbing, setPeakClimbing] = useState({});
   const { getToken } = useAuth();
   const [image, setImage] = useState(null);
+  const [mapImage, setMapImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [mapImagePreview, setMapImagePreview] = useState(null);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
@@ -110,6 +112,7 @@ const PeakClimbingsController = () => {
     setModalOpen(true);
     setPeakClimbing({});
     setImage(null);
+    setMapImage(null);
   };
 
   const handleEditButtonClick = (item) => {
@@ -118,6 +121,7 @@ const PeakClimbingsController = () => {
     setModalOpen(true);
     setIdToUpdate(item?._id);
     setImage(null);
+    setMapImage(null);
   };
 
   const onDeleteButtonClick = (item) => {
@@ -159,15 +163,30 @@ const PeakClimbingsController = () => {
     }
   };
 
+  const handleMapImageSelect = (mapImage) => {
+    if (mapImage) {
+      const objectUrl = URL.createObjectURL(mapImage);
+      setMapImagePreview(objectUrl);
+      setMapImage(mapImage);
+    } else {
+      setMapImage(null);
+      setMapImagePreview(null);
+    }
+  };
+
   //avoids memory leaks when switching or removing pages
   useEffect(() => {
     if (imagePreview) {
       URL.revokeObjectURL(imagePreview);
     }
-  }, [imagePreview]);
+
+    if (mapImagePreview) {
+      URL.revokeObjectURL(mapImagePreview);
+    }
+  }, [imagePreview, mapImagePreview]);
 
   const handleSubmit = async (formData) => {
-    const result = FieldValidator(formData, image);
+    const result = FieldValidator(formData, image, mapImage);
 
     if (!result.valid) {
       notify({
@@ -178,6 +197,9 @@ const PeakClimbingsController = () => {
     }
     showLoading();
     const fD = new FormData();
+    if (mapImage) {
+      fD.append("mapFile", mapImage);
+    }
     if (image) {
       fD.append("file", image);
     }
@@ -218,6 +240,10 @@ const PeakClimbingsController = () => {
       let responseMessage;
       let response;
       if (isEditPeakClimbing) {
+        const imageUrl =
+          image instanceof Blob ? URL.createObjectURL(image) : null;
+        const mapImageUrl =
+          mapImage instanceof Blob ? URL.createObjectURL(mapImage) : null;
         response = await peakClimbingRepository.updatePeakClimbingPackage(
           fD,
           idToUpdate
@@ -238,7 +264,8 @@ const PeakClimbingsController = () => {
                   exclusions: formData.exclusions,
                   packageRate: formData.packageRate,
                   discountInPercentage: formData.discountInPercentage,
-                  file: imagePreview || item.file,
+                  image: imageUrl || imagePreview || item.image,
+                  mapImage: mapImageUrl || mapImagePreview || item.mapImage,
                 }
               : item
           )
@@ -278,6 +305,7 @@ const PeakClimbingsController = () => {
     { label: "Duration", accessor: "duration" },
     { label: "Discount", accessor: "discountInPercentage" },
     { label: "Image", accessor: "image" },
+    { label: "Map", accessor: "mapImage" },
   ];
   console.log({ peakClimbingList });
   return (
@@ -289,6 +317,7 @@ const PeakClimbingsController = () => {
           setIsEditPeakClimbing(false);
           setPeakClimbing({});
           setImage(null);
+          setMapImage(null);
         }}
         columns={columns}
         peakClimbings={peakClimbingList}
@@ -311,14 +340,17 @@ const PeakClimbingsController = () => {
           setModalOpen(false);
           setPeakClimbing({});
           setImage(null);
+          setMapImage(null);
         }}
         handleSubmit={handleSubmit}
         handleImageSelect={handleImageSelect}
+        handleMapImageSelect={handleMapImageSelect}
         isEditPeakClimbing={isEditPeakClimbing}
         peakClimbing={peakClimbing}
         destinationList={destinationList}
         travelThemeList={travelThemeList}
         imagePreview={isEditPeakClimbing ? peakClimbing?.image : null}
+        mapImagePreview={isEditPeakClimbing ? peakClimbing?.mapImage : null}
       />
       <CustomDialogModal
         opened={isDeletePeakClimbing}

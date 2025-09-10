@@ -132,7 +132,7 @@ const TopRatedPackagesController = () => {
   };
 
   const handleSubmit = async (packageId) => {
-    console.log(packageId)
+    console.log(packageId);
     if (!packageId || packageId.trim() == "") {
       notify({
         type: "error",
@@ -171,7 +171,6 @@ const TopRatedPackagesController = () => {
     setOpenedView(true);
     setTopRatedPackage(item);
   };
-
 
   const columns = [
     { label: "Destination", accessor: "destinationIds" },

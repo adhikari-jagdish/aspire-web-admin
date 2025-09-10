@@ -1,21 +1,16 @@
 import AxiosService from "../../common/service/axios_service";
 
-class MenuRepository {
+class ServiceReviewRepository {
   constructor(getToken) {
     this.axiosService = new AxiosService(getToken); // Pass getToken to AxiosService
   }
 
-  //Function to add a new Menu
-  async addMenu(formData) {
+  //Function to add a new ServiceReview
+  async addServiceReview(formData) {
     try {
       const response = await this.axiosService.post(
-        "/api/addMenuItem",
-        {
-          title: formData.title,
-          order: formData.order,
-          type: formData?.type,
-          parent: formData.parent
-        }
+        "/api/createServiceReview",
+        formData
       );
 
       if (response.status >= 200 || response.status <  300) {
@@ -39,11 +34,11 @@ class MenuRepository {
   }
 
   
-  //Function to update  Menu
-  async updateMenu(formData, menuId) {
+  //Function to update  ServiceReview
+  async updateServiceReview(formData, serviceReviewId) {
     try {
       const response = await this.axiosService.put(
-        "/api/updateMenu/"+menuId,
+        "/api/updateServiceReview/"+serviceReviewId,
         formData
       );
       if (response.status >= 200 || response.status <  300) {
@@ -67,10 +62,10 @@ class MenuRepository {
     }
   }
 
-  //Function to get all Menus
-  async getMenus() {
+  //Function to get all ServiceReviews
+  async getServiceReviews() {
     try {
-      const response = await this.axiosService.get("/api/getMenu");
+      const response = await this.axiosService.get("/api/getServiceReviews");
       if (response.status === 200) {
         return {
           data: response.data.data,
@@ -91,11 +86,11 @@ class MenuRepository {
     }
   }
 
-  //Function to get all Menus
-  async deleteMenu(menuId) {
+  //Function to get all ServiceReviews
+  async deleteServiceReview(serviceReviewId) {
     try {
       const response = await this.axiosService.delete(
-        `/api/deleteMenuItem/${menuId}`
+        `/api/deleteServiceReview/${serviceReviewId}`
       );
 
       if (response.status === 200) {
@@ -119,4 +114,4 @@ class MenuRepository {
   }
 }
 
-export default MenuRepository;
+export default ServiceReviewRepository;

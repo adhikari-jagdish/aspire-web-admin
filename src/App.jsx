@@ -8,7 +8,7 @@ import DestinationsController from "./destinations/controller/destinations_contr
 import TravelThemesController from "./travel_themes/controller/travelThemes_controller";
 import HotelsController from "./hotels/controller/hotels_controller";
 import CarouselsController from "./Carousels/controller/carousels_controller";
-import AdventuresView from "./adventures/view/adventures_view";
+import AdventuresController from "./adventures/controller/adventures_controller";
 import ContactView from "./contact/view/contact_view";
 import ToursController from "./tours/controller/tours_controller";
 import TripHighLightsController from "./trip highlights/controller/tripHighlights_controller";
@@ -23,7 +23,9 @@ import ReviewsController from "./reviews/controller/reviews_controller";
 import BlogsController from "./blogs/controller/blogs_controller";
 import FaqController from "./faq/controller/faq_controller";
 import TrendingPackagesController from "./trending packages/controller/trendingPackages_controller";
-import VehiclesController from "./vehicle/controller/vehicles_controller";
+import VehicleController from "./vehicle/controller/vehicles_controller";
+import ServiceReviewsController from "./service review/controller/serviceReviews_controller";
+import VehicleBookingsController from "./vehicle_booking/controller/vehicle_bookings_controller";
 
 function App() {
   return (
@@ -42,22 +44,32 @@ function App() {
           <Route path="triphighlights" element={<TripHighLightsController />} />
           <Route path="trekkings" element={<TrekkingsController />} />
           <Route path="expeditions" element={<ExpeditionsController />} />
-          <Route path="peakClimbings" element={<PeakClimbingsController />} />
-          <Route path="adventures" element={<AdventuresView />} />
           <Route path="menu" element={<MenusController />} />
           <Route path="faqtitles" element={<FaqTitlesController />} />
-          <Route path="top-Rated-Packages" element={<TopRatedPackagesController />} />
-          <Route path="trending-packages" element={<TrendingPackagesController />} />
+          <Route
+            path="top-Rated-Packages"
+            element={<TopRatedPackagesController />}
+          />
+          <Route
+            path="trending-packages"
+            element={<TrendingPackagesController />}
+          />
           <Route path="reviews" element={<ReviewsController />} />
           <Route path="blogs" element={<BlogsController />} />
           <Route path="peakClimbings" element={<PeakClimbingsController />} />
-          <Route path="vehicles" element={<VehiclesController />} />
-          <Route path="peakClimbings" element={<PeakClimbingsView />} />
-          <Route path="adventures" element={<AdventuresView />} />
+          <Route
+            path="vehiclebookings"
+            element={<VehicleBookingsController />}
+          />
+          <Route path="adventures" element={<AdventuresController />} />
           <Route path="faqs" element={<FaqController />} />
           <Route path="/about" element={<AboutUsController />} />
           <Route path="/vehicles" element={<VehiclesController />} />
           <Route path="/contact" element={<ContactView />} />
+          <Route
+            path="/service-review"
+            element={<ServiceReviewsController />}
+          />
           <Route path="*" element={<PageNotFound />} />
         </Route>
       </Routes>

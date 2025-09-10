@@ -87,6 +87,7 @@ const AboutUsController = () => {
   };
 
   const handleImageSelect = (file) => {
+    console.log({file})
     setImage(file);
   };
 
@@ -132,6 +133,7 @@ const AboutUsController = () => {
       let responseMessage;
       let response;
       if (isEditAboutUs) {
+        const imageUrl = image instanceof Blob ? URL.createObjectURL(image) : null;
         response = await aboutUsRepository.updateAboutUs(
           fD,
           idToUpdate
@@ -139,7 +141,7 @@ const AboutUsController = () => {
         setAboutUsList((prev) =>
           prev.map((item) =>
             item._id === idToUpdate
-              ? { ...item, title: formData.title, description: formData.description, image: image || item.bannerImage }
+              ? { ...item, title: formData.title, description: formData.description, bannerImage: imageUrl || image || item.bannerImage }
               : item
           )
         );
@@ -174,7 +176,7 @@ const AboutUsController = () => {
   const columns = [
     { label: "Title", accessor: "title" },
     { label: "Description", accessor: "description" },
-    { label: "Image", accessor: "image" },
+    { label: "Image", accessor: "bannerImage" },
   ];
 
   return (

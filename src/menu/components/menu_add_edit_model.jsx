@@ -33,7 +33,7 @@ const MenuAddEditModel = ({
     <Modal
       opened={opened}
       onClose={onClose}
-      title={"Add " + modalTitle ?? ""}
+      title={"Add " + modalTitle}
       centered
       styles={{
         title: {

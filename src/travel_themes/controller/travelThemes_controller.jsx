@@ -15,6 +15,7 @@ const TravelThemesController = () => {
   const [travelTheme, setTravelTheme] = useState({});
   const { getToken } = useAuth();
   const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const notify = useNotification();
   const { showLoading, hideLoading, LoadingOverlayComponent } =
     useLoadingOverlay();
@@ -46,8 +47,6 @@ const TravelThemesController = () => {
 
   const handleClick = () => {
     setModalOpen(true);
-    setTravelTheme({});
-    setImage(null);
   };
 
   const handleEditButtonClick = (item) => {
@@ -55,7 +54,6 @@ const TravelThemesController = () => {
     setTravelTheme(item);
     setModalOpen(true);
     setIdToUpdate(item?._id);
-    setImage(null);
   };
 
   const onDeleteButtonClick = (item) => {
@@ -87,11 +85,28 @@ const TravelThemesController = () => {
   };
 
   const handleImageSelect = (file) => {
-    setImage(file);
+    if(file) {
+      const objectUrl = URL.createObjectURL(file);
+      setImagePreview(objectUrl);
+      setImage(file); 
+    } else {
+      setImage(null);
+      setImagePreview(null);
+    }
   };
 
+  
+//avoids memory leaks when switching or removing pages
+  useEffect(() => {
+  return () => {
+    if (imagePreview) {
+      URL.revokeObjectURL(imagePreview);
+    }
+  };
+}, [imagePreview]);
+
   const handleSubmit = async (formData) => {
-    if (!formData.title.trim() || (!image )) {
+    if (!formData.title.trim() || (!image && !formData.image )) {
       notify({
         type: "error",
         message: "All fields are required.",
@@ -122,7 +137,7 @@ const TravelThemesController = () => {
         setTravelThemeList((prev) =>
           prev.map((item) =>
             item._id === idToUpdate
-              ? { ...item, title: formData.title, image: image || item.image }
+              ? { ...item, title: formData.title, image: imagePreview || item.image }
               : item
           )
         );
@@ -132,9 +147,6 @@ const TravelThemesController = () => {
       }
       responseMessage = response.message;
       setModalOpen(false);
-      setImage(null);
-      setIsEditTravelTheme(false);
-      setTravelTheme({});
       notify({
         type: "success",
         message: responseMessage,
@@ -158,7 +170,7 @@ const TravelThemesController = () => {
     { label: "Title", accessor: "title" },
     { label: "Image", accessor: "image" },
   ];
-
+console.log({image})
   return (
     <>
       <TravelThemesView
@@ -188,11 +200,13 @@ const TravelThemesController = () => {
           setModalOpen(false);
           setTravelTheme({});
           setImage(null);
+          setImagePreview(null);
         }}
         handleSubmit={handleSubmit}
         handleImageSelect={handleImageSelect}
         isEditTravelTheme={isEditTravelTheme}
         travelTheme={travelTheme}
+         imagePreview={imagePreview ?? (isEditTravelTheme ? travelTheme?.image : null)}
       />
       <CustomDialogModal
         opened={isDeleteTravelTheme}

@@ -28,7 +28,8 @@ const initialFormState = {
   hotels: [],
   packageRate: "",
   discountInPercentage: 0,
-  file: null,
+  image: null,
+  mapImage: null
 };
 const TrekkingsAddEditModel = ({
   opened,
@@ -36,11 +37,12 @@ const TrekkingsAddEditModel = ({
   isEditTrekking,
   handleSubmit,
   handleImageSelect,
+  handleMapImageSelect,
   trekking = {},
   idToUpdate,
   imagePreview,
+  mapImagePreview
 }) => {
-  
   const [formData, setFormData] = useState(initialFormState);
   // Initialize form data
   useEffect(() => {
@@ -65,7 +67,8 @@ const TrekkingsAddEditModel = ({
         hotels: Array.isArray(trekking.hotels) ? trekking.hotels : [],
         packageRate: Array.isArray(trekking.packageRate) ? trekking.packageRate : [],
         discountInPercentage: trekking.discountInPercentage ?? 0,
-        file: imagePreview || null,
+        image: imagePreview || trekking.image || null ,
+        mapImage :mapImagePreview || trekking.mapImage || null
       });
     } else {
       setFormData(initialFormState);
@@ -86,6 +89,14 @@ const TrekkingsAddEditModel = ({
     }
   };
 
+    const onMapImageChange = (mapImage) => {
+    setFormData((prev) => ({ ...prev, mapImage }));
+    if (handleMapImageSelect) {
+      handleMapImageSelect(mapImage);
+    }
+  };
+
+
   const onSubmit = () => {
     handleSubmit(formData, formData.file, isEditTrekking, idToUpdate);
   };
@@ -93,7 +104,7 @@ const TrekkingsAddEditModel = ({
       <Modal
         opened={opened}
         onClose={onClose}
-        title={isEditTrekking ? "Edit trekking Packages" : "Add trekking Packages"}
+        title={isEditTrekking ? "Edit Trekking Packages" : "Add Trekking Packages"}
         size="xxl"
         centered
         padding="lg"
@@ -173,13 +184,17 @@ const TrekkingsAddEditModel = ({
 
             <ImageDiscount
               imageName="file"
+              mapImageName="mapFile"
               discountName="discountInPercentage"
               discountValue={formData.discountInPercentage}
               onChange={handleChange}
               onImageChange={onImageChange}
+              onMapImageChange={onMapImageChange}
               isEditTrekking={isEditTrekking}
               trekking={trekking}
               defaultImage={isEditTrekking && (trekking?.image || imagePreview)}
+              defaultMapImage={isEditTrekking && (trekking?.mapImage || mapImagePreview)}
+              isTrek={true}
             />
           </div>
           {/* Sticky Button inside Modal */}

@@ -1,5 +1,4 @@
-export const FieldValidator = (formData, image) => {
-  console.log(formData);
+export const FieldValidator = (formData, image, mapImage, isMapImage) => {
   if (
     !formData.destinationIds ||
     !formData.travelThemeIds ||
@@ -38,10 +37,12 @@ export const FieldValidator = (formData, image) => {
       message: "Exclusions must be 500 characters or fewer.",
     };
   }
-  if (!image) {
+  if (!image && !formData.image) {
     return { valid: false, message: "Image is required" };
   }
-
+ if (!mapImage && ( isMapImage && !formData.mapImage)) {
+    return { valid: false, message: "Map image is required" };
+  }
   for (let item of formData.tripHighlights) {
     if (item.description.trim().length > 500) {
       return {

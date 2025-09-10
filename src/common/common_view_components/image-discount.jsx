@@ -4,18 +4,22 @@ import { Title } from "@mantine/core";
 
 const ImageDiscount = ({
   imageName,
+  mapImageName,
   discountName,
   discountValue,
   onChange,
   onImageChange,
+  onMapImageChange,
   isEditTour,
-  tour,
   isEditTrekking,
   isEditPeakClimbing,
   isEditExpedition,
   defaultImage,
+  isTrek,
+  isExpedition,
+  isPeakClimbing,
+  defaultMapImage
 }) => {
-  const [image, setImage] = useState(null);
   const [discount, setDiscount] = useState("");
 
   useEffect(() => {
@@ -29,9 +33,13 @@ const ImageDiscount = ({
     }
   }, [isEditTour, isEditTrekking, discountValue]);
   const handleImageSelect = (image) => {
-    setImage(image);
     onChange({ target: { name: imageName, value: image } });
     onImageChange?.(image);
+  };
+
+   const handleMapImageSelect = (mapImage) => {
+    onChange({ target: { name: mapImageName, value: mapImage } });
+    onMapImageChange?.(mapImage);
   };
 
   const handleDiscountChange = (value) => {
@@ -39,7 +47,7 @@ const ImageDiscount = ({
     onChange({ target: { name: discountName, value } });
   };
   return (
-    <div className="flex gap-30 ">
+    <div className="flex gap-60 ">
       <div className="flex flex-col items-start  ">
         <Title order={4} ta="left" c="dark" className="flex flex-col">
           Image
@@ -47,7 +55,12 @@ const ImageDiscount = ({
         <div>
           <ImagePicker
             onImageSelect={handleImageSelect}
+            onMapImageSelect={handleMapImageSelect}
             defaultImage={defaultImage}
+            isTrek={isTrek}
+            isExpedition={isExpedition}
+            isPeakClimbing={isPeakClimbing}
+            defaultMapImage={defaultMapImage}
           />
         </div>
       </div>
@@ -72,6 +85,20 @@ const ImageDiscount = ({
           onWheel={(e) => e.target.blur()}
         />
       </div>
+     {/* {(isTrek || isExpedition || isPeakClimbing) &&  <div className="flex flex-col justify-center  ">
+        <Title order={4} ta="" c="dark" className="flex flex-col">
+          Map
+        </Title>
+        <div>
+          <ImagePicker
+            onMapImageSelect={handleMapImageSelect}
+            defaultMapImage={defaultMapImage}
+            isTrek={isTrek}
+            isExpedition={isExpedition}
+            isPeakClimbing={isPeakClimbing}
+          />
+        </div>
+      </div>} */}
     </div>
   );
 };

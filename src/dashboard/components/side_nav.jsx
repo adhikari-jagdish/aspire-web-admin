@@ -25,7 +25,9 @@ const navItems = [
   { name: "Reviews", icon: "⭐" },
   { name: "Blogs", icon: "⭐" },
   { name: "Faqs", icon: "⭐" },
+  { name: "Service-Review", icon: "⭐" },
   { name: "Vehicles", icon: "⭐" },
+  { name: "VehicleBookings", icon: "⭐" },
 ];
 
 const SideNav = () => {

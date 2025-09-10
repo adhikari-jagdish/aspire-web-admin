@@ -226,7 +226,7 @@ const AdventuresController = () => {
           // setImage(null);
         }}
         columns={columns}
-        Adventures={AdventureList}
+        adventures={adventureList}
         handleClick={handleClick}
         onEditButtonClick={handleEditButtonClick}
         onDeleteButtonClick={onDeleteButtonClick}

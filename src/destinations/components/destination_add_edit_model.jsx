@@ -4,7 +4,6 @@ import {
   TextInput,
   Button,
   Group,
-  Textarea,
   Title,
 } from "@mantine/core";
 import ImagePicker from "../../common/common_view_components/image_picker";
@@ -25,18 +24,21 @@ const DestinationAddEditModel = ({
   const [formData, setFormData] = useState({
     title: "",
     description: "",
+    image: null
   });
   useEffect(() => {
     if (isEditDestination && opened) {
       setFormData({
         title: destination.title || "",
         description: destination.description || "",
+        image : imagePreview || destination.image || null
       });
     } else {
       // Clear form for new destination
       setFormData({
         title: "",
         description: "",
+        image: null
       });
     }
   }, [isEditDestination, opened]);

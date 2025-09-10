@@ -45,6 +45,7 @@ const VehiclesController = () => {
   }, []);
 
   const handleClick = () => {
+    setVehicle([]);
     setModalOpen(true);
   };
 
@@ -107,11 +108,10 @@ const VehiclesController = () => {
     if (!result.valid) {
       notify({
         type: "error",
-        message: result.message
-      })
+        message: result.message,
+      });
       return;
     }
-
 
     const fd = new FormData();
 

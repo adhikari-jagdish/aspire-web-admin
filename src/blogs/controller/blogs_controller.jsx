@@ -80,12 +80,13 @@ const BlogsController = () => {
   const handleImageSelect = (file) => {
     if (file) {
       const objectUrl = URL.createObjectURL(file);
-      setImagePreview(objectUrl);
-      setImage(file);
-    } else {
-      setImage(null);
-      setImagePreview(null);
+    //   setImagePreview(objectUrl);
+      setImage(objectUrl);
     }
+    // } else {
+    //   setImage(null);
+    //   setImagePreview(null);
+    // }
   };
 
   useEffect(() => {
@@ -125,6 +126,8 @@ console.log({formData})
       let responseMessage;
       let response;
       if (isEditBlog) {
+        // const imageUrl = URL.createObjectURL(image);
+
         response = await blogRepository.updateBlog(fD, idToUpdate);
         setBlogList((prev) =>
           prev.map((item) =>
@@ -134,7 +137,7 @@ console.log({formData})
                   postedBy: formData.postedBy,
                   postDate: formData.postDate.toLocaleDateString("en-CA"),
                   description: formData.description,
-                  image: imagePreview || item.image,
+                  image:  imagePreview || item.image,
                 }
               : item
           )
@@ -173,7 +176,7 @@ console.log({formData})
     { label: "Description", accessor: "description" },
     { label: "Image", accessor: "image" },
   ];
-
+console.log({image})
   return (
     <>
       <BlogsView

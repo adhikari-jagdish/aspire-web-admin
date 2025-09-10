@@ -43,7 +43,7 @@ const DestinationsController = () => {
     fetchDestinations();
   }, []);
 
-  const handleClick = (item) => {
+  const handleClick = () => {
     setModalOpen(true);
   };
 
@@ -121,7 +121,7 @@ const DestinationsController = () => {
         message: "Description must be 500 characters or fewer."
       })
     }
-    if(!image) {
+    if(!image && !formData.image) {
       notify({
         type: "error",
         message: "Image is required!"
@@ -130,7 +130,9 @@ const DestinationsController = () => {
     }
     showLoading();
     const fD = new FormData();
-    fD.append("file", image);
+    if(image){
+      fD.append("file", image);
+    }
     fD.append("title", formData.title);
     fD.append("description", formData.description);
     try {
