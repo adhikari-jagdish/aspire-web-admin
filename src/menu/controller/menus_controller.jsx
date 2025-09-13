@@ -13,6 +13,7 @@ const MenusController = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [openedView, setOpenedView] = useState(false);
   const [menuList, setMenuList] = useState([]);
+  const [menuRoutesList, setMenuRoutesList] = useState([]);
   const [menu, setMenu] = useState({});
   const { getToken } = useAuth();
   const [file, setFile] = useState(null);
@@ -47,7 +48,25 @@ const MenusController = () => {
     };
     fetchMenus();
   }, []);
-  console.log({menuList})
+
+  useEffect(() => {
+    const fetchMenuRoutes = async () => {
+      try {
+        showLoading();
+        const menuRoutesResponse =
+          await menuRepository.getRoutesForMenuDropdown();
+        setMenuRoutesList(menuRoutesResponse.data);
+      } catch (err) {
+        notify({
+          type: "error",
+          message: err.message ?? "Something went wrong. Please try again.",
+        });
+      } finally {
+        hideLoading();
+      }
+    };
+    fetchMenuRoutes();
+  }, []);
   const handleClick = (modalTitle, parent) => {
     setModalTitle(modalTitle)
     setModalOpen(true);
@@ -163,6 +182,7 @@ const MenusController = () => {
         menu={menu}
         modalTitle={modalTitle}
         parentId={parentId}
+        menuRoutesList={menuRoutesList}
       />
 
       <CustomDialogModal
