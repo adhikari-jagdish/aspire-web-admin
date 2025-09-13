@@ -26,6 +26,7 @@ import TrendingPackagesController from "./trending packages/controller/trendingP
 import VehicleController from "./vehicle/controller/vehicles_controller";
 import ServiceReviewsController from "./service review/controller/serviceReviews_controller";
 import VehicleBookingsController from "./vehicle_booking/controller/vehicle_bookings_controller";
+import VehiclesController from "./vehicle/controller/vehicles_controller";
 
 function App() {
   return (
