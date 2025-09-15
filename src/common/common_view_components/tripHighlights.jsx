@@ -79,9 +79,9 @@ const handleTripHighlightRemove = (idx) => {
         </button>
       </div>
 
-      <div className="border p-2 border-gray-400 rounded space-y-4">
+      <div className="border p-2 border-gray-400 rounded  grid grid-cols-2 gap-10">
         {tripHighlightRows.map((trip, i) => (
-          <>
+          <div className="space-y-4">
             <div className="flex gap-6 items-center justify-center">
               <select
               name={name}
@@ -116,8 +116,8 @@ const handleTripHighlightRemove = (idx) => {
                 placeholder="Details....."
                 onChange={e => handleTripHighlightRowChange(i, "description", e.target.value)}
 
-              ></textarea>
-          </>
+              />
+          </div>
         ))}
 
         {tripHighlightRows.length === 0 && <div>No Trip highlights yet.</div>}
