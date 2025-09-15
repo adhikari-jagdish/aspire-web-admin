@@ -70,7 +70,7 @@ const MenuAddEditModel = ({
           className="w-[75%]"
       />}
        
-      <button className="w-23 rounded mt-5 hover:bg-blue-500 cursor-pointer bg-blue-400 text-white px-2 py-1" onClick={() => setIsDropDown(!isDropDown)}>{isDropDown ? "Text" : "Dropdown"}</button>
+      <button className="w-23 rounded mt-5 hover:bg-blue-500 cursor-pointer bg-blue-400 text-white px-2 py-1" onClick={() => setIsDropDown(!isDropDown)}>{isDropDown ? "Manual" : "Dropdown"}</button>
       </div>
       <TextInput
         label="Order"
