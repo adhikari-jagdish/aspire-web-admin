@@ -15,7 +15,15 @@ const mealPlan = [
     value: "JP - Room, Breakfast, Lunch and Dinner + Jungle Activities ",
   },
 ];
-const HotelAndMealPlan = ({ onChange, value, parentName, isEditTour,isEditTrekking, isEditPeakClimbing, isEditExpedition }) => {
+const HotelAndMealPlan = ({
+  onChange,
+  value,
+  parentName,
+  isEditTour,
+  isEditTrekking,
+  isEditPeakClimbing,
+  isEditExpedition,
+}) => {
   const [hotelList, setHotelList] = useState([]);
   const [selectedHotel, setSelectedHotel] = useState("");
   const [hotelName, setHotelName] = useState("");
@@ -45,7 +53,7 @@ const HotelAndMealPlan = ({ onChange, value, parentName, isEditTour,isEditTrekki
       const hotel = hotelList.find((h) => h._id === selected);
       setSelectedHotel(hotel?.title);
 
-      onChange({ hotel: selected  });
+      onChange({ hotel: selected });
     }
   };
 
@@ -61,28 +69,32 @@ const HotelAndMealPlan = ({ onChange, value, parentName, isEditTour,isEditTrekki
     }
   };
   return (
-    <div className="w-full space-y-4 flex flex-col gap-2">
-      <div className="flex gap-8">
-        <div className="flex items-center  w-[50%] gap-5">
-          {/* <Title
-          order={4}
-          mt={20}
-          mb={10}
-          ta="left"
-          c="dark"
-          className="flex flex-col"
-        >
-          Hotels:
-        </Title> */}
-          {(parentName == "expeditions" || parentName == "peakClimbings") ? (
+    <div className="w-full space-y-4 flex flex-col gap-2 ">
+      <div className="flex gap-8 sm:flex-col-base sm:shrink-0">
+        <div className="flex items-center  w-[50%] gap-5 ">
+          {parentName == "expeditions" || parentName == "peakClimbings" ? (
             <div className="w-full">
-              <input value={(isEditPeakClimbing || isEditExpedition) ? value.hotel : hotelName} onChange={e => {setHotelName(e.target.value); onChange({hotel: e.target.value})}} type="text" required placeholder="Enter Hotel Name here...." className="border border-gray-600 outline-0 p-2 rounded w-70 h-[30px] mt-2 " />
+              <input
+                value={
+                  isEditPeakClimbing || isEditExpedition
+                    ? value.hotel
+                    : hotelName
+                }
+                onChange={(e) => {
+                  setHotelName(e.target.value);
+                  onChange({ hotel: e.target.value });
+                }}
+                type="text"
+                required
+                placeholder="Enter Hotel Name here...."
+                className="border border-gray-600 outline-0 p-2 rounded w-70 h-[30px] mt-2 "
+              />
             </div>
           ) : (
             <select
               name={name}
               id={name}
-              className="border border-gray-500 outline-0 rounded  h-[30px]  mt-2 cursor-pointer text-center "
+              className="border border-gray-500 outline-0 rounded  h-[30px]  mt-2 cursor-pointer text-center w-20 md:w-30 lg:w-full sm:w-30"
               onChange={handleHotelChange}
               value={value?.hotel}
             >
@@ -102,7 +114,7 @@ const HotelAndMealPlan = ({ onChange, value, parentName, isEditTour,isEditTrekki
 
         <div className="w-full space-y-4">
           <select
-            className="border border-gray-500 outline-0 rounded w-full  h-[30px] w- mt-2 cursor-pointer text-center "
+            className="border border-gray-500 outline-0 rounded  h-[30px] w-20  mt-2 cursor-pointer text-center md:w-30 sm:w-30 lg:w-full "
             onChange={handleMealPlanChange}
             value={value?.mealPlan}
           >
@@ -116,15 +128,23 @@ const HotelAndMealPlan = ({ onChange, value, parentName, isEditTour,isEditTrekki
         </div>
       </div>
       {((selectedHotel && selectedMealPlan) ||
-        JSON.stringify(value) !== "{}" || hotelName.trim() !== "") && (
+        JSON.stringify(value) !== "{}" ||
+        hotelName.trim() !== "") && (
         <ul className="border border-gray-400 rounded p-2 w-full  flex flex-col ">
           <li className="bg-gray-100 px-2 py-1 rounded flex justify-around ">
             <span>
               {(value
                 ? hotelList.find((h) => h?._id === value?.hotel)?.title
-                : selectedHotel) || hotelName || value.hotel}{" "}
+                : selectedHotel) ||
+                hotelName ||
+                value.hotel}{" "}
             </span>
-            |<span>{value ? mealPlan.find(m => m.key === value?.mealPlan )?.value : selectedMealPlan}</span>
+            | &nbsp;
+            <span>
+              {value
+                ? mealPlan.find((m) => m.key === value?.mealPlan)?.value
+                : selectedMealPlan}
+            </span>
             <button
               onClick={() => {
                 setSelectedMealPlan("");
