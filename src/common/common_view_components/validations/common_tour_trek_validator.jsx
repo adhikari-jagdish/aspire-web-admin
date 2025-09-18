@@ -18,23 +18,23 @@ export const FieldValidator = (formData, image, mapImage, isMapImage) => {
   if (formData.title.trim().length > 25) {
     return { valid: false, message: "Title must be 25 characters or fewer." };
   }
-  if (formData.overview.trim().length > 500) {
+  if (formData.overview.trim().length > 5000) {
     return {
       valid: false,
-      message: "Overview must be 500 characters or fewer.",
+      message: "Overview must be 5000 characters or fewer.",
     };
   }
 
-  if (formData.inclusions.trim().length > 500) {
+  if (formData.inclusions.trim().length > 5000) {
     return {
       valid: false,
-      message: "Inclusions must be 500 characters or fewer.",
+      message: "Inclusions must be 5000 characters or fewer.",
     };
   }
-  if (formData.exclusions.trim().length > 500) {
+  if (formData.exclusions.trim().length > 5000) {
     return {
       valid: false,
-      message: "Exclusions must be 500 characters or fewer.",
+      message: "Exclusions must be 5000 characters or fewer.",
     };
   }
   if (!image && !formData.image) {
@@ -44,10 +44,10 @@ export const FieldValidator = (formData, image, mapImage, isMapImage) => {
     return { valid: false, message: "Map image is required" };
   }
   for (let item of formData.tripHighlights) {
-    if (item.description.trim().length > 500) {
+    if (item.description.trim().length > 5000) {
       return {
         valid: false,
-        message: "Trip highlights description must be 500 characters or fewer.",
+        message: "Trip highlights description must be 5000 characters or fewer.",
       };
     }
   }
@@ -70,9 +70,9 @@ export const FieldValidator = (formData, image, mapImage, isMapImage) => {
       return { valid: false, message: "Itinerary facts details must be 20 characters or fewer."}
     }
    }
-    if (item.details.trim().length > 500) {
+    if (item.details.trim().length > 5000) {
       
-       return { valid: false,  message: "Itinerary details must be 500 characters or fewer."}
+       return { valid: false,  message: "Itinerary details must be 5000 characters or fewer."}
     
     }
   }

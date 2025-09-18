@@ -79,7 +79,7 @@ const handleTripHighlightRemove = (idx) => {
         </button>
       </div>
 
-      <div className="border p-2 border-gray-400 rounded  grid grid-cols-2 gap-10">
+      <div className="border p-2 border-gray-400 rounded  grid grid-cols-4 gap-10">
         {tripHighlightRows.map((trip, i) => (
           <div className="space-y-4">
             <div className="flex gap-6 items-center justify-center">

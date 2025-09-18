@@ -115,10 +115,10 @@ const DestinationsController = () => {
       })
       return;
     }
-    if(formData.description.trim().length > 500) {
+    if(formData.description.trim().length > 5000) {
       notify({
         type: "errror",
-        message: "Description must be 500 characters or fewer."
+        message: "Description must be 5000 characters or fewer."
       })
     }
     if(!image && !formData.image) {
