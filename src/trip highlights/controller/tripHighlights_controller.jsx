@@ -39,7 +39,7 @@ const TripHighLightsController = () => {
     };
     fetchTripHighLights();
   }, []);
-  const handleClick = (item) => {
+  const handleClick = () => {
     setModalOpen(true);
   };
   //Function to trigger when edit button is clicked
@@ -56,9 +56,13 @@ const TripHighLightsController = () => {
   };
   const handleDeleteButtonClick = async () => {
     try {
-      await tripHighlightRepository.deleteTripHighlight(idToDelete);
       showLoading();
+      await tripHighlightRepository.deleteTripHighlight(idToDelete);
       setTripHighlightList((prev) => prev.filter((p) => p._id !== idToDelete));
+      notify({
+        type: "success",
+        message: "TripHighLight deleted successfully.",
+      });
     } catch (err) {
       notify({
         type: "error",

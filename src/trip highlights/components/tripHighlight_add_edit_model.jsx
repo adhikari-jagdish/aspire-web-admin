@@ -3,55 +3,58 @@ import { Modal, TextInput, Button, Group, Textarea } from "@mantine/core";
 import FilePicker from "../../common/common_view_components/file_picker";
 
 const initialFormState = {
-    title: "",
-    icon: null
-}
+  title: "",
+  icon: null,
+};
 const TripHighlightAddEditModel = ({
   opened,
   onClose,
   isEditTripHighlight,
   handleSubmit,
   tripHighlight,
-  
 }) => {
+  console.log({ tripHighlight });
   const [formData, setFormData] = useState(initialFormState);
   useEffect(() => {
     if (isEditTripHighlight && opened) {
       setFormData({
         title: tripHighlight.title || "",
         icon: tripHighlight.icon || null,
-    });
+      });
     } else {
       // Clear form for new TripHighlight
-      setFormData(initialFormState);
+      setFormData({
+        title: "",
+        icon: null,
+      });
     }
-  }, [isEditTripHighlight, opened]);
+  }, [opened, isEditTripHighlight]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleFileSelect = (selectedFile) => {
-   setFormData(prev => ({
-    ...prev,
-    icon: selectedFile
-   }))
-  }
-console.log({formData})
+    setFormData((prev) => ({
+      ...prev,
+      icon: selectedFile,
+    }));
+  };
+  console.log({ formData });
   return (
     <Modal
       opened={opened}
       onClose={onClose}
       title={isEditTripHighlight ? "Edit Trip Highlight" : "Add Trip Highlight"}
       centered
-       styles={{
+      styles={{
         title: {
           fontSize: "34px",
           color: "#0890cf",
-          fontWeight: 700
+          fontWeight: 700,
         },
         content: {
-          scrollbarWidth: "none", 
+          scrollbarWidth: "none",
         },
       }}
     >
@@ -64,7 +67,11 @@ console.log({formData})
         required
       />
 
-      <FilePicker icon={tripHighlight.icon} onFileSelect={handleFileSelect} allowSVGOnly={true} />
+      <FilePicker
+        icon={isEditTripHighlight && tripHighlight.icon}
+        onFileSelect={handleFileSelect}
+        allowSVGOnly={true}
+      />
 
       <Group position="right" mt="md">
         <Button variant="default" onClick={onClose}>

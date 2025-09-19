@@ -124,7 +124,7 @@ const DestinationAddEditModel = ({
         </RichTextEditor.ControlsGroup>
 
         </RichTextEditor.Toolbar>
-        <RichTextEditor.Content className="h-[250px] [&_ul]:list-disc [&_ol]:list-decimal" />
+        <RichTextEditor.Content className="min-h-[250px] [&_ul]:list-disc [&_ol]:list-decimal" />
       </RichTextEditor>
 
       <ImagePicker

@@ -14,7 +14,7 @@ const TripHighLightsView = ({
     <>
       <button
         onClick={handleClick}
-        className="fixed bottom-15 right-6 bg-blue-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-blue-800 hover:cursor-pointer transition-colors duration-200 z-50 duration-200 z-50"
+        className="fixed bottom-15 right-6 bg-blue-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg hover:bg-blue-800 hover:cursor-pointer transition-colors duration-200 z-50 "
         aria-label="Add new item"
       >
         <IconPlus size={24} stroke={2} />

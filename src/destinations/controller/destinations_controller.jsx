@@ -77,6 +77,8 @@ const DestinationsController = () => {
   ///This is called when user selects an image
   const handleImageSelect = (file) => {
     if(file) {
+
+      
       const objectUrl = URL.createObjectURL(file);
       setImagePreview(objectUrl);
       setImage(file); 
@@ -120,6 +122,7 @@ const DestinationsController = () => {
         type: "errror",
         message: "Description must be 5000 characters or fewer."
       })
+      return;
     }
     if(!image && !formData.image) {
       notify({
