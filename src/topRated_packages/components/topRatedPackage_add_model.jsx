@@ -25,13 +25,13 @@ const TopRatedPackagesAddModel = ({
       setSelectedPackage(value);
     }
   };
-console.log({selectedPackage})
   const showSelectedTitle = packageList.filter((t) =>t._id === selectedPackage);
 
   const packages = packageList.map(({_id, title}) => ({
     value: _id,
     label: title
   }))
+  console.log({packageList})
 
 
   return (

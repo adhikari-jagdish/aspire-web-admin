@@ -7,10 +7,7 @@ import TopRatedPackageRepository from "../repository/topRatedPackage_repository"
 import TopRatedPackagesView from "../view/topRatedPackages_view";
 import TopRatedPackagesViewModel from "../components/TopRatedPackages_view_model";
 import TopRatedPackagesAddModel from "../components/topRatedPackage_add_model";
-import TourRepository from "../../tours/repository/tour_repository";
-import TrekkingRepository from "../../trekkings/repository/trekking_repository";
-import ExpeditionRepository from "../../expeditions/repository/expedition_repository";
-import PeakClimbingRepository from "../../peak climbings/repository/peakClimbing_repository";
+import { useGetAllPackages } from "../../common/hooks/useGetAllPackages";
 
 const TopRatedPackagesController = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -46,38 +43,12 @@ const TopRatedPackagesController = () => {
     fetchTopRatedPackages();
   }, []);
 
-  //fetch all top rated packages
-  const tourRepository = new TourRepository(getToken);
-  const trekkingRepository = new TrekkingRepository(getToken);
-  const expeditionRepository = new ExpeditionRepository(getToken);
-  const peakClimbingRepository = new PeakClimbingRepository(getToken);
   useEffect(() => {
     const fetchAllPackages = async () => {
       try {
         showLoading();
-        const [tours, trekkings, expeditions, peaks] = await Promise.all([
-          tourRepository.getTourPackages(),
-          trekkingRepository.getTrekkingPackages(),
-          expeditionRepository.getExpeditionPackages(),
-          peakClimbingRepository.getPeakClimbingPackages(),
-        ]);
-
-        const allPackages = [
-          ...tours.data,
-          ...trekkings.data,
-          ...expeditions.data,
-          ...peaks.data,
-        ];
-
-        const uniquePackages = Array.from(
-          new Map(
-            allPackages.map((pkg) => [
-              pkg._id,
-              { _id: pkg._id, title: pkg.title },
-            ])
-          ).values()
-        );
-        setPackageList(uniquePackages);
+        const result = await useGetAllPackages(getToken);
+        setPackageList(result);
       } catch (error) {
         notify({
           type: "error",
@@ -87,7 +58,7 @@ const TopRatedPackagesController = () => {
         hideLoading();
       }
     };
-
+    fetchAllPackages();
     fetchAllPackages();
   }, [topRatedPackageList]);
 
@@ -100,7 +71,7 @@ const TopRatedPackagesController = () => {
     setTopRatedPackage(item);
     setModalOpen(true);
     setIdToUpdate(item?._id);
-    setImage(null);
+    // setImage(null);
   };
 
   const onDeleteButtonClick = (item) => {
@@ -204,7 +175,6 @@ const TopRatedPackagesController = () => {
         onClose={() => {
           setModalOpen(false);
           setTopRatedPackage({});
-          setImage(null);
         }}
         handleSubmit={handleSubmit}
         packageList={packageList}

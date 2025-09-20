@@ -7,10 +7,7 @@ import TrendingPackageRepository from "../repository/trendingPackage_repository"
 import TrendingPackagesView from "../view/trendingPackages_view";
 import TrendingPackagesViewModel from "../components/trendingPackages_view_model";
 import TrendingPackagesAddModel from "../components/trendingPackage_add_model";
-import TourRepository from "../../tours/repository/tour_repository";
-import TrekkingRepository from "../../trekkings/repository/trekking_repository";
-import ExpeditionRepository from "../../expeditions/repository/expedition_repository";
-import PeakClimbingRepository from "../../peak climbings/repository/peakClimbing_repository";
+import {  useGetAllPackages } from "../../common/hooks/useGetAllPackages";
 
 const TrendingPackagesController = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -47,37 +44,13 @@ const TrendingPackagesController = () => {
   }, []);
 
   //fetch all top rated packages
-  const tourRepository = new TourRepository(getToken);
-  const trekkingRepository = new TrekkingRepository(getToken);
-  const expeditionRepository = new ExpeditionRepository(getToken);
-  const peakClimbingRepository = new PeakClimbingRepository(getToken);
+
   useEffect(() => {
     const fetchAllPackages = async () => {
       try {
         showLoading();
-        const [tours, trekkings, expeditions, peaks] = await Promise.all([
-          tourRepository.getTourPackages(),
-          trekkingRepository.getTrekkingPackages(),
-          expeditionRepository.getExpeditionPackages(),
-          peakClimbingRepository.getPeakClimbingPackages(),
-        ]);
-
-        const allPackages = [
-          ...tours.data,
-          ...trekkings.data,
-          ...expeditions.data,
-          ...peaks.data,
-        ];
-
-        const uniquePackages = Array.from(
-          new Map(
-            allPackages.map((pkg) => [
-              pkg._id,
-              { _id: pkg._id, title: pkg.title },
-            ])
-          ).values()
-        );
-        setPackageList(uniquePackages);
+        const result = await useGetAllPackages(getToken);
+        setPackageList(result);
       } catch (error) {
         notify({
           type: "error",
@@ -87,7 +60,6 @@ const TrendingPackagesController = () => {
         hideLoading();
       }
     };
-
     fetchAllPackages();
   }, [trendingPackageList]);
 
@@ -164,7 +136,6 @@ const TrendingPackagesController = () => {
     setOpenedView(true);
     setTrendingPackage(item);
   };
-
 
   const columns = [
     { label: "Destination", accessor: "destinationIds" },

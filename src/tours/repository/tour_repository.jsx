@@ -37,7 +37,6 @@ class TourRepository {
   async getTourPackages() {
     try {
       const response = await this.AxiosService.get("/api/getTourPackages");
-
       if (response.status >= 200 || response.status < 300) {
         return {
           data: response.data.data,
