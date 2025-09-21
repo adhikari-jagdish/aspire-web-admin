@@ -107,10 +107,10 @@ const AboutUsController = () => {
       return;
     }
 
-     if (formData.title.trim().length > 25){
+     if (formData.title.trim().length > 150){
       notify({
         type: "error",
-        message: "Title must be 25 characters or fewer.",
+        message: "Title must be 150 characters or fewer.",
       });
       return;
     }

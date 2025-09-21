@@ -13,8 +13,8 @@ export const CommonReviewBlogValidator = (formData, tempDiv, image) => {
   if(!image) {
     return { valid: false, message: "Image is required"}
   }
-  if(formData.postedBy.trim().length > 25){
-    return { valid: false, message: "Posted By must be 25 characters or fewer."}
+  if(formData.postedBy.trim().length > 150){
+    return { valid: false, message: "Posted By must be 150 characters or fewer."}
   }
    if(tempDiv.textContent.trim().length > 5000){
     return { valid: false, message: "Description must be 5000 characters or fewer."}

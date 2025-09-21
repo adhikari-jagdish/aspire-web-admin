@@ -124,7 +124,7 @@ const CustomTable = ({
                             <span className="w-[250px]">
                               {item[col.accessor]?.title || "N/A"}
                             </span>
-                          ) : col.accessor === "description" ? (
+                          ) : (col.accessor === "description" || "overview") ? (
                             <SafeHtml html={item[col.accessor]} />
                         ) : (
                             <span className="line-clamp-3 overflow-hidden">

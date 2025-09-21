@@ -7,10 +7,21 @@ import {
   Textarea,
   Stack,
   Menu,
+  Title,
 } from "@mantine/core";
 import ImagePicker from "../../common/common_view_components/image_picker";
-import { IconPlus, IconTrash } from "@tabler/icons-react";
-import { NumbersOnlyValidator, TextOnlyValidator } from "../../common/hooks/common_inputField_validator";
+import {  IconPlus, IconTrash } from "@tabler/icons-react";
+import {
+  NumbersOnlyValidator,
+  TextOnlyValidator,
+} from "../../common/hooks/common_inputField_validator";
+import { useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import Strike from "@tiptap/extension-strike";
+import TextStyle from "@tiptap/extension-text-style";
+import Color from "@tiptap/extension-color";
+import { RichTextEditor } from "@mantine/tiptap";
 
 const HotelAddEditModel = ({
   opened,
@@ -42,6 +53,16 @@ const HotelAddEditModel = ({
   const [DestinationCategory, setDestinationCategory] = useState("");
 
   const destinaton = hotel.destinationId;
+  const overviewValue = formData.overview;
+  //Inclusion editor
+  const overviewEditor = useEditor({
+    extensions: [StarterKit, Underline, Strike, TextStyle, Color],
+    content: overviewValue || "",
+    onUpdate({ editor }) {
+      const html = editor.getHTML();
+      setFormData({ ...formData, overview: html });
+    },
+  });
 
   useEffect(() => {
     if (isEditHotel && opened) {
@@ -81,16 +102,15 @@ const HotelAddEditModel = ({
 
   const handleChange = (e) => {
     NumbersOnlyValidator(e);
-    const {name, value} = e.target;
+    const { name, value } = e.target;
 
-    if(name === "rating"){
+    if (name === "rating") {
       const isValid = /^\d{0,1}(\.\d{0,1})?$/.test(value);
       const num = Number(value);
-      if(isValid && num < 10){
-        setFormData({...formData, [name]: value})
+      if (isValid && num < 10) {
+        setFormData({ ...formData, [name]: value });
       }
     } else {
-
       setFormData({ ...formData, [e.target.name]: e.target.value });
     }
   };
@@ -132,23 +152,29 @@ const HotelAddEditModel = ({
     }));
   };
 
- 
+  useEffect(() => {
+    if (overviewEditor && overviewValue !== overviewEditor.getHTML()) {
+      overviewEditor.commands.setContent(overviewValue, false);
+    }
+  }, [overviewEditor, overviewValue]);
+
+  console.log({ formData });
 
   return (
     <Modal
       opened={opened}
       onClose={onClose}
       title={isEditHotel ? "Edit Hotel" : "Add Hotel"}
-       styles={{
-          title: {
-            fontSize: "34px",
-            color: "#0890cf",
-            fontWeight: 700,
-          },
-          content: {
-            scrollbarWidth: "none",
-          },
-        }}
+      styles={{
+        title: {
+          fontSize: "34px",
+          color: "#0890cf",
+          fontWeight: 700,
+        },
+        content: {
+          scrollbarWidth: "none",
+        },
+      }}
       centered
     >
       <div className="flex flex-col">
@@ -204,14 +230,50 @@ const HotelAddEditModel = ({
         onWheel={(e) => e.target.blur()}
       />
 
-      <TextInput
+      {/* <TextInput
         label="Overview"
         placeholder="Enter Overview"
         name="overview"
         value={formData.overview}
         onChange={handleChange}
         required
-      />
+      /> */}
+      <Title
+        order={6}
+        mt={20}
+        mb={10}
+        ta="left"
+        c="dark"
+        className="flex flex-col"
+      >
+        Overview
+      </Title>
+
+      <RichTextEditor
+        editor={overviewEditor}
+        className="border border-gray-500 rounded"
+      >
+        <RichTextEditor.Toolbar sticky stickyOffset={60}>
+          <RichTextEditor.ControlsGroup>
+            <RichTextEditor.Bold />
+            <RichTextEditor.Italic />
+            <RichTextEditor.Underline />
+          </RichTextEditor.ControlsGroup>
+
+          <RichTextEditor.ControlsGroup>
+            <RichTextEditor.H1 />
+            <RichTextEditor.H2 />
+            <RichTextEditor.H3 />
+          </RichTextEditor.ControlsGroup>
+
+          <RichTextEditor.ControlsGroup>
+            <RichTextEditor.BulletList />
+            <RichTextEditor.OrderedList />
+          </RichTextEditor.ControlsGroup>
+        </RichTextEditor.Toolbar>
+
+        <RichTextEditor.Content className="h-[200px] [&_ul]:list-disc [&_ol]:list-decimal overflow-y-scroll" />
+      </RichTextEditor>
 
       <div className="flex flex-col">
         <label htmlFor="hotelCategory" className="font-medium text-[15px]">
@@ -226,14 +288,13 @@ const HotelAddEditModel = ({
           onChange={handleChange}
         >
           <option value=""> Select Category </option>
+          <option value="5 star">5 Star</option>
+          <option value="4 star">4 Star</option>
+          <option value="3 star">3 Star</option>
           <option value="budget">Budget</option>
-          <option value="standard">Standard</option>
-          <option value="deluxe">Deluxe</option>
-          <option value="luxury">Luxury</option>
-          <option value="boutique">Boutique</option>
-          <option value="resort">Resort</option>
+          <option value="apartment">Apartment</option>
           <option value="hostel">Hostel</option>
-          <option value="apartment">Serviced Apartment</option>
+          <option value="farmHouse">Farm House</option>
         </select>
       </div>
 
@@ -265,14 +326,12 @@ const HotelAddEditModel = ({
               <TextInput
                 label="NPR"
                 value={rateItem.rateInNPR}
-                onChange={(e) =>
-                    {
-                    const value = e.target.value;
-                    if(/^\d{0,5}$/.test(value)){
-                      handleRateChange(idx, "rateInNPR", value)
-                    }
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^\d{0,5}$/.test(value)) {
+                    handleRateChange(idx, "rateInNPR", value);
                   }
-                }
+                }}
                 placeholder="Enter Rate in NPR"
                 name="rateInNPR"
                 required
@@ -284,14 +343,12 @@ const HotelAddEditModel = ({
               <TextInput
                 label="USD"
                 value={rateItem.rateInUSD}
-                onChange={(e) =>
-                  {
-                    const value = e.target.value;
-                    if(/^\d{0,5}$/.test(value)){
-                      handleRateChange(idx, "rateInUSD", value)
-                    }
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^\d{0,5}$/.test(value)) {
+                    handleRateChange(idx, "rateInUSD", value);
                   }
-                }
+                }}
                 placeholder="Enter Rate in USD"
                 name="rateInUSD"
                 onKeyDown={NumbersOnlyValidator}
@@ -303,14 +360,12 @@ const HotelAddEditModel = ({
                 label="INR"
                 value={rateItem.rateInINR}
                 onKeyDown={NumbersOnlyValidator}
-                onChange={(e) =>
-                    {
-                    const value = e.target.value;
-                    if(/^\d{0,5}$/.test(value)){
-                      handleRateChange(idx, "rateInINR", value)
-                    }
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^\d{0,5}$/.test(value)) {
+                    handleRateChange(idx, "rateInINR", value);
                   }
-                }
+                }}
                 placeholder="Enter Rate in INR"
                 name="rateInINR"
                 required

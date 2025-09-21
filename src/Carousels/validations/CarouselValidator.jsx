@@ -5,8 +5,8 @@ export const CarouselValidator = (formData, image) => {
     if(!image){
         return { valid: false, message: "Image is required."}
     }
-    if(formData.title.trim().length > 25){
-        return { valid: false, message: "Title must be 25 characters or fewer."}
+    if(formData.title.trim().length > 150){
+        return { valid: false, message: "Title must be 150 characters or fewer."}
     }
      if(formData.description.trim().length > 500){
         return { valid: false, message: "Description must be 500 characters or fewer."}

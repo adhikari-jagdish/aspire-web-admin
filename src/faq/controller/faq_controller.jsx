@@ -92,16 +92,10 @@ const FaqController = () => {
     if (!formData.title) {
       notify({ type: "error", message: "Title is required." });
       return;
-    } else if (formData.title.length < 10) {
+    } else if (formData.title.length > 150) {
       notify({
         type: "error",
-        message: "Title must be at least 10 characters.",
-      });
-      return;
-    }else if (formData.title.length > 40) {
-      notify({
-        type: "error",
-        message: "Title must be at least 40 characters.",
+        message: "Title must be at least 150 characters or fewer.",
       });
       return;
     }

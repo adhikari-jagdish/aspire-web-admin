@@ -10,8 +10,8 @@ export const VehicleValidator = (formData, image, isEditVehicle) => {
     return { valid: false, message: "All fields are required!" };
   }
 
-  if (trimmedTitle.length > 25) {
-    return { valid: false, message: "Title must be 25 characters or fewer." };
+  if (trimmedTitle.length > 150) {
+    return { valid: false, message: "Title must be 150 characters or fewer." };
   }
 
   if (trimmedDescription.length > 5000) {

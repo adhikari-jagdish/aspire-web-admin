@@ -78,6 +78,13 @@ const FaqTitlesController = () => {
 
   const handleSubmit = async (formData) => {
     showLoading();
+     if (formData.title.length > 150) {
+      notify({
+        type: "error",
+        message: "Title must be at least 150 characters or fewer.",
+      });
+      return;
+    }
     const fD = new FormData();
     fD.append("file", formData.icon);
     fD.append("title", formData.title);

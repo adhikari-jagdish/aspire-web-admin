@@ -1,4 +1,5 @@
 import { Image, Modal, Stack, Text, Title } from "@mantine/core";
+import SafeHtml from "../../common/common_view_components/safeHtml";
 
 const HotelViewModel = ({ openedView, onClose, hotel }) => {
   const destination =  hotel.destinationId;
@@ -36,7 +37,8 @@ const HotelViewModel = ({ openedView, onClose, hotel }) => {
            <Title style={{ fontWeight: "500", fontSize: "15px" }} order={4}>
             Overview
           </Title>
-          <Text inherit>{hotel?.overview}</Text>
+          
+          <Text inherit><SafeHtml html={hotel?.overview} /></Text>
 
            <Title style={{ fontWeight: "500", fontSize: "15px" }} order={4}>
             Hotel Category

@@ -16,8 +16,8 @@ export const HotelValidator = (formData, image) => {
   if (!image) {
       return { valid: false, message: "Image is required."}
   }
-  if (formData.title.trim().length > 25) {
-      return { valid: false, message: "Title must be 25 characters or fewer."}
+  if (formData.title.trim().length > 500) {
+      return { valid: false, message: "Title must be 500 characters or fewer."}
   }
 
   if (formData.city.trim().length > 35) {
