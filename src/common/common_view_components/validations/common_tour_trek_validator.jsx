@@ -59,7 +59,7 @@ export const FieldValidator = (formData, image, mapImage, isMapImage) => {
   }
 
   for (let item of formData.itinerary) {
-     if (item.dayAndTitle.trim().length > 60) {
+     if (item.title.trim().length > 60) {
       
        return { valid: false,  message: "Itineray title must be 60 characters or fewer."}
     

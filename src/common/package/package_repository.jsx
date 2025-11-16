@@ -1,15 +1,15 @@
-import AxiosService from "../../common/service/axios_service";
+import AxiosService from "../service/axios_service";
 
-class ExpeditionRepository {
+class PackageRepository {
   constructor(getToken) {
     this.AxiosService = new AxiosService(getToken); // Pass getToken to AxiosService
   }
 
-  //Function to add a new tour package
-  async createExpeditionPackage(formData) {
+  //Function to add a package
+  async createPackage(formData) {
     try {
       const response = await this.AxiosService.post(
-        "/api/createExpeditionPackage",
+        "/api/createPackage",
         formData
       );
 
@@ -34,9 +34,9 @@ class ExpeditionRepository {
   }
 
   //Function to get all tour packages
-  async getExpeditionPackages() {
+  async getPackages() {
     try {
-      const response = await this.AxiosService.get("/api/getExpeditionPackages");
+      const response = await this.AxiosService.get("/api/getPackages");
 
       if (response.status >= 200 || response.status < 300) {
         return {
@@ -58,10 +58,34 @@ class ExpeditionRepository {
     }
   }
 
-   //Function to get  tour package by id
-  async getExpeditionPackageById(expeditionPackageId) {
+    async getPackagesByType(packageType) {
     try {
-      const response = await this.AxiosService.get("/api/getExpeditionPackageById/"+expeditionPackageId);
+      const response = await this.AxiosService.get(`/api/getPackagesByType?packageType=${packageType}`);
+
+      if (response.status >= 200 || response.status < 300) {
+        return {
+          data: response.data.data,
+          message: response.data.message,
+        };
+      }
+      throw new Error(response.data.message || "Oops! Something went wrong!");
+    } catch (error) {
+      if (error.response) {
+        // Server responded with a status other than 2xx
+        throw new Error(
+          error.response.data.message || "Oops! Something went wrong!"
+        );
+      } else if (error.request) {
+        throw new Error("Oops! Failed to connect to the server");
+      }
+      throw new Error("Oops! Something went wrong!");
+    }
+  }
+
+   //Function to get  package by id
+  async getPackageById(packageId) {
+    try {
+      const response = await this.AxiosService.get("/api/getPackageById/"+packageId);
 
       if (response.status >= 200 || response.status < 300) {
         return {
@@ -84,9 +108,9 @@ class ExpeditionRepository {
   }
 
    //Function to get  tour package by destination id
-  async getExpeditionPackagesByDestinationId(destinationId) {
+  async getPackagesByDestinationId(destinationId) {
     try {
-      const response = await this.AxiosService.get("/api/getExpeditionPackagesByDestinationId/"+destinationId);
+      const response = await this.AxiosService.get("/api/getPackagesByDestinationId/"+destinationId);
 
       if (response.status >= 200 || response.status < 300) {
         return {
@@ -109,9 +133,9 @@ class ExpeditionRepository {
   }
 
    //Function to get  tour package by travelTheme id
-  async getExpeditionPackagesByTravelThemeId(travelThemeId) {
+  async getPackagesByTravelThemeId(travelThemeId) {
     try {
-      const response = await this.AxiosService.get("/api/getExpeditionPackagesByTravelThemeId/"+travelThemeId);
+      const response = await this.AxiosService.get("/api/getPackagesByTravelThemeId/"+travelThemeId);
 
       if (response.status >= 200 || response.status < 300) {
         return {
@@ -133,9 +157,9 @@ class ExpeditionRepository {
     }
   }
 
-  async updateExpeditionPackage(formData, expeditionPackageId) {
+  async updatePackage(formData, packageId) {
     try {
-      const response = await this.AxiosService.put("/api/updateExpeditionPackage/"+expeditionPackageId, formData);
+      const response = await this.AxiosService.put("/api/updatePackage/"+packageId, formData);
 
       if (response.status >= 200 || response.status < 300) {
         return {
@@ -158,9 +182,9 @@ class ExpeditionRepository {
   }
 
      //Function to delete  tour package by  id
-  async deleteExpeditionPackage(expeditionPackageId) {
+  async deletePackage(packageId) {
     try {
-      const response = await this.AxiosService.delete("/api/deleteExpeditionPackage/"+expeditionPackageId);
+      const response = await this.AxiosService.delete("/api/deletePackage/"+packageId);
 
       if (response.status >= 200 || response.status < 300) {
         return {
@@ -184,4 +208,4 @@ class ExpeditionRepository {
   
 }
 
-export default ExpeditionRepository;
+export default PackageRepository;

@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { Title } from "@mantine/core";
 import { useNotification } from "../hooks/useNotification";
 
-const Destinations = ({ name, value, onChange, isEditTrekking }) => {
+const Destinations = ({ name, value, onChange, isEditTrekking, isEditPeakClimbing }) => {
+  console.log({value})
   const [destinationList, setDestinationList] = useState([]);
   const [selectedDestinations, setSelectedDestinations] = useState([]);
   const { getToken } = useAuth();
@@ -31,7 +32,7 @@ const Destinations = ({ name, value, onChange, isEditTrekking }) => {
 
   const handleChange = (id) => {
     let updated;
-    if (isEditTrekking) {
+    if (isEditTrekking || isEditPeakClimbing) {
       updated = purifiedDestinationIds.includes(id)
         ? purifiedDestinationIds.filter((p) => p !== id)
         : [...purifiedDestinationIds, id];

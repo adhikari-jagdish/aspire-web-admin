@@ -47,7 +47,9 @@ const CommonItineraryViewComponent = ({ sectionsRef, itineraryData, parentName }
           key={idx}
           className="bg-blue-50 p-2 flex flex-col  rounded border border-dotted border-gray-400"
         >
-          <strong>{day.dayAndTitle}</strong> <br />
+          <div className="flex gap-2">
+            <strong>Day {idx < 9 ? `0${idx + 1}`: idx}</strong> : <span>{day.title}</span>
+          </div> <br />
           <div className="space-x-4 flex text-[#0890cf]">
             {day?.itineraryFactors?.map((factor, idx) => (
               <div className="flex gap-2">

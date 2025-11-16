@@ -17,7 +17,8 @@ const CustomTable = ({
   shouldShowDelete = false,
   destinationList,
 }) => {
-  console.log({ data });
+  console.log({data})
+  console.log({destinationList})
   const safeColumns = Array.isArray(columns) ? columns : [];
   return (
     <Box
@@ -101,7 +102,7 @@ const CustomTable = ({
                                 </ul>
                               ))}
                             </div>
-                          ) : col.accessor === "destinationId" ? (
+                          ) : (col.accessor === "destinationId") ? (
                             <span className="w-[250px]">
                               {destinationList?.find(
                                 (d) => d._id === item.destinationId
