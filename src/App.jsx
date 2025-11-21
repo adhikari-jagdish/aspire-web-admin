@@ -27,6 +27,7 @@ import VehicleController from "./vehicle/controller/vehicles_controller";
 import ServiceReviewsController from "./service review/controller/serviceReviews_controller";
 import VehicleBookingsController from "./vehicle_booking/controller/vehicle_bookings_controller";
 import VehiclesController from "./vehicle/controller/vehicles_controller";
+import BookingsController from "./bookings/controller/bookings_controller";
 
 function App() {
   return (
@@ -67,6 +68,7 @@ function App() {
           <Route path="/about" element={<AboutUsController />} />
           <Route path="/vehicles" element={<VehiclesController />} />
           <Route path="/contact" element={<ContactView />} />
+          <Route path="/bookings" element={<BookingsController />} />
           <Route
             path="/service-review"
             element={<ServiceReviewsController />}
