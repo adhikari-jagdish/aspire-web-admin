@@ -8,6 +8,7 @@ const DestinationViewModel = ({ openedView, onClose, destination }) => {
       onClose={onClose}
       title="View Destination"
       centered
+      size={'full'}
       style={{ fontSize: "15px" }}
       styles={{
          title: {
