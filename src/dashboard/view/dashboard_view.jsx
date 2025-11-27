@@ -2,7 +2,6 @@ import { AppShell, Card, Text, Grid, Container } from "@mantine/core";
 import Header from "../components/header";
 import SideNav from "../components/side_nav";
 import Footer from "../components/footer";
-import HomeView from "./home_view";
 import { Outlet } from "react-router-dom";
 
 const DashboardView = () => {

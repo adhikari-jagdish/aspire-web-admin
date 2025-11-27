@@ -28,6 +28,7 @@ import ServiceReviewsController from "./service review/controller/serviceReviews
 import VehicleBookingsController from "./vehicle_booking/controller/vehicle_bookings_controller";
 import VehiclesController from "./vehicle/controller/vehicles_controller";
 import BookingsController from "./bookings/controller/bookings_controller";
+import HomeController from "./dashboard/controller/home_controller";
 
 function App() {
   return (
@@ -36,7 +37,7 @@ function App() {
         <Route path="/login" element={<AuthController />} />
 
         <Route path="/" element={<DashboardController />}>
-          <Route index path="home" element={<HomeView />} />
+          <Route index path="home" element={<HomeController />} />
           <Route path="destinations" element={<DestinationsController />} />
           <Route path="travelThemes" element={<TravelThemesController />} />
           <Route path="hotels" element={<HotelsController />} />
