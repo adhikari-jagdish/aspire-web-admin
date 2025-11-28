@@ -8,7 +8,7 @@ const DestinationViewModel = ({ openedView, onClose, destination }) => {
       onClose={onClose}
       title="View Destination"
       centered
-      size={'full'}
+      size={'xl'}
       style={{ fontSize: "15px" }}
       styles={{
          title: {
@@ -41,17 +41,21 @@ const DestinationViewModel = ({ openedView, onClose, destination }) => {
           </Text>
 
           {destination?.image && (
-            <>
-              <Title style={{ fontWeight: "500", fontSize: "15px" }} order={4}>
+           <>
+               <Title style={{ fontWeight: "500", fontSize: "15px" }} order={4}>
                 Image
               </Title>
+            <div className="flex flex-col items-center">
               <Image
                 src={destination.image}
                 alt="Destination"
-                readius="md"
+                readius="lg"
                 withPlaceHolder
+                w={500}
+                
               />
-            </>
+            </div>
+           </>
           )}
         </Stack>
       ) : (

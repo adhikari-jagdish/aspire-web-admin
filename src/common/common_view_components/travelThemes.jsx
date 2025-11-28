@@ -4,7 +4,7 @@ import { Title } from "@mantine/core";
 import useAuth from "../../auth/components/use_auth";
 import { useNotification } from "../hooks/useNotification";
 
-const TravelThemes = ({ name, value, onChange, isEditPeakClimbing }) => {
+const TravelThemes = ({ name, value, onChange, isEditPeakClimbing, isEditTrekking }) => {
   const [travelThemeList, setTravelThemeList] = useState([]);
   const [selectedTravelThemes, setSelectedTravelThemes] = useState([]);
   const { getToken } = useAuth();

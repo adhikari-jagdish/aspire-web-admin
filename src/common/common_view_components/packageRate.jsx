@@ -18,10 +18,10 @@ const initialRate = {
 };
 
 const currencyFields = [
-  { label: "NPR", name: "rateInNPR" },
+  // { label: "NPR", name: "rateInNPR" },
   { label: "USD", name: "rateInUSD" },
   { label: "INR", name: "rateInINR" },
-  { label: "EUR", name: "rateInEUR" },
+  // { label: "EUR", name: "rateInEUR" },
 ];
 
 const PackageRate = ({ name, value, onChange, isEditTour, isEditTrekking, isEditExpedition, isEditPeakClimbing }) => {
