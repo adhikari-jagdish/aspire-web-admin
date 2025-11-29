@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useNotification } from "../hooks/useNotification";
 // import Hotels from "./hotels";
 // import MealPlan from "./mealPlan";
-import HotelAndMealPlan from "./hotel-mealPlan";
 
 const ItineraryFactors = [
   "Trek Distance",
@@ -168,7 +167,6 @@ const Itinerary = ({
     onChange({ target: { name, value: updatedItineraries } });
   };
 
-  console.log({ itineraries });
   return (
     <div className="">
       <div className=" flex justify-between items-center ">

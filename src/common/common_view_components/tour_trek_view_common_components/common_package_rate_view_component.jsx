@@ -17,27 +17,27 @@ const CommonPackageRateViewComponent = ({ sectionsRef, packageRateList }) => {
             <table className="w-full text-sm text-left text-gray-700">
               <thead className="bg-gray-50 border-b">
                 <tr>
-                  <th className="px-4 py-2 border-r">NPR</th>
+                  {/* <th className="px-4 py-2 border-r">NPR</th> */}
                   <th className="px-4 py-2 border-r">INR</th>
-                  <th className="px-4 py-2 border-r">USD</th>
-                  <th className="px-4 py-2">EUR</th>
+                  <th className="px-4 py-2 ">USD</th>
+                  {/* <th className="px-4 py-2">EUR</th> */}
                 </tr>
               </thead>
               <tbody>
                 <tr className="bg-white hover:bg-gray-50 transition text-md">
-                  <td className="px-4 py-2 border-r">
+                  {/* <td className="px-4 py-2 border-r">
                     <strong className="text-sm">Rs.</strong> {p.rateInNPR}
-                  </td>
-                  <td className="px-4 py-2 border-r ">
+                  </td> */}
+                  <td className="px-4 py-2 border-r">
                     <strong className="text-sm">₹ </strong>
                     {p.rateInINR}
                   </td>
-                  <td className="px-4 py-2 border-r">
+                  <td className="px-4 py-2 ">
                     <strong className="text-sm">$</strong> {p.rateInUSD}
                   </td>
-                  <td className="px-4 py-2">
+                  {/* <td className="px-4 py-2">
                     <strong className="text-sm">€</strong> {p.rateInEUR}
-                  </td>
+                  </td> */}
                 </tr>
               </tbody>
             </table>
