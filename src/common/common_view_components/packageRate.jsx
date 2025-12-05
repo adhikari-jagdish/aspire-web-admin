@@ -135,7 +135,7 @@ const PackageRate = ({ name, value, onChange, isEditTour, isEditTrekking, isEdit
                       value={p[name] === 0 ? "" : p[name] || ""}
                       onChange={(e) => {
                         const value = e.target.value;
-                       if(/^\d{0,5}$/.test(value)){
+                       if(/^\d{0,7}$/.test(value)){
                          handleUpdate(
                           idx,
                           name,

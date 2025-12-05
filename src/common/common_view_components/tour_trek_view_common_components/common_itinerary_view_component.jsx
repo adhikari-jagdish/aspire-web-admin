@@ -5,39 +5,39 @@ import { useNotification } from "../../hooks/useNotification";
 import { FaBed } from "react-icons/fa6";
 import { FaUtensils } from "react-icons/fa";
 
-const mealPlan = [
-  { key: "EP", value: "EP - Room only" },
-  { key: "CP", value: "CP - Room and Breakfast only " },
-  { key: "MAP", value: "MAP - Room, Breakfast and Dinner" },
-  { key: "AP", value: "AP - Room, Breakfast, Lunch and Dinner" },
-  {
-    key: "JP",
-    value: "JP - Room, Breakfast, Lunch and Dinner + Jungle Activities ",
-  },
-];
+// const mealPlan = [
+//   { key: "EP", value: "EP - Room only" },
+//   { key: "CP", value: "CP - Room and Breakfast only " },
+//   { key: "MAP", value: "MAP - Room, Breakfast and Dinner" },
+//   { key: "AP", value: "AP - Room, Breakfast, Lunch and Dinner" },
+//   {
+//     key: "JP",
+//     value: "JP - Room, Breakfast, Lunch and Dinner + Jungle Activities ",
+//   },
+// ];
 
 const CommonItineraryViewComponent = ({ sectionsRef, itineraryData, parentName }) => {
-  const [hotelList, setHotelList] = useState([]);
+  // const [hotelList, setHotelList] = useState([]);
 
-    const { getToken } = useAuth();
-    const notify = useNotification();
-    const hotelRepository = new HotelRepository(getToken);
-  useEffect(() => {
-    //get all hotels
-    const fetchHotels = async () => {
-      try {
-        const hotelResponse = await hotelRepository.getHotels();
-        setHotelList(hotelResponse.data);
-      } catch (error) {
-        notify({
-          type: "error",
-          message: error.message ?? "Something went wrong. Please try again.",
-        });
-      }
-    };
-    fetchHotels();
+    // const { getToken } = useAuth();
+    // const notify = useNotification();
+    // const hotelRepository = new HotelRepository(getToken);
+  // useEffect(() => {
+  //   //get all hotels
+  //   const fetchHotels = async () => {
+  //     try {
+  //       const hotelResponse = await hotelRepository.getHotels();
+  //       setHotelList(hotelResponse.data);
+  //     } catch (error) {
+  //       notify({
+  //         type: "error",
+  //         message: error.message ?? "Something went wrong. Please try again.",
+  //       });
+  //     }
+  //   };
+  //   fetchHotels();
 
-  }, []);
+  // }, []);
 
   
   return (
@@ -65,12 +65,12 @@ const CommonItineraryViewComponent = ({ sectionsRef, itineraryData, parentName }
             
           </div>
            <div className="mt-4">{day.details}</div> <br />
-          <div className="flex items-center gap-2" >
+          {/* <div className="flex items-center gap-2" >
           
              <span className="flex items-center justify-center gap-2"><FaBed color="#0890cf" size={18}/>{parentName === "expeditions" ? day?.hotelAndMealPlan?.hotel :  hotelList.find(h => h._id === day?.hotelAndMealPlan?.hotel)?.title}</span> | &nbsp;
              
          <span  className="flex items-center justify-center gap-2"> <FaUtensils color="#0890cf" size={18}/>  {mealPlan.find(m => m.key === day?.hotelAndMealPlan?.mealPlan)?.value}</span>
-          </div>
+          </div> */}
            {/* <span>Details: </span> */}
         </li>
       ))}
