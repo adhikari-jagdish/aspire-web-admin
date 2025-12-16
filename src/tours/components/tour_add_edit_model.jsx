@@ -77,7 +77,6 @@ const ToursAddEditModel = ({
 
    
 
-  console.log({formData})
   return (
       <Modal
         opened={opened}
