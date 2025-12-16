@@ -17,9 +17,8 @@ const CustomTable = ({
   shouldShowDelete = false,
   destinationList,
 }) => {
-  console.log({data})
-  console.log({destinationList})
   const safeColumns = Array.isArray(columns) ? columns : [];
+  console.log(data)
   return (
     <Box
       style={{
@@ -125,7 +124,13 @@ const CustomTable = ({
                             <span className="w-[250px]">
                               {item[col.accessor]?.title || "N/A"}
                             </span>
-                          ) : (col.accessor === "description" || "overview") ? (
+                          ) :
+                          col.accessor === "videoUrl" ? (
+                            <video className="w-[250px]" >
+                              <source src={item[col.accessor] || "N/A"} />
+                            </video>
+                          ) :
+                           (col.accessor === "description" || "overview") ? (
                             <SafeHtml html={item[col.accessor]} title={'description'}/>
                         ) : (
                             <span className="line-clamp-3 overflow-hidden">

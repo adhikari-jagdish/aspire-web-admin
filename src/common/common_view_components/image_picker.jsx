@@ -103,6 +103,7 @@ const ImagePicker = ({
           onDrop={handleDrop}
           accept={["image/*"]}
           maxFiles={1}
+          loading
           multiple={false}
           className={`border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-blue-500 transition-colors cursor-pointer 
         }`}
