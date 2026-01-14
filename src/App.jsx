@@ -16,6 +16,11 @@ import ToursController from "./tours/controller/tours_controller";
 import TripHighLightsController from "./trip highlights/controller/tripHighlights_controller";
 import TrekkingsController from "./trekkings/controller/trekkings_controller";
 import ExpeditionsController from "./expeditions/controller/expeditions_controller";
+import ReviewsController from "./reviews/controller/reviews_controller";
+import BlogsController from "./blogs/controller/blogs_controller";
+import FaqController from "./faq/controller/faq_controller";
+import VehiclesController from "./vehicle/controller/vehicles_controller";
+import VehicleBookingsController from "./vehicle_booking/controller/vehicle_bookings_controller";
 
 function App() {
   return (
@@ -34,8 +39,16 @@ function App() {
           <Route path="triphighlights" element={<TripHighLightsController />} />
           <Route path="trekkings" element={<TrekkingsController />} />
           <Route path="expeditions" element={<ExpeditionsController />} />
+          <Route path="reviews" element={<ReviewsController />} />
+          <Route path="blogs" element={<BlogsController />} />
+          <Route path="vehicles" element={<VehiclesController />} />
+          <Route
+            path="vehiclebookings"
+            element={<VehicleBookingsController />}
+          />
           <Route path="peakClimbings" element={<PeakClimbingsView />} />
           <Route path="adventures" element={<AdventuresView />} />
+          <Route path="faqs" element={<FaqController />} />
 
           <Route path="/about" element={<AboutView />} />
           <Route path="/contact" element={<ContactView />} />
