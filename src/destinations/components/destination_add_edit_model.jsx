@@ -26,6 +26,7 @@ const DestinationAddEditModel = ({
     description: "",
     image: null
   });
+  
   useEffect(() => {
     if (isEditDestination && opened) {
       setFormData({
