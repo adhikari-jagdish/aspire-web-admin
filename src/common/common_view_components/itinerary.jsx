@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useNotification } from "../hooks/useNotification";
 // import Hotels from "./hotels";
 // import MealPlan from "./mealPlan";
-import HotelAndMealPlan from "./hotel-mealPlan";
 
 const ItineraryFactors = [
   "Trek Distance",
@@ -39,7 +38,7 @@ const Itinerary = ({
       Array.isArray(value)
     ) {
       const initialized = value.map((v) => ({
-        dayAndTitle: v.dayAndTitle,
+        title: v.title,
         details: v.details,
         itineraryFactors: v.itineraryFactors,
         hotelAndMealPlan: v.hotelAndMealPlan,
@@ -63,10 +62,10 @@ const Itinerary = ({
       return;
     }
     const newItem = {
-      dayAndTitle: `Day ${itineraries.length + 1}: `,
+      title: "",
       details: "",
       itineraryFactors: [],
-      hotelAndMealPlan: {},
+      // hotelAndMealPlan: {},
     };
     const updated = [...itineraries, newItem];
     setItineraries(updated);
@@ -78,7 +77,7 @@ const Itinerary = ({
       .filter((_, i) => i !== indexToRemove)
       .map((item, idx) => ({
         ...item,
-        dayAndTitle: `Day ${idx + 1}: ${extractTitle(item.dayAndTitle)}`,
+        title: item.title,
       }));
     setItineraries(updated);
     onChange({ target: { name, value: updated } });
@@ -90,7 +89,7 @@ const Itinerary = ({
       const current = { ...updated[index] };
 
       if (field === "title") {
-        current.dayAndTitle = `Day ${index + 1}: ${inputValue}`;
+        current.title = inputValue;
       } else if (field === "details") {
         current.details = inputValue;
       }
@@ -101,10 +100,6 @@ const Itinerary = ({
     });
   };
 
-  const extractTitle = (dayAndTitle) => {
-    const match = dayAndTitle.match(/^Day \d+: (.*)$/);
-    return match ? match[1] : "";
-  };
 
   const handleAddItineraryFactors = (itineraryIdx) => {
     const newFactor = {
@@ -172,7 +167,6 @@ const Itinerary = ({
     onChange({ target: { name, value: updatedItineraries } });
   };
 
-  console.log({ itineraries });
   return (
     <div className="">
       <div className=" flex justify-between items-center ">
@@ -218,7 +212,7 @@ const Itinerary = ({
                     <input
                       type="text"
                       placeholder="Title"
-                      value={extractTitle(item?.dayAndTitle)}
+                      value={item?.title}
                       onChange={(e) =>
                         updateItineraryField(idx, "title", e.target.value)
                       }
@@ -306,7 +300,7 @@ const Itinerary = ({
                     }
                     className="border border-gray-400 text-black w-full rounded p-2 resize-none outline-0"
                   />
-                  <HotelAndMealPlan
+                  {/* <HotelAndMealPlan
                     value={item?.hotelAndMealPlan}
                     onChange={(newData) => {
                       const updated = [...itineraries];
@@ -322,7 +316,7 @@ const Itinerary = ({
                     isEditTour={isEditTour}
                     isEditPeakClimbing={isEditPeakClimbing}
                     isEditExpedition={isEditExpedition}
-                  />
+                  /> */}
                 </div>
 
                 <div className="pl-3">

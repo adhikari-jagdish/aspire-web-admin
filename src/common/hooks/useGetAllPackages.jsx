@@ -1,14 +1,9 @@
-import ExpeditionRepository from "../../expeditions/repository/expedition_repository";
-import PeakClimbingRepository from "../../peak climbings/repository/peakClimbing_repository";
-import TourRepository from "../../tours/repository/tour_repository";
-import TrekkingRepository from "../../trekkings/repository/trekking_repository";
+import PackageRepository from "../package/package_repository";
+
 
 export const useGetAllPackages = async (token) => {
 
-  const tourRepository = new TourRepository(token);
-  const trekkingRepository = new TrekkingRepository(token);
-  const expeditionRepository = new ExpeditionRepository(token);
-  const peakClimbingRepository = new PeakClimbingRepository(token);
+  const packageRepository = new PackageRepository(token);
 
   try {
 
@@ -21,10 +16,10 @@ export const useGetAllPackages = async (token) => {
       }
     };
     const [tours, trekkings, expeditions, peaks] = await Promise.all([
-      safe(tourRepository.getTourPackages()),
-      safe(trekkingRepository.getTrekkingPackages()),
-      safe(expeditionRepository.getExpeditionPackages()),
-      safe(peakClimbingRepository.getPeakClimbingPackages()),
+      safe(packageRepository.getPackagesByType("Tour")),
+      safe(packageRepository.getPackagesByType("Trekking")),
+      safe(packageRepository.getPackagesByType("Expedition")),
+      safe(packageRepository.getPackagesByType("PeakClimbing")),
     ]);
 
     const allPackages = [

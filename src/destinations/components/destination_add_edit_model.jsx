@@ -26,6 +26,7 @@ const DestinationAddEditModel = ({
     description: "",
     image: null
   });
+  
   useEffect(() => {
     if (isEditDestination && opened) {
       setFormData({
@@ -69,7 +70,7 @@ const DestinationAddEditModel = ({
       onClose={onClose}
       title={isEditDestination ? "Edit Destination" : "Add Destination"}
       centered
-      size="xl"
+      size={"100%"}
       styles={{
          title: {
           fontSize: "34px",

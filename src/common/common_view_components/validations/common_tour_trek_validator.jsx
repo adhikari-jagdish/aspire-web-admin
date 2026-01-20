@@ -18,10 +18,10 @@ export const FieldValidator = (formData, image, mapImage, isMapImage) => {
   if (formData.title.trim().length > 150) {
     return { valid: false, message: "Title must be 150 characters or fewer." };
   }
-  if (formData.overview.trim().length > 5000) {
+  if (formData.overview.trim().length > 7000) {
     return {
       valid: false,
-      message: "Overview must be 5000 characters or fewer.",
+      message: "Overview must be 7000 characters or fewer.",
     };
   }
 
@@ -59,9 +59,9 @@ export const FieldValidator = (formData, image, mapImage, isMapImage) => {
   }
 
   for (let item of formData.itinerary) {
-     if (item.dayAndTitle.trim().length > 60) {
+     if (item.title.trim().length > 500) {
       
-       return { valid: false,  message: "Itineray title must be 60 characters or fewer."}
+       return { valid: false,  message: "Itineray title must be 500 characters or fewer."}
     
     }
 

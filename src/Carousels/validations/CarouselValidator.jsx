@@ -14,8 +14,5 @@ export const CarouselValidator = (formData, image) => {
     if(formData.priority > 5 ){
         return { valid: false, message: "Priority must be betwenn 1-5"}
     }
-    if(formData.priority > 5 ){
-        return { valid: false, message: "Priority must be betwenn 1-5"}
-    }
     return { valid: true}
 }

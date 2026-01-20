@@ -4,7 +4,7 @@ import { Title } from "@mantine/core";
 import useAuth from "../../auth/components/use_auth";
 import { useNotification } from "../hooks/useNotification";
 
-const TravelThemes = ({ name, value, onChange }) => {
+const TravelThemes = ({ name, value, onChange, isEditPeakClimbing, isEditTrekking }) => {
   const [travelThemeList, setTravelThemeList] = useState([]);
   const [selectedTravelThemes, setSelectedTravelThemes] = useState([]);
   const { getToken } = useAuth();
@@ -30,11 +30,17 @@ const TravelThemes = ({ name, value, onChange }) => {
   }, []);
 
   const handleChange = (id) => {
-    const updated = value.includes(id)
-      ? value.filter((v) => v !== id)
-      : [...value, id];
-      setSelectedTravelThemes(updated)
-
+    let updated;
+    if (isEditTrekking || isEditPeakClimbing) {
+      updated = purifiedTravelThemeIds.includes(id)
+        ? purifiedTravelThemeIds.filter((p) => p !== id)
+        : [...purifiedTravelThemeIds, id];
+    } else {
+      updated = value?.includes(id)
+        ? value.filter((v) => v !== id)
+        : [...value, id];
+    }
+    setSelectedTravelThemes(updated);
     onChange({ target: { name, value: updated } });
   };
   return (

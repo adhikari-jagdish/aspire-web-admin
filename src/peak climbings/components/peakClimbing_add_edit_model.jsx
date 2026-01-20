@@ -129,11 +129,13 @@ const PeakClimbingsAddEditModel = ({
             name="destinationIds"
             value={formData.destinationIds}
             onChange={handleChange}
+            isEditPeakClimbing={isEditPeakClimbing}
           />
           <TravelThemes
             name="travelThemeIds"
             value={formData.travelThemeIds}
             onChange={handleChange}
+            isEditPeakClimbing={isEditPeakClimbing}
           />
           <TitleDuration
             titleName="title"

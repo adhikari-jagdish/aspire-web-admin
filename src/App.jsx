@@ -27,6 +27,9 @@ import VehicleController from "./vehicle/controller/vehicles_controller";
 import ServiceReviewsController from "./service review/controller/serviceReviews_controller";
 import VehicleBookingsController from "./vehicle_booking/controller/vehicle_bookings_controller";
 import VehiclesController from "./vehicle/controller/vehicles_controller";
+import BookingsController from "./bookings/controller/bookings_controller";
+import HomeController from "./dashboard/controller/home_controller";
+import VideoController from "./video/controller/video_controller";
 
 function App() {
   return (
@@ -35,7 +38,7 @@ function App() {
         <Route path="/login" element={<AuthController />} />
 
         <Route path="/" element={<DashboardController />}>
-          <Route index path="home" element={<HomeView />} />
+          <Route index path="home" element={<HomeController />} />
           <Route path="destinations" element={<DestinationsController />} />
           <Route path="travelThemes" element={<TravelThemesController />} />
           <Route path="hotels" element={<HotelsController />} />
@@ -67,6 +70,8 @@ function App() {
           <Route path="/about" element={<AboutUsController />} />
           <Route path="/vehicles" element={<VehiclesController />} />
           <Route path="/contact" element={<ContactView />} />
+          <Route path="/bookings" element={<BookingsController />} />
+          <Route path="/videos" element={<VideoController />} />
           <Route
             path="/service-review"
             element={<ServiceReviewsController />}

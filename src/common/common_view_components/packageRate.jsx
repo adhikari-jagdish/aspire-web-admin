@@ -18,10 +18,10 @@ const initialRate = {
 };
 
 const currencyFields = [
-  { label: "NPR", name: "rateInNPR" },
+  // { label: "NPR", name: "rateInNPR" },
   { label: "USD", name: "rateInUSD" },
   { label: "INR", name: "rateInINR" },
-  { label: "EUR", name: "rateInEUR" },
+  // { label: "EUR", name: "rateInEUR" },
 ];
 
 const PackageRate = ({ name, value, onChange, isEditTour, isEditTrekking, isEditExpedition, isEditPeakClimbing }) => {
@@ -31,9 +31,9 @@ const PackageRate = ({ name, value, onChange, isEditTour, isEditTrekking, isEdit
       const initialized = value?.map((v) => ({
         noOfPerson: v.noOfPerson || null,
         rateInNPR: v.rateInNPR || null,
-        rateInEUR: v.rateInEUR || null,
+        // rateInEUR: v.rateInEUR || null,
         rateInUSD: v.rateInUSD || null,
-        rateInINR: v.rateInINR || null,
+        // rateInINR: v.rateInINR || null,
       }));
 
       setPackageRates(initialized);
@@ -135,7 +135,7 @@ const PackageRate = ({ name, value, onChange, isEditTour, isEditTrekking, isEdit
                       value={p[name] === 0 ? "" : p[name] || ""}
                       onChange={(e) => {
                         const value = e.target.value;
-                       if(/^\d{0,5}$/.test(value)){
+                       if(/^\d{0,7}$/.test(value)){
                          handleUpdate(
                           idx,
                           name,
