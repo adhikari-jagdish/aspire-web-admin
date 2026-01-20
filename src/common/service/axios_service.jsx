@@ -1,7 +1,7 @@
 import axios from "axios";
 
 class AxiosService {
-  constructor(getToken = null, baseURL = "http://localhost:6001") {
+  constructor(getToken = null, baseURL = "139.84.167.10:6001") {
     this.axiosInstance = axios.create({
       baseURL,
       //headers: { "Content-Type": "application/json" },
@@ -20,7 +20,7 @@ class AxiosService {
         }
         return config;
       },
-      (error) => Promise.reject(error)
+      (error) => Promise.reject(error),
     );
 
     // Response interceptor for handling 401 errors
@@ -31,7 +31,7 @@ class AxiosService {
           window.location.href = "/login";
         }
         return Promise.reject(error);
-      }
+      },
     );
   }
 
